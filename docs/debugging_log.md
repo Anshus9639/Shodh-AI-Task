@@ -78,3 +78,24 @@ Real incidents observed while building Stage 1. Each entry states the symptom, t
 - **Symptom:** Public spec/workflow contracts accepted the internal `not_true` node, so an artifact could submit a generated first-match guard.
 - **Fix:** Added `models/conditions.py` with an external union excluding `not_true`; spec, workflow and dictionary fields now use it, with `to_ir` conversion at ingestion/extraction boundaries.
 - **Guard:** `tests/unit/test_conditions.py` and scheme-level negative cases in `tests/unit/test_contracts.py`.
+
+## 2026-11-18 — Correct precedence defect was reported as a generic disagreement
+
+- **Symptom:** `tests/unit/test_verify_code.py::test_reordered_guards_are_reported_as_precedence` failed: a router with correct guards in the wrong order produced only `SCRIPT_DISAGREEMENT`, not `PRECEDENCE`.
+- **Cause:** Guard matching compared exact three-valued truth. A code presence guard (`"priority" in ticket and ticket["priority"] == "urgent"`) yields FALSE on an absent field where the requirement condition yields UNKNOWN, so `perfect_matching` found no assignment even though the guards fire on the same tickets.
+- **Fix:** Added `firing_equivalent` (`verify/equivalence.py`), wrapping both sides in `NotTrue` before the equivalence check, and used `firing=True` for router reordering. First-match semantics only depends on whether a guard is TRUE.
+- **Guard:** `tests/unit/test_verify_code.py::test_reordered_guards_are_reported_as_precedence` and `::test_matching_router_agrees_everywhere` (presence guards still agree on every ticket).
+
+## 2026-11-18 — A code-only boundary defect was blamed on the wrong rule
+
+- **Symptom:** A router using `> 30` where the requirement uses `>= 30` produced `SCRIPT_DISAGREEMENT` instead of `THRESHOLD_CHANGED` when the differing ticket fell through to the catch-all requirement.
+- **Cause:** The numeric-boundary clue was looked up only on the requirement rule that the differing ticket actually fired (`R4`, a constant), which has no numeric atom.
+- **Fix:** `_condition_clue` falls back to every requirement rule on the same field before giving up, so the `> 30` versus `>= 30` boundary is found without using IDs.
+- **Guard:** `tests/unit/test_verify_code.py::test_threshold_change_is_classified_without_rule_ids` and `tests/integration/test_review.py::test_strict_boundary_requires_changes_and_names_the_threshold`.
+
+## 2026-11-18 — Sampled review asserted a defect from absence
+
+- **Symptom:** Reviewing the clean router `B10_router_clean` with `max_cells = 8` produced `CHANGES_REQUIRED`: requirement `R3` was never sampled, and `verify_code` reported `SCRIPT_DISAGREEMENT`/`BLOCKER` ("no agreeing branch in any evaluated ticket").
+- **Cause:** The unexercised-requirement loop did not distinguish exhaustive from sampled evaluation; absence from a sample was treated as evidence about the router.
+- **Fix:** In sampled mode the loop now emits `STRUCTURAL`/`COVERAGE_GAP` ("not exercised by the sample") and relies on the disclosed sampling scope; `BLOCKER` requires a validated witness. Status for the sampled B10 review is INCOMPLETE.
+- **Guard:** `tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed` (decision D-039).

@@ -199,3 +199,21 @@ Format: ID · date · decision · rationale · alternatives considered · status
 - **Why:** Conflating "code version under evaluation" with "commit that generated fixtures" makes evaluation provenance ambiguous.
 - **How to apply:** Future frozen sets must record both fields. `tests/unit/test_stage2_holdout_isolation.py` asserts the Stage 2 metadata and the unchanged Stage 1 manifest hash.
 - **Status:** Accepted.
+
+### D-038 · 2026-11-18 · Guard correspondence uses firing equivalence, not truth equivalence
+- **Decision:** When comparing an ordered first-match entry with a router guard, both sides are wrapped in `NotTrue` before the semantic equivalence check (`verify/equivalence.py::firing_equivalent`). Plain `NotTrue`-wrapped conditions and code presence guards such as `"field" in ticket and ticket["field"] == x` are therefore equivalent when they fire on the same tickets, even though their exact three-valued results differ (FALSE versus UNKNOWN on absent fields).
+- **Why:** First-match routing only asks whether a guard is TRUE. Comparing exact truth produced false negatives: a correct precedence defect was reported as a generic disagreement, and correct guards looked different from their requirements.
+- **How to apply:** `verify/code.py::_is_reordered` uses `is_reordered(..., firing=True)`; direct `same_behaviour` remains exact truth for spec/workflow conditions, which are already expressed in the requirement IR. `tests/unit/test_verify_code.py` covers the presence-guard case.
+- **Status:** Accepted.
+
+### D-039 · 2026-11-18 · Sampling discloses unreviewed requirements instead of asserting defects
+- **Decision:** In a sampled ticket space, a requirement that never fires is reported as `STRUCTURAL`/`COVERAGE_GAP` ("not exercised by the sample") rather than `SCRIPT_DISAGREEMENT`/`BLOCKER`. A `BLOCKER` requires a validated witness from the evaluated set. The sampled space itself is disclosed in `ReviewReport.unreviewed`, and the status cannot exceed INCOMPLETE.
+- **Why:** Absence from a sample is not evidence that the router lacks a branch. Treating it as a blocker states more than the evaluation established and would make sampling indistinguishable from exhaustive verification.
+- **How to apply:** Any future verifier that infers a missing artifact element must check `space.exhaustive` first. `tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed` pins the untuned B10 bundle with `max_cells = 8`.
+- **Status:** Accepted.
+
+### D-040 · 2026-11-18 · Stage 2 baseline tag marks the first complete deterministic reviewer
+- **Decision:** Tag commit `4702939` as `stage2-baseline`: the first checkpoint containing the eight ordered Stage 2 steps and the `review` CLI. `04d9ea6` remains the Stage 1 implementation provenance checkpoint. The evaluation configuration is `configs/default.toml` at sha256 `6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61`; the exact evaluation identity (tag, commit, config, both sealed manifests) is recorded in `docs/evaluation_protocol.md`.
+- **Why:** The user asked to distinguish implementation provenance from the evaluation baseline and to freeze the baseline before tuning; a commit cannot contain its own hash, so the tag is the stable handle and the document records the rest.
+- **How to apply:** The sealed Stage 2 evaluation is run once against `stage2-baseline`; later commits are enhancements, not the evaluation baseline. Do not move the tag.
+- **Status:** Accepted; sealed set still unexecuted.

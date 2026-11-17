@@ -6,7 +6,7 @@ Stage 1 evaluates contracts, parsing, compilation, approval resolution and seman
 
 | Set | Location | Bundles | Purpose |
 | --- | --- | --- | --- |
-| Dev | `fixtures/dev/` | `B01_starter`, `B03_approved_change`, `B05_unapproved_change`, `B06_conflicting_approvals`, `B07_approved_threshold_25`, `B08_unapproved_threshold_25`, `B09_conflicting_threshold_25` | Development and regression tests; safe to inspect while iterating. `B07`–`B09` are the primary 30 → 25 minute approval fixtures; `B03`/`B05`/`B06` retain the 20-minute generalization case. |
+| Dev | `fixtures/dev/` | `B01_starter`, `B03_approved_change`, `B05_unapproved_change`, `B06_conflicting_approvals`, `B07_approved_threshold_25`, `B08_unapproved_threshold_25`, `B09_conflicting_threshold_25`, `B10_router_clean`, `B11_router_precedence`, `B12_router_threshold`, `B13_router_runtime` | Development and regression tests; safe to inspect while iterating. `B07`–`B09` are the primary 30 → 25 minute approval fixtures; `B03`/`B05`/`B06` retain the 20-minute generalization case. `B10`–`B13` link a Python router: clean, reordered guards, strict boundary and runtime `KeyError`. |
 | Development evidence | `fixtures/dev_evidence/holdout_v1/` | `H01_clean`, `H02_renamed`, `H03_spec_reordered`, `H04_approved_threshold`, `H05_tampered_approval` | Frozen historical evidence from Stage 1. These bundles were inspected during debugging, so they are no longer sealed; the recorded labels still run as ordinary regression tests. |
 | Sealed Stage 1 holdout | `holdout/bundles/` | `F01_clean`, `F02_renamed`, `F03_approved_threshold`, `F04_unapproved_threshold`, `F05_tampered_approval` | Reserved for final Stage 1 evaluation. Authored before any final-evaluation run and not executed during Stage 1 development or the follow-up corrections. |
 | Sealed Stage 2 semantic holdout | `holdout_stage2/bundles/` | `G01_valid_original`, `G02_valid_approved_25`, `G03_precedence_defect`, `G04_code_boundary_defect`, `G05_conflicting_approvals` | Frozen before any Stage 2 algorithm exists; reserved for the Stage 2 semantic evaluation. Never executed or tuned against. |
@@ -39,7 +39,7 @@ The Stage 2 set returns to the support-ticket routing domain. Requirements use u
 | `G04_code_boundary_defect` | Spec and workflow use `>= 30`; the linked `router.py` uses `> 30`. | CHANGES_REQUIRED (`THRESHOLD_CHANGED`); counterexample wait = 30 → normal queue instead of escalation. |
 | `G05_conflicting_approvals` | Approve and reject bind to the same change hash with no supersession; spec and workflow use 25. | INCOMPLETE (`UNDETERMINED_CONFLICT`); `T3`/`approval` undetermined, no effective policy emitted, threshold-dependent routes undetermined. |
 
-Labels are hand-derived from the requirement order and the change/approval records; no Stage 2 verifier exists, so no implementation output was used to produce them. They live in `holdout_stage2/labels/` and grade status, finding category, counterexample and route expectations. The set is frozen at manifest SHA-256 `a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4`; `holdout_stage2/GENERATION.json` records the seed, phrase assignment, generator hash, config hash and checkpoint provenance. Ordinary development tests hash and inspect metadata only; they never load a bundle through the reviewer.
+Labels were hand-derived from the requirement order and the change/approval records before any Stage 2 verifier existed, so no implementation output was used to produce them. They live in `holdout_stage2/labels/` and grade status, finding category, counterexample and route expectations. The set is frozen at manifest SHA-256 `a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4`; `holdout_stage2/GENERATION.json` records the seed, phrase assignment, generator hash, config hash and checkpoint provenance. Ordinary development tests hash and inspect metadata only; they never load a bundle through the reviewer.
 
 ## Commands
 
@@ -51,24 +51,64 @@ uv run pytest -q
 # holdout/ or holdout_stage2/, because the manifests are content-addressed).
 uv run python scripts/build_fixtures.py          # fixtures/dev + sealed Stage 1 holdout
 uv run python scripts/build_stage2_holdout.py    # sealed Stage 2 semantic holdout
+uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B13 only
 
 # One bundle through the public interface.
 uv run verityflow resolve fixtures/dev/B07_approved_threshold_25
 uv run verityflow map fixtures/dev/B01_starter --artifact all
+uv run verityflow review fixtures/dev/B10_router_clean
 ```
 
-Integration tests (`tests/integration/test_bundle_pipeline.py`) run load → parse → compile → resolve → map on dev bundles and verify evidence anchors with `LineIndex`. `tests/integration/test_dev_evidence_stage1.py` compares the frozen H01–H05 development evidence against its recorded labels field by field.
+`verityflow review` prints the full `ReviewReport` as JSON. Exit codes: `0` for PASS, `1` for any other status, `2` for an input/configuration error.
 
-A sealed-holdout evaluation test is deliberately not present in Stage 1: `F01–F05` are reserved for final Stage 1 evaluation and `G01–G05` for Stage 2, where each set will be run once against the final implementation and its recorded labels.
+Integration tests (`tests/integration/test_bundle_pipeline.py`) run load → parse → compile → resolve → map on dev bundles and verify evidence anchors with `LineIndex`. `tests/integration/test_review.py` runs the end-to-end reviewer on B01 and B10–B13, asserting status, finding category, validated witness content, sampled-mode disclosure and CLI exit codes. `tests/integration/test_dev_evidence_stage1.py` compares the frozen H01–H05 development evidence against its recorded labels field by field.
 
-## Current Stage 1 results
+A sealed-holdout evaluation test is deliberately not present: `F01–F05` are reserved for final Stage 1 evaluation and `G01–G05` for Stage 2, where each set will be run once against the final implementation and its recorded labels.
 
-- Default suite: **221 passed**.
+## Stage 2 baseline
+
+The first complete, runnable deterministic reviewer is commit `4702939` and is tagged `stage2-baseline`. It contains steps 1–8 of the Stage 2 implementation order and the `review` CLI; no tuning followed before the tag was created.
+
+| Fact | Value |
+| --- | --- |
+| Baseline tag | `stage2-baseline` |
+| Baseline commit | `4702939` |
+| Implementation provenance checkpoint (Stage 1) | `04d9ea6` |
+| Evaluation configuration | `configs/default.toml`, sha256 `6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61` |
+| Sealed Stage 2 holdout manifest | `a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4` |
+| Sealed Stage 1 holdout manifest | `e10de058ceb51586f16c657c75e4fd3b4fd9cbded6f76beda9a4e0c648ba6f41` |
+
+Stage 2 was implemented and tuned only against `fixtures/dev/`. The labels of neither sealed set were loaded, and neither set was executed. The exact run command for the final evaluation is `uv run verityflow review holdout_stage2/bundles/<name>` under the configuration above, compared field by field with `holdout_stage2/labels/<name>.json`.
+
+## Exhaustive and sampled verification
+
+The ticket space is the cross-product of per-field behavioural states induced by every compared boundary (requirement, spec, workflow and code literals). Each field contributes its domain values, absent/null, and one representative on each side of every boundary.
+
+- If the cross-product is at most `max_cells` (50,000), every cell is evaluated and the comparison mode is `EXHAUSTIVE`. Only then can `ReviewReport.exhaustive` be true and the status be PASS.
+- Otherwise a deterministic pairwise sample is evaluated (baseline, every single-field variation, every field pair), the exact skipped count is reported, the comparison mode is `SAMPLED`, and the status is at most INCOMPLETE. Skipped combinations are never described as verified.
+- In sampled mode, a requirement not exercised by the sample is disclosed as an unreviewed region (`STRUCTURAL`, `COVERAGE_GAP`), not as a defect. A defect still requires a witness that was re-routed and validated.
+
+`tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed` pins this behaviour with `max_cells = 8`.
+
+## Stage 2 development evidence
+
+The B10–B13 fixtures are development evidence, not an evaluation set. Their observed reviewer behaviour (developer fixtures only; no sealed labels were consulted):
+
+| Bundle | Observed | Evidence |
+| --- | --- | --- |
+| `B10_router_clean` | PASS, exhaustive | code and code-vs-workflow comparisons equal |
+| `B11_router_precedence` | CHANGES_REQUIRED, `PRECEDENCE` | validated witness `{category: absent, priority: urgent}`: manual review vs priority queue |
+| `B12_router_threshold` | CHANGES_REQUIRED, `THRESHOLD_CHANGED` | validated witness `{wait_time: 30}`: escalation queue vs normal queue |
+| `B13_router_runtime` | CHANGES_REQUIRED, `RUNTIME_ERROR` | validated witness `{category: absent, vip: absent}`: `KeyError` in the router |
+
+## Current results
+
+- Default suite: **300 passed** (Stage 1 baseline 221 retained; Stage 2 adds 79).
 - Sealed Stage 1 holdout: **not executed** (reserved for final evaluation).
-- Sealed Stage 2 semantic holdout: **not executed** (frozen before Stage 2 exists).
-- `ruff check .`: clean.
-- `ruff format --check .`: clean, 75 files.
-- `mypy` (strict): clean, 40 source files.
+- Sealed Stage 2 semantic holdout: **not executed** (reserved for final evaluation against `stage2-baseline`).
+- `ruff check src tests scripts`: clean.
+- `ruff format --check src tests scripts`: clean.
+- `mypy` (strict, `src`): clean, 51 source files.
 
 ## Checkpoint provenance
 

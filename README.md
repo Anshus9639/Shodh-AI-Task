@@ -1,8 +1,8 @@
 # VerityFlow
 
-Deterministic-first workflow compliance reviewer. It parses versioned business requirements, compiles them into an ordered first-match policy, resolves hash-bound approvals, and infers ID-free semantic correspondence to a specification and workflow graph. Every claim carries evidence; unsupported input and ambiguity are reported, never guessed.
+Deterministic-first workflow compliance reviewer. It parses versioned business requirements, compiles them into an ordered first-match policy, resolves hash-bound approvals, and verifies the specification, workflow graph and linked Python router against that policy over a disclosed ticket space. Linked Python is AST-interpreted, never executed. Every claim carries evidence; unsupported input, ambiguity and sampling are reported, never guessed.
 
-Status: **Stage 1 complete (awaiting review).** Verification (behavioral equivalence, counterexamples, restricted-Python analysis, status) and model integration are not implemented.
+Status: **Stage 2 complete (awaiting review).** The deterministic reviewer and `review` CLI are implemented and tagged `stage2-baseline` (`4702939`). Model integration (Stage 3) is not implemented.
 
 ## Documentation
 
@@ -41,9 +41,12 @@ uv run verityflow resolve fixtures/dev/B03_approved_change
 
 # Infer semantic correspondence to spec and workflow (or --artifact spec|workflow).
 uv run verityflow map fixtures/dev/B01_starter --artifact all
+
+# Deterministically review every linked artifact; full report as JSON.
+uv run verityflow review fixtures/dev/B10_router_clean
 ```
 
-Exit codes: `0` no coverage gap, `1` a blocker/coverage gap was found, `2` invalid input (unreadable file, malformed config, bad option).
+`review` exit codes: `0` PASS, `1` CHANGES_REQUIRED or INCOMPLETE, `2` invalid input (unreadable bundle, malformed config, bad option). The Stage 1 commands share exit codes `0`/`1`/`2` for no gap, gap/blocker, and invalid input.
 
 ## Contracts
 
@@ -56,8 +59,9 @@ uv run python scripts/export_schemas.py   # writes schemas/*.schema.json
 Fixtures are generated deterministically:
 
 ```
-uv run python scripts/build_fixtures.py          # fixtures/dev + sealed Stage 1 holdout
-uv run python scripts/build_stage2_holdout.py    # sealed Stage 2 semantic holdout
+uv run python scripts/build_fixtures.py             # fixtures/dev + sealed Stage 1 holdout
+uv run python scripts/build_stage2_holdout.py       # sealed Stage 2 semantic holdout
+uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B13 only
 ```
 
 Both `holdout/` and `holdout_stage2/` are frozen after their freezing commits; do not regenerate them.
@@ -73,4 +77,4 @@ uv run ruff format --check .
 uv run mypy
 ```
 
-Current results: 221 default tests passed; ruff, ruff format and strict mypy clean. Neither sealed set (`holdout/`, `holdout_stage2/`) has been executed; they are reserved for final Stage 1 and Stage 2 evaluation respectively.
+Current results: 300 default tests passed; ruff, ruff format and strict mypy (`src`) clean. Neither sealed set (`holdout/`, `holdout_stage2/`) has been executed; they are reserved for final Stage 1 and Stage 2 evaluation.

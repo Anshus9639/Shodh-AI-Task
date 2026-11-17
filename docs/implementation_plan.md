@@ -1,6 +1,6 @@
 # VerityFlow — Implementation Plan
 
-Status: **Stage 1 complete (awaiting review)**. Revision 3 (2026-11-17). Revision 2 approved; the two final requirements (optional trace maps with inferred semantic correspondence, and refined continuous-domain partitioning) are incorporated and implemented. Stage 2 has not started.
+Status: **Stage 2 complete (awaiting review)**. Revision 3 (2026-11-17). Revision 2 approved; the two final requirements (optional trace maps with inferred semantic correspondence, and refined continuous-domain partitioning) are incorporated and implemented. Stage 1 completed in `04d9ea6`. The deterministic reviewer (steps 1–8) and `verityflow review` are tagged `stage2-baseline` (`4702939`); Stage 3 (model advisory) has not started.
 
 Revision history:
 - Rev 1 (2026-11-17): initial plan.

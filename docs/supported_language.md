@@ -79,6 +79,19 @@ A catch-all has condition `Const(True)`, and its guard is the conjunction of `No
 
 Specification artifacts order by the explicit integer `priority` field; array position is ignored. Duplicate priorities make the ordered list undetermined and produce `AMBIGUITY` with no extracted elements. Workflow artifacts order by graph structure and ordered branch lists; an else-branch is the negation of the preceding branch conditions.
 
+## Linked router subset (Stage 2)
+
+A Python artifact is reviewed only if it parses to the following subset. It is parsed with `ast` and interpreted; it is never imported, compiled or executed.
+
+- Module docstring, `from __future__ import annotations`, and `from typing import ...` / `import typing` statements.
+- Module-level literal assignments (used as named constants).
+- Exactly one function, named by `CodeLink.entrypoint` (default `route`), taking one parameter (default `ticket`).
+- Statements: docstring, `if`/`elif`/`else`, `return`, single-name assignment, `pass`.
+- Expressions: literals; names bound to unambiguous literals; `ticket["field"]`; `ticket.get("field")`; `"field" in ticket` / `"field" not in ticket`; one comparison (`==`, `!=`, `<`, `<=`, `>`, `>=`, `in`, `not in`) between supported operands; `and`/`or`/`not`; literal tuples/lists/sets.
+- Returned values must be destination strings (mapped through `CodeLink.destination_map`) or `None`. `None` means "no match"; falling off the end means "fell through".
+
+Anything else — imports beyond the above, calls, attribute access, subscripts other than `ticket[...]`, loops, `try`, `raise`, classes, decorators, lambdas, comprehensions, multiple functions, `global`/`nonlocal` — is rejected statically as `UNSUPPORTED_CODE` (or `STRUCTURAL` for syntax errors) and the affected region is unreviewed. Budgets (`interpreter_max_steps`, `interpreter_max_ast_nodes`, `interpreter_max_depth`) bound evaluation; exceeding them yields `STEP_LIMIT`, which is also unreviewed, not a defect.
+
 ## External artifact conditions
 
 JSON specification rules (`spec.json`), workflow branches (`workflow.json`) and dictionary named predicates accept the **external** condition union:
