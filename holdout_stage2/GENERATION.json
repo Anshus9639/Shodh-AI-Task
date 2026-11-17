@@ -1,0 +1,48 @@
+{
+  "holdout_id": "stage2_semantic_v1",
+  "reserved_on": "2026-11-17",
+  "generated_by": "scripts/build_stage2_holdout.py",
+  "generator_sha256": "83c2ed087604340a758e82847e342afa907b74177ba73e48123d27a8ab9f05ae",
+  "seed": 20261117,
+  "seed_usage": "random.Random(seed).sample assigns one distinct equivalent threshold formulation per bundle from the vetted phrase pool; no other randomness is used.",
+  "threshold_phrases": [
+    "waiting >= 30 minutes",
+    "waiting is at least 30 minutes",
+    "waiting > 29 minutes",
+    "not waiting < 30 minutes",
+    "waiting is greater than or equal to 30 minutes"
+  ],
+  "phrase_assignment": {
+    "G01_valid_original": "waiting is at least 30 minutes",
+    "G02_valid_approved_25": "waiting >= 30 minutes",
+    "G03_precedence_defect": "not waiting < 30 minutes",
+    "G04_code_boundary_defect": "waiting > 29 minutes",
+    "G05_conflicting_approvals": "waiting is greater than or equal to 30 minutes"
+  },
+  "config": {
+    "path": "configs/default.toml",
+    "sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61"
+  },
+  "provenance": {
+    "baseline_implementation_checkpoint": "04d9ea6",
+    "baseline_meaning": "Stage 1 implementation the Stage 2 fixtures are authored against; it is not the commit that generated these files.",
+    "fixture_generation_base_commit": "9a420cd",
+    "fixture_generation_commit": "The commit that first adds holdout_stage2/ and contains this file. Recorded in docs/evaluation_protocol.md because a commit cannot name its own hash."
+  },
+  "domain": "support-ticket routing (category, priority, wait_time, vip)",
+  "bundles": [
+    "G01_valid_original",
+    "G02_valid_approved_25",
+    "G03_precedence_defect",
+    "G04_code_boundary_defect",
+    "G05_conflicting_approvals"
+  ],
+  "labels": [
+    "G01_valid_original",
+    "G02_valid_approved_25",
+    "G03_precedence_defect",
+    "G04_code_boundary_defect",
+    "G05_conflicting_approvals"
+  ],
+  "policy": "Frozen before Stage 2 implementation. Not executed by ordinary development tests. Labels are never reviewer inputs and must not be edited after freezing."
+}

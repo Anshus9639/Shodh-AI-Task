@@ -1,0 +1,40 @@
+{
+  "bundle": "G04_code_boundary_defect",
+  "stage": 2,
+  "holdout_id": "stage2_semantic_v1",
+  "derivation": "Hand-derived from the requirement list, the effective-policy rules and the change/approval records before any Stage 2 verifier existed. No implementation output was used to produce this label.",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "finding_categories": [
+      "THRESHOLD_CHANGED"
+    ],
+    "resolution": {
+      "applied": [],
+      "undetermined": [],
+      "rule_thresholds": {
+        "T3": "30"
+      }
+    },
+    "routes": {
+      "missing_category": "manual_review",
+      "urgent": "priority_queue",
+      "waiting_30": "escalation_queue",
+      "baseline": "normal_queue"
+    },
+    "counterexamples": [
+      {
+        "ticket": {
+          "category": "billing",
+          "priority": "normal",
+          "wait_time": 30
+        },
+        "expected_destination": "escalation_queue",
+        "actual_destination": "normal_queue",
+        "artifacts": [
+          "code:PY@1.0"
+        ]
+      }
+    ]
+  },
+  "rationale": "Spec and workflow use wait_time >= 30, but the linked router uses > 30. The boundary ticket wait=30 exposes the off-by-one disagreement."
+}

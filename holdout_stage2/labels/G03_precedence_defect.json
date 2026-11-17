@@ -1,0 +1,53 @@
+{
+  "bundle": "G03_precedence_defect",
+  "stage": 2,
+  "holdout_id": "stage2_semantic_v1",
+  "derivation": "Hand-derived from the requirement list, the effective-policy rules and the change/approval records before any Stage 2 verifier existed. No implementation output was used to produce this label.",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "finding_categories": [
+      "PRECEDENCE"
+    ],
+    "resolution": {
+      "applied": [],
+      "undetermined": [],
+      "rule_thresholds": {
+        "T3": "30"
+      }
+    },
+    "routes": {
+      "missing_category": "manual_review",
+      "urgent": "priority_queue",
+      "waiting_30": "escalation_queue",
+      "baseline": "normal_queue"
+    },
+    "counterexamples": [
+      {
+        "ticket": {
+          "priority": "normal",
+          "wait_time": 45
+        },
+        "expected_destination": "manual_review",
+        "actual_destination": "escalation_queue",
+        "artifacts": [
+          "spec:SPEC@1.0",
+          "workflow:WF@1.0"
+        ]
+      },
+      {
+        "ticket": {
+          "category": "billing",
+          "priority": "urgent",
+          "wait_time": 45
+        },
+        "expected_destination": "priority_queue",
+        "actual_destination": "escalation_queue",
+        "artifacts": [
+          "spec:SPEC@1.0",
+          "workflow:WF@1.0"
+        ]
+      }
+    ]
+  },
+  "rationale": "Each rule is individually equivalent to its requirement, but both artifacts evaluate the wait threshold before missing-category and urgent handling. Tickets that match two rules prove the combined precedence is wrong."
+}

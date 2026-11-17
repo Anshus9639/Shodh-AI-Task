@@ -1,0 +1,63 @@
+{
+  "bundle_id": "G04_code_boundary_defect",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0",
+    "code": [
+      "PY@1.0"
+    ]
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "fd5357f708d66ae7abce625219951e2d0493fb43c23a9fcbdec8589371576a72"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "a1fb50788923a2287cd15ba4a11ef86fa1772d6c10424633a97d4e805a766162"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "7ff6cd85a02df01fca5160e5a014482c194ea097a8320e44102a41b949ea7589"
+    },
+    {
+      "artifact_id": "PY",
+      "version": "1.0",
+      "kind": "python",
+      "path": "router.py",
+      "sha256": "b153ff52602f2f7637fbecca39789c09ed801a126d95ba2f932378d031b7cb3c",
+      "link": {
+        "entrypoint": "route",
+        "param": "ticket",
+        "field_map": {
+          "wait_time": {
+            "field": "wait_time",
+            "unit": "minutes"
+          }
+        },
+        "destination_map": {}
+      }
+    }
+  ],
+  "approvals": []
+}

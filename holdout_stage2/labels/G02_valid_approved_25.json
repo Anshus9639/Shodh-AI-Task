@@ -1,0 +1,29 @@
+{
+  "bundle": "G02_valid_approved_25",
+  "stage": 2,
+  "holdout_id": "stage2_semantic_v1",
+  "derivation": "Hand-derived from the requirement list, the effective-policy rules and the change/approval records before any Stage 2 verifier existed. No implementation output was used to produce this label.",
+  "expected": {
+    "status": "PASS",
+    "finding_categories": [],
+    "resolution": {
+      "applied": [
+        "C1@1"
+      ],
+      "undetermined": [],
+      "rule_thresholds": {
+        "T3": "25"
+      }
+    },
+    "routes": {
+      "missing_category": "manual_review",
+      "urgent": "priority_queue",
+      "waiting_25": "escalation_queue",
+      "waiting_24": "normal_queue",
+      "waiting_30": "escalation_queue",
+      "baseline": "normal_queue"
+    },
+    "counterexamples": []
+  },
+  "rationale": "The hash-bound approval lowers T3 to 25 minutes; spec and workflow both implement 25, so the effective policy and the artifacts agree."
+}

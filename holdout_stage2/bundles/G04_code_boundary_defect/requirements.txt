@@ -1,0 +1,4 @@
+T1. Missing category -> manual review.
+T2. Otherwise, urgent ticket -> priority queue.
+T3. Otherwise, waiting > 29 minutes -> escalation queue.
+T4. All remaining tickets -> normal queue.

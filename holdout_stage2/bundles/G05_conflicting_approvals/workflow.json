@@ -1,0 +1,74 @@
+{
+  "workflow_id": "TRIAGE-WF",
+  "version": "1.0",
+  "start": "intake",
+  "nodes": [
+    {
+      "id": "intake",
+      "version": "1.0",
+      "kind": "decision",
+      "branches": [
+        {
+          "branch_id": "rb-missing",
+          "version": "1.0",
+          "condition": {
+            "kind": "missing",
+            "field": "category"
+          },
+          "target": "manual_node"
+        },
+        {
+          "branch_id": "rb-urgent",
+          "version": "1.0",
+          "condition": {
+            "kind": "eq",
+            "field": "priority",
+            "value": "urgent"
+          },
+          "target": "priority_node"
+        },
+        {
+          "branch_id": "rb-wait",
+          "version": "1.0",
+          "condition": {
+            "kind": "cmp",
+            "field": "wait_time",
+            "op": ">=",
+            "value": 25,
+            "unit": "minutes"
+          },
+          "target": "escalation_node"
+        },
+        {
+          "branch_id": "rb-default",
+          "version": "1.0",
+          "target": "normal_node"
+        }
+      ]
+    },
+    {
+      "id": "manual_node",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "manual_review"
+    },
+    {
+      "id": "priority_node",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "priority_queue"
+    },
+    {
+      "id": "escalation_node",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "escalation_queue"
+    },
+    {
+      "id": "normal_node",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "normal_queue"
+    }
+  ]
+}

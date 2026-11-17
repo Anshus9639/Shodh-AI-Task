@@ -1,0 +1,42 @@
+{
+  "bundle_id": "G03_precedence_defect",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "a5389c14e334ef190c7ce2e6b32aae560d43ac040369af5037969ee78f2fcfeb"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "cfb44b5fcdc8c39784cbb741e35ad7af0fb798809fb5d7da94ae90f65c072593"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "d269921b01ebc85731868d501ca8881244a1cbc1880d26bc1d0f012ddbc585c8"
+    }
+  ],
+  "approvals": []
+}

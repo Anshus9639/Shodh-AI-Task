@@ -1,0 +1,26 @@
+{
+  "bundle": "G01_valid_original",
+  "stage": 2,
+  "holdout_id": "stage2_semantic_v1",
+  "derivation": "Hand-derived from the requirement list, the effective-policy rules and the change/approval records before any Stage 2 verifier existed. No implementation output was used to produce this label.",
+  "expected": {
+    "status": "PASS",
+    "finding_categories": [],
+    "resolution": {
+      "applied": [],
+      "undetermined": [],
+      "rule_thresholds": {
+        "T3": "30"
+      }
+    },
+    "routes": {
+      "missing_category": "manual_review",
+      "urgent": "priority_queue",
+      "waiting_30": "escalation_queue",
+      "waiting_29": "normal_queue",
+      "baseline": "normal_queue"
+    },
+    "counterexamples": []
+  },
+  "rationale": "Spec and workflow match the ordered requirements at the original 30-minute threshold; no change is pending."
+}

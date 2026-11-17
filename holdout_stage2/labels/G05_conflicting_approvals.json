@@ -1,0 +1,35 @@
+{
+  "bundle": "G05_conflicting_approvals",
+  "stage": 2,
+  "holdout_id": "stage2_semantic_v1",
+  "derivation": "Hand-derived from the requirement list, the effective-policy rules and the change/approval records before any Stage 2 verifier existed. No implementation output was used to produce this label.",
+  "expected": {
+    "status": "INCOMPLETE",
+    "finding_categories": [
+      "UNDETERMINED_CONFLICT"
+    ],
+    "resolution": {
+      "applied": [],
+      "undetermined": [
+        {
+          "rule": "T3",
+          "scope": "approval"
+        }
+      ],
+      "rule_thresholds": {
+        "T3": "undetermined"
+      }
+    },
+    "routes": {
+      "missing_category": "manual_review",
+      "urgent": "priority_queue",
+      "baseline": "normal_queue"
+    },
+    "undetermined_routes": [
+      "waiting_25",
+      "waiting_30"
+    ],
+    "counterexamples": []
+  },
+  "rationale": "Approval and rejection bind to the same change hash with no supersession, so the effective threshold is undetermined. Artifacts use 25, but no verdict is possible until authority is resolved."
+}
