@@ -194,6 +194,25 @@ def verify_code(
     for rule in policy.rules:
         if rule.rule_ref in agreeing or rule.rule_ref in covered_refs:
             continue
+        if not space.exhaustive:
+            findings.append(
+                make_finding(
+                    FindingCategory.STRUCTURAL,
+                    Severity.COVERAGE_GAP,
+                    f"effective requirement {rule.rule_ref!r} (destination "
+                    f"{rule.destination!r}) was not exercised by any sampled ticket "
+                    "combination, so the linked router is unreviewed there",
+                    rule_ref=rule.rule_ref,
+                    artifact_id=_artifact_id(program),
+                    artifact_version=_artifact_version(program),
+                    explanation=(
+                        "An unexercised requirement is disclosed as an unreviewed region, "
+                        "not as a defect: absence from the sample is not evidence that the "
+                        "router lacks the branch."
+                    ),
+                )
+            )
+            continue
         findings.append(
             make_finding(
                 FindingCategory.SCRIPT_DISAGREEMENT,

@@ -25,6 +25,8 @@ from verityflow.models.manifest import ArtifactEntry, ArtifactKind
 from verityflow.models.report import Finding, FindingCategory, Severity, make_finding
 from verityflow.requirements.compile import compile_document
 from verityflow.requirements.parser import parse_requirements
+from verityflow.verify.models import ReviewStatus
+from verityflow.verify.review import review_bundle
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
@@ -258,6 +260,37 @@ def map_artifacts(
     }
     _emit(payload)
     raise typer.Exit(_exit_for(findings))
+
+
+@app.command()
+def review(
+    bundle: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=False,
+            dir_okay=True,
+            readable=True,
+            help="Bundle directory containing bundle.json.",
+        ),
+    ],
+    requirements_ref: Annotated[
+        str | None,
+        typer.Option("--requirements", help="Requirement artifact ref ID@version."),
+    ] = None,
+    config_path: Annotated[
+        Path | None,
+        typer.Option("--config", help="TOML configuration file."),
+    ] = None,
+) -> None:
+    """Deterministically review every linked artifact against the requirements."""
+    config = _load_config(config_path)
+    try:
+        report = review_bundle(bundle, config=config, requirements_ref=requirements_ref)
+    except BundleLoadError as exc:
+        _fail(str(exc), code=_EXIT_INPUT)
+    _emit(_dump(report))
+    raise typer.Exit(_EXIT_OK if report.status is ReviewStatus.PASS else _EXIT_FINDING)
 
 
 def _load_dictionary(path: Path) -> DataDictionary:
