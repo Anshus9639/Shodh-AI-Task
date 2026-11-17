@@ -163,12 +163,31 @@ def build_ticket_space(
     expressions: Iterable[Expr],
     *,
     max_cells: int,
+    extra_cuts: Mapping[str, Iterable[Fraction]] | None = None,
+    extra_literals: Mapping[str, Iterable[str | bool]] | None = None,
 ) -> TicketSpace:
+    """Enumerate representative tickets induced by every compared boundary.
+
+    ``extra_cuts``/``extra_literals`` add boundaries that occur only in a linked
+    router's code (already converted to field units), so a code-only threshold
+    still gets a representative on either side of it.
+    """
     analysis = condition_analysis(expressions)
+    cuts_by_field: dict[str, set[Fraction]] = {
+        name: set(values) for name, values in analysis.cuts.items()
+    }
+    for name, extra in (extra_cuts or {}).items():
+        cuts_by_field.setdefault(name, set()).update(extra)
+    literals_by_field: dict[str, set[str | bool]] = {
+        name: set(values) for name, values in analysis.literals.items()
+    }
+    for name, extra_literal in (extra_literals or {}).items():
+        literals_by_field.setdefault(name, set()).update(extra_literal)
+
     fields: dict[str, tuple[CellValue, ...]] = {}
     for field in sorted(dictionary.fields, key=lambda item: item.name):
-        cuts = analysis.cuts.get(field.name, ())
-        literals = analysis.literals.get(field.name, ())
+        cuts = tuple(sorted(cuts_by_field.get(field.name, ())))
+        literals = tuple(sorted(literals_by_field.get(field.name, ()), key=repr))
         fields[field.name] = _field_states(field, cuts, literals)
 
     names = tuple(fields)

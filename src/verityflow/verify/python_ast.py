@@ -29,13 +29,26 @@ import ast
 from collections.abc import Mapping
 from dataclasses import dataclass
 from fractions import Fraction
-from typing import cast
+from typing import Literal, cast
 
 from verityflow.config import Limits
 from verityflow.ir.evaluate import CellValue, ValueState
+from verityflow.ir.model import (
+    And,
+    Cmp,
+    Const,
+    Eq,
+    Expr,
+    In,
+    Missing,
+    Ne,
+    NotIn,
+    NotNode,
+    Or,
+)
 from verityflow.ir.units import UnitError, normalize
 from verityflow.models.common import ArtifactRef
-from verityflow.models.dictionary import DataDictionary, FieldDecl
+from verityflow.models.dictionary import DataDictionary, FieldDecl, FieldType
 from verityflow.models.manifest import CodeLink, FieldMapEntry
 from verityflow.verify.routing import RouteKind, RouteOutcome
 
@@ -59,6 +72,28 @@ _TYPE_NAMES = {
     float: "float",
     str: "str",
 }
+
+_CmpOp = Literal["<", "<=", ">", ">=", "==", "!="]
+
+_IR_OPS: dict[type[ast.cmpop], _CmpOp] = {
+    ast.Lt: "<",
+    ast.LtE: "<=",
+    ast.Gt: ">",
+    ast.GtE: ">=",
+    ast.Eq: "==",
+    ast.NotEq: "!=",
+}
+
+_FLIPPED: dict[_CmpOp, _CmpOp] = {
+    "<": ">",
+    "<=": ">=",
+    ">": "<",
+    ">=": "<=",
+    "==": "==",
+    "!=": "!=",
+}
+
+_UNKNOWN = object()
 
 
 class RouterCodeError(ValueError):
@@ -102,6 +137,27 @@ class _Returned:
 
 
 @dataclass(frozen=True, slots=True)
+class CodeDomain:
+    """Numeric cuts and string literals the router compares against, in field units."""
+
+    cuts: Mapping[str, tuple[Fraction, ...]]
+    literals: Mapping[str, tuple[str | bool, ...]]
+
+
+@dataclass(frozen=True, slots=True)
+class CodeRule:
+    """One ordered guard of a simple if/return chain, expressed as internal IR.
+
+    Extracted only for diagnosis (threshold/operator/precedence classification).
+    Witnesses are always produced by actually routing the ticket space.
+    """
+
+    condition: Expr
+    destination: str
+    line: int
+
+
+@dataclass(frozen=True, slots=True)
 class CodeProgram:
     artifact_ref: str
     path: str
@@ -115,6 +171,12 @@ class CodeProgram:
     max_steps: int
     max_depth: int
     name: str = "code"
+
+    def domain_hints(self) -> CodeDomain:
+        return _domain_hints(self)
+
+    def routing_signature(self) -> tuple[CodeRule, ...] | None:
+        return _routing_signature(self)
 
     def route(self, values: Mapping[str, CellValue]) -> RouteOutcome:
         try:
@@ -621,14 +683,7 @@ class _Interpreter:
         return value
 
     def _field_for_key(self, key: str) -> tuple[FieldDecl | None, str | None, str | None]:
-        entry = self._program.field_map.get(key)
-        if entry is not None:
-            field_name = entry.field
-            unit = entry.unit
-        else:
-            field_name = self._program.dictionary.resolve_field(key) or key
-            unit = None
-        return self._program.dictionary.field(field_name), field_name, unit
+        return _field_for_key(self._program, key)
 
     def _compare(self, expression: ast.Compare) -> object:
         operator = expression.ops[0]
@@ -749,8 +804,317 @@ def _type_name(value: object) -> str:
     return _TYPE_NAMES.get(type(value), type(value).__name__)
 
 
+def _field_for_key(
+    program: CodeProgram, key: str
+) -> tuple[FieldDecl | None, str | None, str | None]:
+    entry = program.field_map.get(key)
+    if entry is not None:
+        field_name: str | None = entry.field
+        unit = entry.unit
+    else:
+        field_name = program.dictionary.resolve_field(key) or key
+        unit = None
+    return program.dictionary.field(field_name or key), field_name, unit
+
+
+def _ticket_key(node: ast.expr, param: str) -> str | None:
+    if isinstance(node, ast.Subscript) and _is_ticket(node.value, param):
+        key = node.slice
+        if isinstance(key, ast.Constant) and isinstance(key.value, str):
+            return key.value
+        return None
+    if isinstance(node, ast.Call):
+        function = node.func
+        if (
+            isinstance(function, ast.Attribute)
+            and function.attr == "get"
+            and _is_ticket(function.value, param)
+            and len(node.args) == 1
+            and not node.keywords
+            and isinstance(node.args[0], ast.Constant)
+            and isinstance(node.args[0].value, str)
+        ):
+            return node.args[0].value
+    return None
+
+
+def _static_value(node: ast.expr, environment: Mapping[str, object]) -> object:
+    if isinstance(node, ast.Constant):
+        return node.value if _is_supported_constant(node.value) else _UNKNOWN
+    if (
+        isinstance(node, ast.UnaryOp)
+        and isinstance(node.op, ast.USub)
+        and isinstance(node.operand, ast.Constant)
+        and isinstance(node.operand.value, int)
+        and not isinstance(node.operand.value, bool)
+    ):
+        return -node.operand.value
+    if isinstance(node, ast.Name):
+        return environment.get(node.id, _UNKNOWN)
+    if isinstance(node, (ast.Tuple, ast.List, ast.Set)):
+        values = tuple(_static_value(element, environment) for element in node.elts)
+        if any(value is _UNKNOWN for value in values):
+            return _UNKNOWN
+        return values
+    return _UNKNOWN
+
+
+def _static_environment(program: CodeProgram) -> dict[str, object]:
+    """Resolve names bound exactly once to an unambiguous literal value.
+
+    Names assigned in several branches are omitted rather than guessed; this
+    environment feeds domain hints and diagnosis only, never routing.
+    """
+    environment: dict[str, object] = dict(program.constants)
+    assignments: dict[str, list[object]] = {}
+    for node in ast.walk(program.function):
+        if not isinstance(node, ast.Assign):
+            continue
+        target = node.targets[0]
+        if isinstance(target, ast.Name):
+            value = _static_value(node.value, environment)
+            if value is not _UNKNOWN:
+                assignments.setdefault(target.id, []).append(value)
+    for name, values in assignments.items():
+        distinct = {(type(value), value) for value in values}
+        if len(distinct) == 1:
+            environment[name] = values[0]
+    return environment
+
+
+def _numbers(value: object) -> tuple[Fraction, ...]:
+    if isinstance(value, bool):
+        return ()
+    if isinstance(value, int):
+        return (Fraction(value),)
+    if isinstance(value, tuple):
+        numbers: list[Fraction] = []
+        for item in value:
+            if isinstance(item, bool) or not isinstance(item, int):
+                return ()
+            numbers.append(Fraction(item))
+        return tuple(numbers)
+    return ()
+
+
+def _texts(value: object) -> tuple[str, ...]:
+    if isinstance(value, str):
+        return (value,)
+    if isinstance(value, tuple):
+        if all(isinstance(item, str) for item in value):
+            return cast(tuple[str, ...], value)
+    return ()
+
+
+def _convert(number: Fraction, unit: str | None, field: FieldDecl) -> Fraction | None:
+    if unit is None:
+        return number
+    if field.unit is None:
+        return None
+    try:
+        return normalize(number, unit, field.unit)
+    except UnitError:
+        return None
+
+
+def _domain_hints(program: CodeProgram) -> CodeDomain:
+    environment = _static_environment(program)
+    cuts: dict[str, set[Fraction]] = {}
+    literals: dict[str, set[str | bool]] = {}
+    for node in ast.walk(program.function):
+        if not isinstance(node, ast.Compare) or len(node.ops) != 1:
+            continue
+        operator = node.ops[0]
+        if isinstance(operator, (ast.In, ast.NotIn)) and _is_ticket(
+            node.comparators[0], program.param
+        ):
+            continue
+        left_key = _ticket_key(node.left, program.param)
+        right_key = _ticket_key(node.comparators[0], program.param)
+        if left_key is not None and right_key is None:
+            key, literal_node = left_key, node.comparators[0]
+        elif right_key is not None and left_key is None:
+            key, literal_node = right_key, node.left
+        else:
+            continue
+        value = _static_value(literal_node, environment)
+        if value is _UNKNOWN:
+            continue
+        field, _field_name, unit = _field_for_key(program, key)
+        if field is None:
+            continue
+        if field.type in {FieldType.INTEGER, FieldType.DECIMAL}:
+            for number in _numbers(value):
+                converted = _convert(number, unit, field)
+                if converted is not None:
+                    cuts.setdefault(field.name, set()).add(converted)
+        elif field.type is FieldType.STRING:
+            for text in _texts(value):
+                literals.setdefault(field.name, set()).add(text)
+    return CodeDomain(
+        cuts={name: tuple(sorted(values)) for name, values in cuts.items()},
+        literals={name: tuple(sorted(values, key=repr)) for name, values in literals.items()},
+    )
+
+
+def _routing_signature(program: CodeProgram) -> tuple[CodeRule, ...] | None:
+    environment = _static_environment(program)
+    rules = _chain(program, program.function.body, environment)
+    return None if rules is None else tuple(rules)
+
+
+def _chain(
+    program: CodeProgram,
+    statements: list[ast.stmt],
+    environment: Mapping[str, object],
+) -> list[CodeRule] | None:
+    rules: list[CodeRule] = []
+    for statement in statements:
+        if isinstance(statement, ast.Expr) and _is_docstring(statement):
+            continue
+        if isinstance(statement, ast.If):
+            condition = _ir_from_ast(program, statement.test, environment)
+            destination = _body_destination(program, statement.body, environment)
+            if condition is None or destination is None:
+                return None
+            rules.append(CodeRule(condition, destination, statement.lineno))
+            if statement.orelse:
+                nested = _chain(program, statement.orelse, environment)
+                if nested is None:
+                    return None
+                rules.extend(nested)
+            continue
+        if isinstance(statement, ast.Return):
+            destination = _return_destination(program, statement, environment)
+            if destination is None:
+                return None
+            rules.append(CodeRule(Const(value=True), destination, statement.lineno))
+            continue
+        return None
+    return rules
+
+
+def _body_destination(
+    program: CodeProgram,
+    statements: list[ast.stmt],
+    environment: Mapping[str, object],
+) -> str | None:
+    body = [item for item in statements if not _is_docstring(item)]
+    if len(body) != 1 or not isinstance(body[0], ast.Return):
+        return None
+    return _return_destination(program, body[0], environment)
+
+
+def _return_destination(
+    program: CodeProgram,
+    statement: ast.Return,
+    environment: Mapping[str, object],
+) -> str | None:
+    if statement.value is None:
+        return None
+    value = _static_value(statement.value, environment)
+    if not isinstance(value, str):
+        return None
+    return program.dictionary.destination(program.destination_map.get(value, value))
+
+
+def _ir_from_ast(
+    program: CodeProgram, node: ast.expr, environment: Mapping[str, object]
+) -> Expr | None:
+    if isinstance(node, ast.Compare):
+        return _ir_compare(program, node, environment)
+    if isinstance(node, ast.BoolOp):
+        items = tuple(_ir_from_ast(program, value, environment) for value in node.values)
+        if any(item is None for item in items):
+            return None
+        present = tuple(item for item in items if item is not None)
+        if len(present) == 1:
+            return present[0]
+        return And(items=present) if isinstance(node.op, ast.And) else Or(items=present)
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.Not):
+        inner = _ir_from_ast(program, node.operand, environment)
+        return None if inner is None else NotNode(item=inner)
+    if isinstance(node, ast.Constant) and isinstance(node.value, bool):
+        return Const(value=node.value)
+    if isinstance(node, ast.Name):
+        value = environment.get(node.id, _UNKNOWN)
+        return Const(value=value) if isinstance(value, bool) else None
+    return None
+
+
+def _ir_compare(
+    program: CodeProgram, node: ast.Compare, environment: Mapping[str, object]
+) -> Expr | None:
+    if len(node.ops) != 1:
+        return None
+    operator = node.ops[0]
+    if isinstance(operator, (ast.In, ast.NotIn)) and _is_ticket(node.comparators[0], program.param):
+        key_node = node.left
+        if not (isinstance(key_node, ast.Constant) and isinstance(key_node.value, str)):
+            return None
+        field, _field_name, _unit = _field_for_key(program, key_node.value)
+        if field is None:
+            return None
+        missing = Missing(field=field.name)
+        return NotNode(item=missing) if isinstance(operator, ast.In) else missing
+    left_key = _ticket_key(node.left, program.param)
+    right_key = _ticket_key(node.comparators[0], program.param)
+    if left_key is not None and right_key is None:
+        key, literal_node = left_key, node.comparators[0]
+        flipped = False
+    elif right_key is not None and left_key is None:
+        key, literal_node = right_key, node.left
+        flipped = True
+    else:
+        return None
+    field, _field_name, unit = _field_for_key(program, key)
+    if field is None:
+        return None
+    value = _static_value(literal_node, environment)
+    if value is _UNKNOWN:
+        return None
+    if isinstance(operator, (ast.In, ast.NotIn)):
+        texts = _texts(value)
+        if field.type is not FieldType.STRING or not texts:
+            return None
+        values = frozenset(texts)
+        return (
+            In(field=field.name, values=values)
+            if isinstance(operator, ast.In)
+            else NotIn(field=field.name, values=values)
+        )
+    if field.type in {FieldType.INTEGER, FieldType.DECIMAL}:
+        numbers = _numbers(value)
+        if len(numbers) != 1:
+            return None
+        converted = _convert(numbers[0], unit, field)
+        op_code = _IR_OPS.get(type(operator))
+        if converted is None or op_code is None:
+            return None
+        return Cmp(
+            field=field.name,
+            op=_FLIPPED[op_code] if flipped else op_code,
+            value=converted,
+            unit=field.unit,
+        )
+    if isinstance(value, str):
+        if isinstance(operator, ast.Eq):
+            return Eq(field=field.name, value=value)
+        if isinstance(operator, ast.NotEq):
+            return Ne(field=field.name, value=value)
+        return None
+    if isinstance(value, bool):
+        if isinstance(operator, ast.Eq):
+            return Eq(field=field.name, value=value)
+        if isinstance(operator, ast.NotEq):
+            return Ne(field=field.name, value=value)
+    return None
+
+
 __all__ = [
+    "CodeDomain",
     "CodeProgram",
+    "CodeRule",
     "RouterCodeError",
     "RouterLimitError",
     "RouterSyntaxError",

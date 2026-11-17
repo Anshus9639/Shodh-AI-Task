@@ -51,6 +51,29 @@ def same_behaviour(first: Expr, second: Expr, dictionary: DataDictionary, max_ce
     return outcome.equal is True
 
 
+def firing_equivalent(
+    first: Expr, second: Expr, dictionary: DataDictionary, max_cells: int
+) -> bool:
+    """Compare whether two conditions *fire* under ordered first-match semantics.
+
+    A condition fires only when it evaluates to ``TRUE``; ``FALSE`` and
+    ``UNKNOWN`` both fall through. Wrapping in ``NOT(NOT_TRUE(...))`` turns that
+    into an exact truth comparison, so a code presence guard such as
+    ``"wait_time" in ticket and ticket["wait_time"] >= 30`` matches the plain
+    guarded requirement even though the guard adds a ``FALSE``/``UNKNOWN``
+    distinction that cannot change which branch fires.
+    """
+    if canonical_key(first) == canonical_key(second):
+        return True
+    outcome = equivalent_conditions(
+        NotNode(item=NotTrue(item=first)),
+        NotNode(item=NotTrue(item=second)),
+        dictionary,
+        max_cells=max_cells,
+    )
+    return outcome.equal is True
+
+
 def perfect_matching(
     left: list[Expr],
     left_destinations: list[str],
@@ -58,10 +81,13 @@ def perfect_matching(
     right_destinations: list[str],
     dictionary: DataDictionary,
     max_cells: int,
+    *,
+    firing: bool = False,
 ) -> list[int] | None:
     """Return a same-destination, behaviour-equivalent assignment or ``None``."""
     if len(left) != len(right):
         return None
+    equivalent = firing_equivalent if firing else same_behaviour
     edges: list[list[int]] = []
     for index, condition in enumerate(left):
         candidates = [
@@ -70,7 +96,7 @@ def perfect_matching(
                 zip(right, right_destinations, strict=True)
             )
             if destination == left_destinations[index]
-            and same_behaviour(condition, other, dictionary, max_cells)
+            and equivalent(condition, other, dictionary, max_cells)
         ]
         if not candidates:
             return None
@@ -103,6 +129,8 @@ def is_reordered(
     right_destinations: list[str],
     dictionary: DataDictionary,
     max_cells: int,
+    *,
+    firing: bool = False,
 ) -> bool:
     matching = perfect_matching(
         left,
@@ -111,6 +139,7 @@ def is_reordered(
         right_destinations,
         dictionary,
         max_cells,
+        firing=firing,
     )
     if matching is None:
         return False
@@ -170,6 +199,7 @@ def number(value: Fraction) -> str:
 __all__ = [
     "NumericClue",
     "cmp_atoms",
+    "firing_equivalent",
     "is_reordered",
     "number",
     "numeric_clue",
