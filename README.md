@@ -56,8 +56,11 @@ uv run python scripts/export_schemas.py   # writes schemas/*.schema.json
 Fixtures are generated deterministically:
 
 ```
-uv run python scripts/build_fixtures.py   # fixtures/dev + sealed holdout + MANIFEST.sha256
+uv run python scripts/build_fixtures.py          # fixtures/dev + sealed Stage 1 holdout
+uv run python scripts/build_stage2_holdout.py    # sealed Stage 2 semantic holdout
 ```
+
+Both `holdout/` and `holdout_stage2/` are frozen after their freezing commits; do not regenerate them.
 
 `fixtures/dev_evidence/holdout_v1/` is frozen historical evidence and is not regenerated.
 
@@ -70,4 +73,4 @@ uv run ruff format --check .
 uv run mypy
 ```
 
-Current results: 215 default tests passed; ruff, ruff format and strict mypy clean. The sealed `holdout/` set has not been executed and is reserved for final evaluation.
+Current results: 221 default tests passed; ruff, ruff format and strict mypy clean. Neither sealed set (`holdout/`, `holdout_stage2/`) has been executed; they are reserved for final Stage 1 and Stage 2 evaluation respectively.

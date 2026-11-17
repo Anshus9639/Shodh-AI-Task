@@ -187,3 +187,15 @@ Format: ID · date · decision · rationale · alternatives considered · status
 - **Why:** A holdout that has been read and modified cannot support an unbiased final evaluation. Historical records are preserved rather than erased.
 - **How to apply:** `tests/integration/test_dev_evidence_stage1.py` runs the recorded H01–H05 expectations as ordinary regression tests. `tests/unit/test_holdout_isolation.py` verifies the sealed manifest, label isolation and generation metadata, and fails if a development test executes the sealed set. Do not run the pipeline on F01–F05 before final evaluation.
 - **Status:** Accepted; the fresh set has not been executed.
+
+### D-036 · 2026-11-17 · Stage 2 semantic holdout frozen before verification
+- **Decision:** Add a sealed `holdout_stage2/` set (G01–G05) in the support-ticket domain: valid original, valid approved 30 → 25 revision, precedence defect over individually correct rules, code/workflow boundary disagreement, and an unresolved approval conflict. Bundle contents, labels, manifest and generation metadata are frozen in commit `b392653`; the manifest SHA-256 is `a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4`.
+- **Why:** Stage 2 needs semantic labels that were not produced or tuned against its implementation. Authoring them before any Stage 2 verifier exists, with a distinct domain-mix from F01–F05, keeps the final evaluation independent.
+- **How to apply:** `scripts/build_stage2_holdout.py` regenerates the set only if the freeze is deliberately broken; seed `20261117` selects one distinct equivalent threshold phrasing per bundle. Labels live in `holdout_stage2/labels/`, are hand-derived, and never enter the reviewer. `tests/unit/test_stage2_holdout_isolation.py` checks manifests, labels, metadata and that development tests do not reference the set. Do not execute or edit G01–G05 before the Stage 2 evaluation.
+- **Status:** Accepted; the set has not been executed.
+
+### D-037 · 2026-11-17 · Baseline checkpoint and generation commit are separate
+- **Decision:** `holdout/GENERATION.json`'s `implementation_checkpoint` (`04d9ea6`) names the Stage 1 implementation baseline the labels target; it is not the commit that generated the files (`9a420cd`). The Stage 2 set records `provenance.baseline_implementation_checkpoint` (`04d9ea6`) and `provenance.fixture_generation_base_commit` (`9a420cd`) explicitly, and the exact generation commit (`b392653`) is recorded in `docs/evaluation_protocol.md` because a commit cannot contain its own hash. The F set is not edited, to preserve manifest `e10de058…`.
+- **Why:** Conflating "code version under evaluation" with "commit that generated fixtures" makes evaluation provenance ambiguous.
+- **How to apply:** Future frozen sets must record both fields. `tests/unit/test_stage2_holdout_isolation.py` asserts the Stage 2 metadata and the unchanged Stage 1 manifest hash.
+- **Status:** Accepted.

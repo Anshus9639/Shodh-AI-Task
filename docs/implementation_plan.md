@@ -646,7 +646,7 @@ Gates: `ruff check`, `ruff format --check`, `mypy --strict src/`, `pytest`.
 
 **18-bundle target: 13 dev + 5 holdout (H01–H05).** The five holdout bundles exceed the required minimum of four and are authored at the end of Stage 1, before any verification code exists, and hashed in `holdout/MANIFEST.sha256` at that point.
 
-**Execution note (2026-11-17).** Stage 1 dev bundles are `B01`, `B03`/`B05`/`B06` (20-minute generalization) and `B07`–`B09` (30 → 25 minute primary approval cases). The original H01–H05 set is frozen as development evidence under `fixtures/dev_evidence/holdout_v1/`; the sealed holdout is now F01–F05 under `holdout/` in a claims-triage domain. Remaining bundle targets in this plan belong to Stage 2/3.
+**Execution note (2026-11-17).** Stage 1 dev bundles are `B01`, `B03`/`B05`/`B06` (20-minute generalization) and `B07`–`B09` (30 → 25 minute primary approval cases). The original H01–H05 set is frozen as development evidence under `fixtures/dev_evidence/holdout_v1/`; the sealed Stage 1 holdout is now F01–F05 under `holdout/` in a claims-triage domain. A separate sealed Stage 2 semantic holdout, G01–G05 under `holdout_stage2/`, is frozen at commit `b392653` (manifest `a76fa4bc…`) with hand-derived labels before any Stage 2 algorithm exists. Remaining bundle targets in this plan belong to Stage 2/3.
 
 | ID | Purpose | Expected |
 |---|---|---|

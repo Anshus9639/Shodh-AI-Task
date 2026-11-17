@@ -27,6 +27,10 @@ def _manifest_entries() -> dict[Path, str]:
     return listed
 
 
+def _text_digest(path: Path) -> str:
+    return hashlib.sha256(path.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
+
+
 def _generation() -> dict[str, object]:
     return json.loads(GENERATION.read_text(encoding="utf-8"))
 
@@ -77,8 +81,8 @@ def test_generation_records_seed_and_checkpoint_provenance() -> None:
     assert generation["bundles"] == bundle_names
     assert generation["labels"] == label_names
     assert generation["seed"] == 20261117
-    assert generation["generator_sha256"] == hashlib.sha256(GENERATOR.read_bytes()).hexdigest()
-    assert generation["config"]["sha256"] == hashlib.sha256(CONFIG.read_bytes()).hexdigest()
+    assert generation["generator_sha256"] == _text_digest(GENERATOR)
+    assert generation["config"]["sha256"] == _text_digest(CONFIG)
     assert generation["provenance"]["baseline_implementation_checkpoint"] == "04d9ea6"
     assert generation["provenance"]["fixture_generation_base_commit"] == "9a420cd"
     assert set(generation["phrase_assignment"]) == set(bundle_names)

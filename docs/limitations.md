@@ -55,7 +55,9 @@ These are known, intentional boundaries. Anything listed here is either reported
 
 ## Evaluation
 
-- The reserved holdout (`holdout/bundles/`, F01–F05) contains five bundles in a claims-triage domain, all authored in this repository. It is not an external benchmark and does not establish general accuracy on unseen domain language.
-- The reserved holdout has not been executed. Labels grade Stage 1 outputs only (parse counts/gaps, mapping completeness, resolution state, finding categories, route expectations); they do not grade Stage 2 behavior, which does not exist yet.
+- The sealed Stage 1 holdout (`holdout/bundles/`, F01–F05) contains five claims-triage bundles, all authored in this repository. It is not an external benchmark and does not establish general accuracy on unseen domain language.
+- The sealed Stage 1 holdout has not been executed. Labels grade Stage 1 outputs only (parse counts/gaps, mapping completeness, resolution state, finding categories, route expectations).
+- The sealed Stage 2 semantic holdout (`holdout_stage2/bundles/`, G01–G05) returns to the support-ticket domain and grades future Stage 2 status, finding category, counterexample and route expectations. No Stage 2 verifier exists, so its labels are hand-derived design intent; they have not been checked by any implementation. At least one case (`G03`) depends on precedence over individually correct rules, one on a code/workflow boundary (`G04`), and one on an unresolved approval conflict (`G05`).
+- Neither sealed set has been used for tuning, and ordinary development tests only hash them and check isolation metadata. The Stage 2 set is frozen at manifest `a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4`; the Stage 1 set remains at `e10de058ceb51586f16c657c75e4fd3b4fd9cbded6f76beda9a4e0c648ba6f41`.
 - The original H01–H05 set is frozen under `fixtures/dev_evidence/holdout_v1/` as development evidence because it was read during the first green-up run. Its recorded labels now run as ordinary regression tests, and the historical disclosure is preserved in `docs/evaluation_protocol.md` and `docs/debugging_log.md`.
-- The fresh holdout was authored before any final-evaluation run; its generator, labels, manifest and implementation checkpoint are recorded in `holdout/GENERATION.json`.
+- Fixture provenance separates the implementation baseline (`04d9ea6`) from the commit that generated each frozen set; see [Checkpoint provenance](evaluation_protocol.md#checkpoint-provenance).
