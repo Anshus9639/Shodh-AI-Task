@@ -121,3 +121,45 @@ Format: ID · date · decision · rationale · alternatives considered · status
 ### D-023 · 2026-11-17 · P0 setup and Python 3.12 pinning approved
 - **Decision:** `git init` in the verified-empty workspace, Python 3.12 installed via `uv` and pinned (`requires-python >=3.12,<3.13`, `.python-version`), differential tests on repository-authored snippets only, and an optional provider-neutral Gemini adapter disabled by default.
 - **Status:** Accepted (user-approved 2026-11-17).
+
+### D-024 · 2026-11-17 · `trace_map` is optional; correspondence is inferred from canonical semantics
+- **Decision:** Cross-artifact correspondence is computed from semantic descriptors (condition, fields, canonical units, destination, precedence, exception relationship). A supplied `trace_map` is a hint only: it narrows candidates and must pass the same semantic equivalence check; invalid hints are reported (`INVALID_TRACE_HINT`) and ignored. Matching IDs never establish equivalence. Renaming IDs cannot cause a behavioral mismatch because no behavioral check consumes IDs.
+- **Ambiguity:** When more than one equally valid counterpart remains and neither semantics, precedence, nor a validated hint disambiguates it, the mapping is reported as `AMBIGUOUS_MAPPING` (`COVERAGE_GAP`, INCOMPLETE). The matcher never arbitrarily selects one.
+- **Rationale:** Review requirement #1; avoids ID-matching reviewers while still allowing intentional trace metadata.
+- **Status:** Accepted; Stage 1 implements the engine plus spec/workflow descriptors.
+
+### D-025 · 2026-11-17 · Continuous and discrete domain partitioning refined
+- **Decision:** Integer domains use adjacent valid integers around every boundary; fixed-scale decimals use adjacent representable values (`±10^-s`); continuous rational domains test each boundary plus a rational midpoint witness inside every open interval. Bounded ends are explicit cells; unbounded ends use `b−ε`/`b+ε` (or `b−1`/`b+1`) representatives. Every cell carries the documented constancy argument: comparisons flip only at `floor(c)`/`ceil(c)` (discrete) or `c` (continuous), equalities only at literals, and Boolean combinations preserve constancy. A review never claims exhaustive coverage while any relevant cell is untested.
+- **Rationale:** Review requirement #2.
+- **Status:** Accepted; `ir/domains.py` implements the partition construction in Stage 1 and is covered by property tests.
+
+### D-026 · 2026-11-17 · Mapping equivalence is not artifact verification
+- **Decision:** The semantic signature used by the mapping engine compares two conditions over the partition induced by their own atoms, for the purpose of correspondence. It is not a verification verdict: it never runs a ticket through an artifact, never produces counterexamples, and cannot establish PASS/CHANGES_REQUIRED. Full behavioral equivalence remains Stage 2.
+- **Rationale:** Keeps Stage 1 free of verification code while making correspondence ID-free and semantic.
+- **Status:** Accepted.
+
+### D-027 · 2026-11-17 · Code-side descriptors deferred to Stage 2
+- **Decision:** Stage 1 provides semantic descriptors for requirements, spec rules and workflow paths. Code descriptors require the restricted-AST layer; until Stage 2, code artifacts in the review target produce `DEFERRED_DESCRIPTOR` (`COVERAGE_GAP`) rather than an assumed mapping.
+- **Rationale:** Avoids a second, divergent AST implementation and honours the "no Stage 2 verification code" instruction.
+- **Status:** Accepted; revisit when Stage 2's extractor lands.
+
+### D-028 · 2026-11-17 · Effective first-match guard uses an internal `NotTrue` node
+- **Decision:** For an ordered list with raw conditions `c_0..c_n`, entry `i`'s compiled condition is `c_i ∧ NotTrue(c_0) ∧ ... ∧ NotTrue(c_{i-1})`. `NotTrue(x)` is TRUE unless `x` is TRUE (UNKNOWN does not count as fired). It is an internal IR node, never accepted from requirement text. Constants fold: `NotTrue(True) → False`, `NotTrue(False) → True`; conjunction folding removes TRUE and short-circuits on FALSE.
+- **Why:** Three-valued conditions make naive "negate the previous condition" wrong: `¬UNKNOWN` is UNKNOWN, which would block a later rule even though no earlier rule fired. The `NotTrue` formulation is exact for first-match semantics and makes semantic comparison of ordered lists possible without executing them.
+- **How to apply:** `mapping/extract.py` builds guards for requirements, spec rules, spec defaults and workflow branches. Evaluation, normalization, canonical keys, referenced-field collection and approval mutation all recurse through `NotTrue`.
+- **Status:** Accepted; covered by IR, evaluation, mapping and approval tests.
+
+### D-029 · 2026-11-17 · Mapping completeness is explicit, and extraction findings propagate
+- **Decision:** `map_to_elements` seeds its findings with `extraction.findings`. Unmatched requirements and unmatched elements each produce `UNTRACEABLE_REQUIREMENT` / `UNTRACEABLE_ELEMENT` (`COVERAGE_GAP`). `complete` requires: extraction sound, both unmatched lists empty, and no BLOCKER/COVERAGE_GAP finding.
+- **Why:** A silent drop of extraction findings or unmatched entries would let `complete=true` coexist with unreviewed correspondence.
+- **Status:** Accepted; `tests/unit/test_mapping.py`.
+
+### D-030 · 2026-11-17 · Supersession cycles are detected on the full edge set
+- **Decision:** Build all valid supersession edges first, then drop every edge `(source, target)` for which `target` can reach `source` in that full graph. Self-edges and edges to unknown/invalid approvals are reported and dropped individually.
+- **Why:** Incremental edge insertion made the result iteration-order dependent; in a two-approval cycle one edge was dropped but the other still suppressed an approval, hiding a conflict.
+- **Status:** Accepted; `tests/unit/test_approvals.py::test_supersession_cycle_is_ignored_with_a_warning`.
+
+### D-031 · 2026-11-17 · Holdout layout and correction disclosure
+- **Decision:** The sealed holdout lives in `holdout/bundles/`, expected answers in `holdout/labels/` (outside every bundle), and file hashes in `holdout/MANIFEST.sha256` (one line per file: `sha256`, two spaces, relative path). This replaces the earlier `fixtures/MANIFEST.sha256` / `fixtures/holdout/SHA256SUMS` wording in D-013 and D-022.
+- **Correction:** The first holdout run showed `H03_spec_reordered` was generated by shuffling the spec array while leaving priorities unchanged, which is a semantic no-op under D-009. The generator was corrected to swap priority values, artifacts and the manifest were regenerated, and the label was left unchanged. The test-side comparison for `H05` was also corrected to include INFO categories. Both are disclosed in `docs/evaluation_protocol.md` and `docs/debugging_log.md`.
+- **Status:** Accepted; `tests/unit/test_holdout_isolation.py` enforces the layout, label isolation and manifest integrity.

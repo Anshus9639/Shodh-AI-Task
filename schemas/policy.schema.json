@@ -1,0 +1,797 @@
+{
+  "$defs": {
+    "And": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "and": "#/$defs/And",
+                "cmp": "#/$defs/Cmp",
+                "const": "#/$defs/Const",
+                "eq": "#/$defs/Eq",
+                "in": "#/$defs/In",
+                "missing": "#/$defs/Missing",
+                "ne": "#/$defs/Ne",
+                "not": "#/$defs/NotNode",
+                "not_in": "#/$defs/NotIn",
+                "not_true": "#/$defs/NotTrue",
+                "or": "#/$defs/Or"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Cmp"
+              },
+              {
+                "$ref": "#/$defs/Eq"
+              },
+              {
+                "$ref": "#/$defs/Ne"
+              },
+              {
+                "$ref": "#/$defs/In"
+              },
+              {
+                "$ref": "#/$defs/NotIn"
+              },
+              {
+                "$ref": "#/$defs/Missing"
+              },
+              {
+                "$ref": "#/$defs/And"
+              },
+              {
+                "$ref": "#/$defs/Or"
+              },
+              {
+                "$ref": "#/$defs/NotNode"
+              },
+              {
+                "$ref": "#/$defs/NotTrue"
+              },
+              {
+                "$ref": "#/$defs/Const"
+              }
+            ]
+          },
+          "minItems": 2,
+          "title": "Items",
+          "type": "array"
+        },
+        "kind": {
+          "const": "and",
+          "default": "and",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "And",
+      "type": "object"
+    },
+    "Cmp": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "cmp",
+          "default": "cmp",
+          "title": "Kind",
+          "type": "string"
+        },
+        "op": {
+          "enum": [
+            "<",
+            "<=",
+            ">",
+            ">=",
+            "==",
+            "!="
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "format": "fraction",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "field",
+        "op",
+        "value"
+      ],
+      "title": "Cmp",
+      "type": "object"
+    },
+    "Const": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "const",
+          "default": "const",
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "Const",
+      "type": "object"
+    },
+    "Eq": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "eq",
+          "default": "eq",
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "field",
+        "value"
+      ],
+      "title": "Eq",
+      "type": "object"
+    },
+    "In": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "in",
+          "default": "in",
+          "title": "Kind",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Values",
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "field",
+        "values"
+      ],
+      "title": "In",
+      "type": "object"
+    },
+    "Missing": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "missing",
+          "default": "missing",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "title": "Missing",
+      "type": "object"
+    },
+    "Ne": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "ne",
+          "default": "ne",
+          "title": "Kind",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "field",
+        "value"
+      ],
+      "title": "Ne",
+      "type": "object"
+    },
+    "NotIn": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "const": "not_in",
+          "default": "not_in",
+          "title": "Kind",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Values",
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "field",
+        "values"
+      ],
+      "title": "NotIn",
+      "type": "object"
+    },
+    "NotNode": {
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "discriminator": {
+            "mapping": {
+              "and": "#/$defs/And",
+              "cmp": "#/$defs/Cmp",
+              "const": "#/$defs/Const",
+              "eq": "#/$defs/Eq",
+              "in": "#/$defs/In",
+              "missing": "#/$defs/Missing",
+              "ne": "#/$defs/Ne",
+              "not": "#/$defs/NotNode",
+              "not_in": "#/$defs/NotIn",
+              "not_true": "#/$defs/NotTrue",
+              "or": "#/$defs/Or"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Cmp"
+            },
+            {
+              "$ref": "#/$defs/Eq"
+            },
+            {
+              "$ref": "#/$defs/Ne"
+            },
+            {
+              "$ref": "#/$defs/In"
+            },
+            {
+              "$ref": "#/$defs/NotIn"
+            },
+            {
+              "$ref": "#/$defs/Missing"
+            },
+            {
+              "$ref": "#/$defs/And"
+            },
+            {
+              "$ref": "#/$defs/Or"
+            },
+            {
+              "$ref": "#/$defs/NotNode"
+            },
+            {
+              "$ref": "#/$defs/NotTrue"
+            },
+            {
+              "$ref": "#/$defs/Const"
+            }
+          ],
+          "title": "Item"
+        },
+        "kind": {
+          "const": "not",
+          "default": "not",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "item"
+      ],
+      "title": "NotNode",
+      "type": "object"
+    },
+    "NotTrue": {
+      "additionalProperties": false,
+      "description": "Internal first-match guard: TRUE unless the item is TRUE.\n\nUsed to express \"no earlier rule or branch fired\". Unlike Kleene negation,\nUNKNOWN satisfies it, which matches ordered first-match semantics.",
+      "properties": {
+        "item": {
+          "discriminator": {
+            "mapping": {
+              "and": "#/$defs/And",
+              "cmp": "#/$defs/Cmp",
+              "const": "#/$defs/Const",
+              "eq": "#/$defs/Eq",
+              "in": "#/$defs/In",
+              "missing": "#/$defs/Missing",
+              "ne": "#/$defs/Ne",
+              "not": "#/$defs/NotNode",
+              "not_in": "#/$defs/NotIn",
+              "not_true": "#/$defs/NotTrue",
+              "or": "#/$defs/Or"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Cmp"
+            },
+            {
+              "$ref": "#/$defs/Eq"
+            },
+            {
+              "$ref": "#/$defs/Ne"
+            },
+            {
+              "$ref": "#/$defs/In"
+            },
+            {
+              "$ref": "#/$defs/NotIn"
+            },
+            {
+              "$ref": "#/$defs/Missing"
+            },
+            {
+              "$ref": "#/$defs/And"
+            },
+            {
+              "$ref": "#/$defs/Or"
+            },
+            {
+              "$ref": "#/$defs/NotNode"
+            },
+            {
+              "$ref": "#/$defs/NotTrue"
+            },
+            {
+              "$ref": "#/$defs/Const"
+            }
+          ],
+          "title": "Item"
+        },
+        "kind": {
+          "const": "not_true",
+          "default": "not_true",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "item"
+      ],
+      "title": "NotTrue",
+      "type": "object"
+    },
+    "Or": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "and": "#/$defs/And",
+                "cmp": "#/$defs/Cmp",
+                "const": "#/$defs/Const",
+                "eq": "#/$defs/Eq",
+                "in": "#/$defs/In",
+                "missing": "#/$defs/Missing",
+                "ne": "#/$defs/Ne",
+                "not": "#/$defs/NotNode",
+                "not_in": "#/$defs/NotIn",
+                "not_true": "#/$defs/NotTrue",
+                "or": "#/$defs/Or"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Cmp"
+              },
+              {
+                "$ref": "#/$defs/Eq"
+              },
+              {
+                "$ref": "#/$defs/Ne"
+              },
+              {
+                "$ref": "#/$defs/In"
+              },
+              {
+                "$ref": "#/$defs/NotIn"
+              },
+              {
+                "$ref": "#/$defs/Missing"
+              },
+              {
+                "$ref": "#/$defs/And"
+              },
+              {
+                "$ref": "#/$defs/Or"
+              },
+              {
+                "$ref": "#/$defs/NotNode"
+              },
+              {
+                "$ref": "#/$defs/NotTrue"
+              },
+              {
+                "$ref": "#/$defs/Const"
+              }
+            ]
+          },
+          "minItems": 2,
+          "title": "Items",
+          "type": "array"
+        },
+        "kind": {
+          "const": "or",
+          "default": "or",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "Or",
+      "type": "object"
+    },
+    "Rule": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/$defs/TextSpan"
+        },
+        "condition": {
+          "discriminator": {
+            "mapping": {
+              "and": "#/$defs/And",
+              "cmp": "#/$defs/Cmp",
+              "const": "#/$defs/Const",
+              "eq": "#/$defs/Eq",
+              "in": "#/$defs/In",
+              "missing": "#/$defs/Missing",
+              "ne": "#/$defs/Ne",
+              "not": "#/$defs/NotNode",
+              "not_in": "#/$defs/NotIn",
+              "not_true": "#/$defs/NotTrue",
+              "or": "#/$defs/Or"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Cmp"
+            },
+            {
+              "$ref": "#/$defs/Eq"
+            },
+            {
+              "$ref": "#/$defs/Ne"
+            },
+            {
+              "$ref": "#/$defs/In"
+            },
+            {
+              "$ref": "#/$defs/NotIn"
+            },
+            {
+              "$ref": "#/$defs/Missing"
+            },
+            {
+              "$ref": "#/$defs/And"
+            },
+            {
+              "$ref": "#/$defs/Or"
+            },
+            {
+              "$ref": "#/$defs/NotNode"
+            },
+            {
+              "$ref": "#/$defs/NotTrue"
+            },
+            {
+              "$ref": "#/$defs/Const"
+            }
+          ],
+          "title": "Condition"
+        },
+        "destination": {
+          "minLength": 1,
+          "title": "Destination",
+          "type": "string"
+        },
+        "exception_of": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exception Of"
+        },
+        "origin": {
+          "default": "base",
+          "title": "Origin",
+          "type": "string"
+        },
+        "precedence": {
+          "minimum": 0,
+          "title": "Precedence",
+          "type": "integer"
+        },
+        "rule_ref": {
+          "minLength": 1,
+          "title": "Rule Ref",
+          "type": "string"
+        },
+        "source_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Text"
+        }
+      },
+      "required": [
+        "rule_ref",
+        "anchor",
+        "condition",
+        "destination",
+        "precedence"
+      ],
+      "title": "Rule",
+      "type": "object"
+    },
+    "TextSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "col_end": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Col End"
+        },
+        "col_start": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Col Start"
+        },
+        "excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excerpt"
+        },
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "line_end": {
+          "minimum": 1,
+          "title": "Line End",
+          "type": "integer"
+        },
+        "line_start": {
+          "minimum": 1,
+          "title": "Line Start",
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "line_start",
+        "line_end"
+      ],
+      "title": "TextSpan",
+      "type": "object"
+    },
+    "UndeterminedScope": {
+      "additionalProperties": false,
+      "properties": {
+        "attribute": {
+          "minLength": 1,
+          "title": "Attribute",
+          "type": "string"
+        },
+        "change_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Change Ids",
+          "type": "array"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "rule_ref": {
+          "minLength": 1,
+          "title": "Rule Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_ref",
+        "attribute",
+        "reason"
+      ],
+      "title": "UndeterminedScope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applied_changes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Applied Changes",
+      "type": "array"
+    },
+    "candidate_id": {
+      "minLength": 1,
+      "title": "Candidate Id",
+      "type": "string"
+    },
+    "diagnostic_only": {
+      "default": false,
+      "title": "Diagnostic Only",
+      "type": "boolean"
+    },
+    "rules": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Rule"
+      },
+      "title": "Rules",
+      "type": "array"
+    },
+    "undetermined": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/UndeterminedScope"
+      },
+      "title": "Undetermined",
+      "type": "array"
+    }
+  },
+  "required": [
+    "candidate_id"
+  ],
+  "title": "Policy",
+  "type": "object"
+}

@@ -1,0 +1,60 @@
+{
+  "additionalProperties": false,
+  "description": "Optional correspondence hints. Hints never establish equivalence.",
+  "properties": {
+    "requirement_to_code": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Requirement To Code",
+      "type": "object"
+    },
+    "requirement_to_spec": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Requirement To Spec",
+      "type": "object"
+    },
+    "requirement_to_workflow": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Requirement To Workflow",
+      "type": "object"
+    },
+    "supplemental": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Supplemental",
+      "type": "object"
+    },
+    "trace_map_id": {
+      "default": "TRACE",
+      "minLength": 1,
+      "title": "Trace Map Id",
+      "type": "string"
+    },
+    "version": {
+      "default": "1",
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "title": "TraceMapArtifact",
+  "type": "object"
+}

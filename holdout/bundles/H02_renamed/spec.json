@@ -1,0 +1,40 @@
+{
+  "spec_id": "RENAMED",
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "S-ALPHA",
+      "priority": 10,
+      "when": {
+        "kind": "missing",
+        "field": "category"
+      },
+      "destination": "manual_review"
+    },
+    {
+      "id": "S-BETA",
+      "priority": 20,
+      "when": {
+        "kind": "eq",
+        "field": "priority",
+        "value": "urgent"
+      },
+      "destination": "priority_queue"
+    },
+    {
+      "id": "S-GAMMA",
+      "priority": 30,
+      "when": {
+        "kind": "cmp",
+        "field": "wait_time",
+        "op": ">=",
+        "value": 30,
+        "unit": "minutes"
+      },
+      "destination": "escalation_queue"
+    }
+  ],
+  "default": {
+    "destination": "normal_queue"
+  }
+}

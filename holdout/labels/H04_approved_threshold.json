@@ -1,0 +1,25 @@
+{
+  "bundle": "H04_approved_threshold",
+  "stage": 1,
+  "expected": {
+    "parse": {
+      "rules": 4,
+      "gap": false
+    },
+    "mapping": {
+      "spec_complete": true,
+      "workflow_complete": true
+    },
+    "resolution": {
+      "confirmed_candidate_id": "confirmed",
+      "applied": [
+        "C1@1"
+      ],
+      "undetermined": [],
+      "rule_thresholds": {
+        "R3": "20"
+      }
+    },
+    "finding_categories": []
+  }
+}

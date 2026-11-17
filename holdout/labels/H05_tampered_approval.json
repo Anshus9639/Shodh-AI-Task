@@ -1,0 +1,26 @@
+{
+  "bundle": "H05_tampered_approval",
+  "stage": 1,
+  "expected": {
+    "parse": {
+      "rules": 4,
+      "gap": false
+    },
+    "mapping": {
+      "spec_complete": true,
+      "workflow_complete": true
+    },
+    "resolution": {
+      "confirmed_candidate_id": "confirmed",
+      "applied": [],
+      "undetermined": [],
+      "decision_states": {
+        "C1": "unapproved"
+      }
+    },
+    "finding_categories": [
+      "INVALID_APPROVAL",
+      "UNAPPROVED_CHANGE"
+    ]
+  }
+}

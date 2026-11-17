@@ -1,0 +1,24 @@
+# VerityFlow default configuration.
+# Unknown keys are rejected; every limit below is also the in-code default.
+
+[limits]
+# Largest single artifact (and manifest) accepted, in bytes.
+max_artifact_bytes = 200000
+# Largest number of declared artifacts loaded from one bundle.
+max_artifacts = 64
+# Largest number of partition cells evaluated for one verification scope.
+max_cells = 50000
+# Largest number of candidate policies retained after approval resolution.
+max_candidate_policies = 8
+# Largest representative-state product used for semantic correspondence.
+mapping_max_signature_cells = 4096
+# Restricted-Python interpreter budget, in evaluation steps.
+interpreter_max_steps = 10000
+# Largest accepted restricted-Python AST, in nodes.
+interpreter_max_ast_nodes = 20000
+# Largest accepted restricted-Python nesting depth.
+interpreter_max_depth = 50
+
+[approvals]
+# Only approvals recorded under one of these roles carry authority.
+authorized_roles = ["policy_owner"]

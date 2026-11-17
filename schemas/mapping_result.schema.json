@@ -1,0 +1,423 @@
+{
+  "$defs": {
+    "ElementKind": {
+      "enum": [
+        "requirement",
+        "spec_rule",
+        "spec_default",
+        "workflow_path"
+      ],
+      "title": "ElementKind",
+      "type": "string"
+    },
+    "EvidenceItem": {
+      "additionalProperties": false,
+      "properties": {
+        "excerpt": {
+          "title": "Excerpt",
+          "type": "string"
+        },
+        "location": {
+          "discriminator": {
+            "mapping": {
+              "json": "#/$defs/JsonPointerLocation",
+              "text": "#/$defs/TextSpan"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/TextSpan"
+            },
+            {
+              "$ref": "#/$defs/JsonPointerLocation"
+            }
+          ],
+          "title": "Location"
+        }
+      },
+      "required": [
+        "location",
+        "excerpt"
+      ],
+      "title": "EvidenceItem",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "artifact_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Version"
+        },
+        "category": {
+          "$ref": "#/$defs/FindingCategory"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceItem"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "explanation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Explanation"
+        },
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "discriminator": {
+                "mapping": {
+                  "json": "#/$defs/JsonPointerLocation",
+                  "text": "#/$defs/TextSpan"
+                },
+                "propertyName": "kind"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/TextSpan"
+                },
+                {
+                  "$ref": "#/$defs/JsonPointerLocation"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "recommendation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendation"
+        },
+        "rule_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Ref"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "source": {
+          "default": "deterministic",
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "severity",
+        "category",
+        "message"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "FindingCategory": {
+      "enum": [
+        "MISSING_REQUIREMENT",
+        "UNTRACEABLE_REQUIREMENT",
+        "UNTRACEABLE_ELEMENT",
+        "THRESHOLD_CHANGED",
+        "WRONG_OPERATOR",
+        "PRECEDENCE",
+        "MISSING_BRANCH",
+        "WRONG_DESTINATION",
+        "UNREACHABLE_NODE",
+        "SCRIPT_DISAGREEMENT",
+        "MISSING_EXCEPTION",
+        "INTERACTION",
+        "IMPLEMENTS_UNAPPROVED_CHANGE",
+        "UNIT_MISMATCH",
+        "RUNTIME_ERROR",
+        "UNDETERMINED_CONFLICT",
+        "INVALID_APPROVAL",
+        "STALE_APPROVAL",
+        "STALE_CHANGE",
+        "UNAPPROVED_CHANGE",
+        "REJECTED_CHANGE",
+        "APPROVAL_IGNORED",
+        "UNSUPPORTED_CHANGE_OPERATION",
+        "UNTRUSTED_APPROVAL_CLAIM",
+        "SUSPECTED_INJECTION",
+        "UNSUPPORTED_LANGUAGE",
+        "UNSUPPORTED_CODE",
+        "AMBIGUITY",
+        "INVALID_TRACE_HINT",
+        "AMBIGUOUS_MAPPING",
+        "DEFERRED_DESCRIPTOR",
+        "MISSING_EVIDENCE",
+        "PROVENANCE_FAILURE",
+        "LIMIT_EXCEEDED",
+        "STRUCTURAL"
+      ],
+      "title": "FindingCategory",
+      "type": "string"
+    },
+    "JsonPointerLocation": {
+      "additionalProperties": false,
+      "properties": {
+        "excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excerpt"
+        },
+        "kind": {
+          "const": "json",
+          "default": "json",
+          "title": "Kind",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "pointer": {
+          "title": "Pointer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "pointer"
+      ],
+      "title": "JsonPointerLocation",
+      "type": "object"
+    },
+    "MappingMatch": {
+      "additionalProperties": false,
+      "properties": {
+        "element_id": {
+          "title": "Element Id",
+          "type": "string"
+        },
+        "element_kind": {
+          "$ref": "#/$defs/ElementKind"
+        },
+        "method": {
+          "$ref": "#/$defs/MatchMethod"
+        },
+        "requirement_ref": {
+          "title": "Requirement Ref",
+          "type": "string"
+        },
+        "states": {
+          "default": 0,
+          "title": "States",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "requirement_ref",
+        "element_id",
+        "element_kind",
+        "method"
+      ],
+      "title": "MappingMatch",
+      "type": "object"
+    },
+    "MatchMethod": {
+      "enum": [
+        "inferred",
+        "hint",
+        "precedence"
+      ],
+      "title": "MatchMethod",
+      "type": "string"
+    },
+    "Severity": {
+      "enum": [
+        "BLOCKER",
+        "COVERAGE_GAP",
+        "WARNING",
+        "INFO"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "TextSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "col_end": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Col End"
+        },
+        "col_start": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Col Start"
+        },
+        "excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excerpt"
+        },
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "line_end": {
+          "minimum": 1,
+          "title": "Line End",
+          "type": "integer"
+        },
+        "line_start": {
+          "minimum": 1,
+          "title": "Line Start",
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "line_start",
+        "line_end"
+      ],
+      "title": "TextSpan",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "title": "Artifact",
+      "type": "string"
+    },
+    "complete": {
+      "default": true,
+      "title": "Complete",
+      "type": "boolean"
+    },
+    "findings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "matches": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/MappingMatch"
+      },
+      "title": "Matches",
+      "type": "array"
+    },
+    "unmatched_elements": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Unmatched Elements",
+      "type": "array"
+    },
+    "unmatched_requirements": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Unmatched Requirements",
+      "type": "array"
+    }
+  },
+  "required": [
+    "artifact"
+  ],
+  "title": "MappingResult",
+  "type": "object"
+}

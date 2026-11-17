@@ -1,0 +1,4 @@
+# Bundle artifacts are content-addressed (SHA-256 in manifests); their bytes
+# must survive checkout unchanged.
+fixtures/** -text
+holdout/** -text

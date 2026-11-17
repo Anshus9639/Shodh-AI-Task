@@ -1,0 +1,19 @@
+{
+  "bundle": "H02_renamed",
+  "stage": 1,
+  "expected": {
+    "parse": {
+      "rules": 4,
+      "gap": false
+    },
+    "mapping": {
+      "spec_complete": true,
+      "workflow_complete": true
+    },
+    "resolution": {
+      "confirmed_candidate_id": "confirmed",
+      "undetermined": []
+    },
+    "finding_categories": []
+  }
+}

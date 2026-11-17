@@ -1,0 +1,212 @@
+{
+  "$defs": {
+    "ChangeOperation": {
+      "enum": [
+        "replace_threshold",
+        "replace_operator",
+        "replace_destination",
+        "replace_condition",
+        "remove_rule",
+        "add_rule"
+      ],
+      "title": "ChangeOperation",
+      "type": "string"
+    },
+    "ChangePayload": {
+      "additionalProperties": false,
+      "properties": {
+        "after": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "After"
+        },
+        "destination": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destination"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "op": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Op"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "format": "fraction",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "title": "ChangePayload",
+      "type": "object"
+    },
+    "ChangeRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "base_artifact": {
+          "minLength": 1,
+          "title": "Base Artifact",
+          "type": "string"
+        },
+        "base_version": {
+          "minLength": 1,
+          "title": "Base Version",
+          "type": "string"
+        },
+        "change_id": {
+          "minLength": 1,
+          "title": "Change Id",
+          "type": "string"
+        },
+        "change_version": {
+          "minLength": 1,
+          "title": "Change Version",
+          "type": "string"
+        },
+        "from": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ChangePayload"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "operation": {
+          "$ref": "#/$defs/ChangeOperation"
+        },
+        "rationale": {
+          "default": "",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "sequence": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sequence"
+        },
+        "target_rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Rule"
+        },
+        "to": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ChangePayload"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "change_id",
+        "change_version",
+        "base_artifact",
+        "base_version",
+        "operation"
+      ],
+      "title": "ChangeRequest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "changes": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ChangeRequest"
+      },
+      "title": "Changes",
+      "type": "array"
+    }
+  },
+  "title": "ChangeArtifact",
+  "type": "object"
+}

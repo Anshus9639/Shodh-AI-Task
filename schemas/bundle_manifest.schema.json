@@ -1,0 +1,286 @@
+{
+  "$defs": {
+    "ApprovalDecision": {
+      "enum": [
+        "approve",
+        "reject"
+      ],
+      "title": "ApprovalDecision",
+      "type": "string"
+    },
+    "ApprovalRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "approval_id": {
+          "minLength": 1,
+          "title": "Approval Id",
+          "type": "string"
+        },
+        "approver_id": {
+          "minLength": 1,
+          "title": "Approver Id",
+          "type": "string"
+        },
+        "approver_role": {
+          "minLength": 1,
+          "title": "Approver Role",
+          "type": "string"
+        },
+        "change_id": {
+          "minLength": 1,
+          "title": "Change Id",
+          "type": "string"
+        },
+        "change_sha256": {
+          "title": "Change Sha256",
+          "type": "string"
+        },
+        "change_version": {
+          "minLength": 1,
+          "title": "Change Version",
+          "type": "string"
+        },
+        "decision": {
+          "$ref": "#/$defs/ApprovalDecision"
+        },
+        "recorded_at": {
+          "format": "date-time",
+          "title": "Recorded At",
+          "type": "string"
+        },
+        "supersedes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Supersedes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "approval_id",
+        "change_id",
+        "change_version",
+        "change_sha256",
+        "decision",
+        "approver_id",
+        "approver_role",
+        "recorded_at"
+      ],
+      "title": "ApprovalRecord",
+      "type": "object"
+    },
+    "ArtifactEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ArtifactKind"
+        },
+        "link": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CodeLink"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version",
+        "kind",
+        "path",
+        "sha256"
+      ],
+      "title": "ArtifactEntry",
+      "type": "object"
+    },
+    "ArtifactKind": {
+      "enum": [
+        "requirements",
+        "data_dictionary",
+        "change_requests",
+        "trace_map",
+        "spec",
+        "workflow",
+        "python"
+      ],
+      "title": "ArtifactKind",
+      "type": "string"
+    },
+    "CodeLink": {
+      "additionalProperties": false,
+      "properties": {
+        "destination_map": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Destination Map",
+          "type": "object"
+        },
+        "entrypoint": {
+          "minLength": 1,
+          "title": "Entrypoint",
+          "type": "string"
+        },
+        "field_map": {
+          "additionalProperties": {
+            "$ref": "#/$defs/FieldMapEntry"
+          },
+          "title": "Field Map",
+          "type": "object"
+        },
+        "param": {
+          "default": "ticket",
+          "minLength": 1,
+          "title": "Param",
+          "type": "string"
+        }
+      },
+      "required": [
+        "entrypoint"
+      ],
+      "title": "CodeLink",
+      "type": "object"
+    },
+    "FieldMapEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "title": "FieldMapEntry",
+      "type": "object"
+    },
+    "ReviewTarget": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Code",
+          "type": "array"
+        },
+        "requirements": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Requirements",
+          "type": "array"
+        },
+        "spec": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Spec"
+        },
+        "workflow": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Workflow"
+        }
+      },
+      "required": [
+        "requirements"
+      ],
+      "title": "ReviewTarget",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approvals": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ApprovalRecord"
+      },
+      "title": "Approvals",
+      "type": "array"
+    },
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactEntry"
+      },
+      "minItems": 1,
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "bundle_id": {
+      "minLength": 1,
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "bundle_version": {
+      "minLength": 1,
+      "title": "Bundle Version",
+      "type": "string"
+    },
+    "review_target": {
+      "$ref": "#/$defs/ReviewTarget"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "bundle_version",
+    "review_target",
+    "artifacts"
+  ],
+  "title": "BundleManifest",
+  "type": "object"
+}

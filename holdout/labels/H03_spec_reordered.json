@@ -1,0 +1,22 @@
+{
+  "bundle": "H03_spec_reordered",
+  "stage": 1,
+  "expected": {
+    "parse": {
+      "rules": 4,
+      "gap": false
+    },
+    "mapping": {
+      "spec_complete": false,
+      "workflow_complete": true
+    },
+    "resolution": {
+      "confirmed_candidate_id": "confirmed",
+      "undetermined": []
+    },
+    "finding_categories": [
+      "UNTRACEABLE_ELEMENT",
+      "UNTRACEABLE_REQUIREMENT"
+    ]
+  }
+}

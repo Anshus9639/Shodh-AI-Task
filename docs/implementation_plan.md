@@ -1,10 +1,11 @@
 # VerityFlow — Implementation Plan
 
-Status: **Revision 2 (2026-11-17)**. Architecture approved in principle; the eight corrections from review are incorporated below. P0 setup is authorized. **Stage 1 implementation has not started.**
+Status: **Stage 1 complete (awaiting review)**. Revision 3 (2026-11-17). Revision 2 approved; the two final requirements (optional trace maps with inferred semantic correspondence, and refined continuous-domain partitioning) are incorporated and implemented. Stage 2 has not started.
 
 Revision history:
 - Rev 1 (2026-11-17): initial plan.
 - Rev 2 (2026-11-17): approval binding and conflict-integrity rules (§6); explicit three-valued logic (§3.6); four independent review check families (§8); conservative Python subset v1 with a separate ERROR outcome (§5); exact partition-representative construction and INCOMPLETE-on-limit rule (§7); evaluation-integrity rules with frozen inputs and inaccessible labels (§11); explicit parsing of the assignment's starter wording and OTHERWISE semantics (§4); setup authorization recorded.
+- Rev 3 (2026-11-17): `trace_map` is optional and acts only as a validated hint (§3.3, §8.2); cross-artifact correspondence is inferred from canonical semantics (conditions, fields, units, destinations, precedence, exceptions); ambiguous correspondences are coverage gaps, never arbitrary choices; matching IDs never establish equivalence and renames never cause behavioral mismatches. Continuous partitioning now distinguishes adjacent-representable-value domains, continuous rational domains with witnesses in every open interval, and explicit bounded/unbounded ends (§7).
 
 ---
 
@@ -111,11 +112,11 @@ D:\Shodh AI\
 │   ├── eval.toml               # frozen evaluation settings (hashed in reports)
 │   └── model.toml              # provider settings (no secrets)
 ├── fixtures/
-│   ├── MANIFEST.sha256         # frozen hashes of every bundle and label
-│   ├── dev/
-│   │   ├── B01_*/              # manifest + artifacts only
-│   │   └── labels/             # expected.json + LABEL.md, outside bundle dirs
-│   └── holdout/                # H01–H05, sealed; labels under holdout/labels/
+│   └── dev/                    # B01, B03, B05, B06 (bundle dirs only; no labels here)
+├── holdout/                    # sealed; not read by the reviewer
+│   ├── MANIFEST.sha256         # hashes of every bundle file
+│   ├── bundles/                # H01–H05
+│   └── labels/                 # expected Stage 1 outputs, outside bundle dirs
 ├── tests/
 │   ├── unit/
 │   ├── integration/
@@ -200,6 +201,23 @@ Validation: every path exists and is contained in the bundle directory; sha256 m
 ```
 
 The lexicon (aliases, named predicates, destination aliases) is data, so the starter text parses without hardcoding and unseen domains work unchanged. Keyword matching is case-insensitive; string literals are not.
+
+### 3.2.1 Trace map (optional artifact, hint only)
+
+```json
+{
+  "trace_map_id": "TRACE", "version": "1",
+  "requirement_to_spec":     {"R3": ["S-ESC"]},
+  "requirement_to_workflow": {"R3": ["n2.b0"]},
+  "requirement_to_code":     {"R3": ["route"]},
+  "supplemental":            {"spec": [], "workflow": [], "code": []}
+}
+```
+
+- **Optional.** Coverage and correspondence are inferred from canonical semantics when no map is supplied.
+- **Hint, not authority.** A hint narrows the candidate set for a requirement but is only accepted if the hinted element is still semantically equivalent (condition, fields, normalized units, destination, exception relationship); otherwise it is rejected as `INVALID_TRACE_HINT` (`COVERAGE_GAP`) and inference proceeds without it.
+- **Validated.** Every referenced requirement and element must exist in the declared artifact versions; dangling references are `MISSING_EVIDENCE`.
+- **IDs never decide equivalence.** Matching IDs do not create a match, and renamed IDs do not remove one.
 
 ### 3.3 Change requests (versioned, **untrusted** content)
 
@@ -388,6 +406,7 @@ A Stage 1 unit test asserts this table character-for-character, including destin
 
 - `Otherwise,` is optional leading sugar. It adds **no implicit negation**; it is not stored in the IR.
 - Precedence is physical line order: the ordered decision list is evaluated top-down and **the first rule whose condition is `T` wins**. That is the only reason `Otherwise, urgent ticket` correctly means "if nothing earlier matched and the ticket is urgent".
+- The compiled guard for entry `i` is `c_i ∧ NotTrue(c_0) ∧ ... ∧ NotTrue(c_{i-1})`, where `NotTrue(x)` is TRUE unless `x` is TRUE (UNKNOWN does not count as fired). `NotTrue` is internal and is never produced by the source grammar. This makes ordered lists comparable semantically without execution and is exact for first-match semantics (D-028).
 - `All remaining tickets -> X` compiles to `Const(true)` and must be the final rule. Any rule after a catch-all is unreachable → `AMBIGUITY` coverage gap (never silently dropped). More than one catch-all is also `AMBIGUITY`.
 - If no catch-all exists and a ticket reaches no rule → `UNSPECIFIED` cells → `AMBIGUITY` coverage gap.
 - Rule IDs out of numeric order → `INFO`; line order still governs.
@@ -483,41 +502,50 @@ Unapproved/rejected/stale/invalid-approval changes are never applied. If an arti
 
 ## 7. Exhaustive verification: partition construction
 
-### 7.1 Domains
+### 7.1 Domains and representative values
 
-| Field kind | Domain | Grid step ε |
-|---|---|---|
-| integer | `[min, max] ∩ ℤ` | 1 |
-| decimal with `scale = s` | `[min, max]` on multiples of `10^-s` | `10^-s` |
-| decimal without `scale` (continuous rational) | `[min, max] ∩ ℚ` | none |
-| string | declared domain literals ∪ `OTHER` sentinel | n/a |
-| boolean | `{true, false}` | n/a |
+| Field kind | Domain | Step ε | Representatives |
+|---|---|---|---|
+| integer | `[min, max] ∩ ℤ` (each end optional) | 1 | adjacent valid integers on both sides of every boundary: `b−1, b, b+1` |
+| fixed-scale decimal (`scale = s`) | multiples of `10^-s` within `[min, max]` | `10^-s` | adjacent representable values: `b−ε, b, b+ε`, plus one value inside each wider gap |
+| continuous rational (decimal without `scale`) | `[min, max] ∩ ℚ` (each end optional) | none | each boundary itself, plus a rational witness (midpoint) strictly inside every open interval |
+| string | declared literals ∪ one `OTHER` sentinel distinct from all literals | n/a | every literal, `OTHER` |
+| boolean | `{true, false}` | n/a | both |
 
-Every nullable field additionally has the states `ABSENT` and `NULL` (distinct for code; both count as missing for requirements). All values and thresholds are exact `Fraction`s in the field's canonical unit. Thresholds are normalized onto the domain: on a discrete grid, `x > c` ⇔ `x ≥ next_grid(c)`; `x ≥ c` ⇔ `x ≥ smallest_grid(c)`; strict/inclusive differences collapse exactly.
+Every nullable field additionally has the states `ABSENT` and `NULL` (distinct for code; both missing for requirements). Values and thresholds are exact `Fraction`s in the field's canonical unit.
 
-### 7.2 Representative selection (mathematical basis)
+**Boundaries for a cut `c`.** On a discrete grid, `x ≥ c` and `x > c` change truth between the largest grid point `≤ c` and the smallest grid point `≥ c`; both are boundaries. This handles non-representable thresholds exactly (an integer field with threshold 30.5 cuts between 30 and 31; a cents field with threshold 30.005 cuts between 30.00 and 30.01). On a continuous domain the cut `c` itself is the boundary.
 
-Collect every atom over field `f` from **all** artifacts: comparison cuts `c`, equality/membership literals `v`. Build the boundary set
+### 7.2 Construction and the constancy argument
+
+Collect every atom over field `f` from **all** artifacts: comparison cuts and equality/membership literals. For a discrete domain, boundary set
 
 ```
-B = {min, max}
-  ∪ {c*, prev(c*)}          for each cut c*, where c* = smallest grid point ≥ c
-                            (for continuous domains c* = c)
-  ∪ {v, prev(v), next(v)}   for each equality/membership literal v
+B = {min, max where present}
+  ∪ {floor(c), ceil(c), floor(c)−ε, ceil(c)+ε}   for each cut c        (clipped to the domain)
+  ∪ {v, v−ε, v+ε}                                 for each literal v     (clipped)
 ```
 
-where `prev/next` use one grid step and are clipped to the domain. Sort `B`; the **cells** are the singleton points of `B` plus one interior representative for each non-empty gap between consecutive boundary points (exact midpoint rounded to the grid; for continuous domains a midpoint). Missing states are extra values of the field's dimension.
+For a continuous domain, `B = {min, max where present} ∪ {c} ∪ {v}`. Sort `B`; cells are every boundary point as a singleton plus every open interval between consecutive boundaries, represented by the adjacent valid value in a discrete domain or by the exact rational midpoint in a continuous domain.
 
-**Why this is exhaustive.** Every supported atom is a comparison, an equality, or a finite membership over `f`. A comparison `x ≥ c` has constant truth on every cell because all sign changes occur at `c*`/`prev(c*)`, which are boundaries. Equality/membership is true only at isolated literals, which are themselves boundaries. Boolean combinations preserve per-cell constancy, so every expression — and therefore every artifact outcome — is constant on each cell. Evaluating one representative per cell therefore evaluates **every behavioral class** in the declared domain: any ticket in a cell is behaviorally indistinguishable from the representative for every artifact under review. This is exhaustive *modulo behavioral indistinguishability*, which is the meaningful definition; the report labels it `exhaustive` and records the cell count.
+**Bounded and unbounded ends are explicit:**
 
-Integer example (threshold 30): representatives include 29 and 30 (adjacent to the boundary), domain min/max, and one value inside each wider gap. Decimal scale 2 example (threshold 30.00): 29.99, 30.00, 30.01. Continuous example: 30, a midpoint below, a midpoint above.
+```
+if min is None and B is non-empty: first cell = (−∞, b₀), representative b₀−ε (discrete) or b₀−1 (rational)
+if max is None and B is non-empty: last cell  = (bₙ, +∞), representative bₙ+ε (discrete) or bₙ+1 (rational)
+if both ends are unbounded and B is empty: one cell (−∞, +∞), representative 0
+```
+
+**Why every cell has constant condition outcomes.** Each supported atom is a comparison, an equality, or a finite membership over one field. A comparison `x ≥ c` can only change truth at the cut `c`; on a discrete grid that bracket is exactly `floor(c)`/`ceil(c)`, both of which are boundaries, so the truth value is identical at every grid point of a cell. Equality and membership are true only at isolated literals, which are boundaries themselves. `Missing` does not depend on the numeric value. Boolean combinations (AND/OR/NOT) of functions that are constant on a cell are constant on that cell. Therefore every supported condition — and every artifact outcome built from it — is constant on each cell, and one representative per cell evaluates every behavioral class. This is exhaustive *modulo behavioral indistinguishability*, which is the only meaningful notion of exhaustive for an infinite domain; the report records the cell count and the partition mode.
+
+Examples: integer threshold 30 → representatives include 29, 30, 31; fixed-scale cents threshold 30.005 → 30.00, 30.01; continuous threshold 2.5 in [0,10] → 0, 2.5, a witness in (0,2.5), a witness in (2.5,10), 10; unbounded integer with threshold 30 → a value ≤29, 30, 31.
 
 ### 7.3 Cross-product, limits and disclosure
 
 - Total cells = product over fields of (representatives + missing states), with unreferenced fields fixed to one representative. If ≤ `max_cells` (default 50 000), every cell is evaluated → `exhaustive`.
 - Otherwise → `sampled`: seeded boundary-pairwise cells plus a deterministic sample; the unevaluated region is disclosed in `unreviewed_scope` and the check is `COVERAGE_GAP`.
 - If any required atom is not partitionable (only possible in a future revision that permits arithmetic/field-vs-field comparisons) → `sampled` for that artifact, disclosed.
-- **Rule:** a review that is sampled, limited, or contains unsupported content is **INCOMPLETE** unless an independently established blocker (from actually evaluated cells or from coverage/traceability with validated evidence) exists, in which case it is CHANGES_REQUIRED with the unreviewed scope reported alongside.
+- **Rule:** a review that is sampled, limited, or contains unsupported content is **INCOMPLETE** unless an independently established blocker (from actually evaluated cells or from coverage/traceability with validated evidence) exists, in which case it is CHANGES_REQUIRED with the unreviewed scope reported alongside. A review must never claim exhaustive verification when any relevant cell is untested.
 - Random or sampled testing is never described as exhaustive, and a sampled review can never PASS.
 
 ### 7.4 Counterexamples, diagnosis, interaction
@@ -546,11 +574,20 @@ Inputs: the parsed requirement rules, the trace map, and each artifact element's
 
 Missing requirements are reported when their IDs are absent from the target artifacts — both rows above fire on absence. Different IDs are accepted **only** when the `trace_map` names them; behavior alone does not confer traceability, and a shared ID alone does not confer correctness.
 
-### 8.2 C2 — Cross-artifact traceability
+### 8.2 C2 — Cross-artifact traceability (inferred, with optional hints)
 
-- Every behavioral element (spec rule, workflow decision/branch, reachable code branch) must map to a requirement via `implements` or `trace_map`, or be declared supplemental in the map. Unmapped elements → `UNTRACEABLE_ELEMENT` (`WARNING`; they are still judged behaviorally, so extra behavior becomes a C3 blocker).
-- Every `trace_map` entry must reference existing elements in the declared versions; dangling entries → `MISSING_EVIDENCE` (`COVERAGE_GAP`).
-- Each requirement should map consistently across artifacts (same semantic rule); inconsistent mappings → `WARNING` naming the entries.
+Correspondence is established from **canonical semantics**, not identifiers. Each artifact element is reduced to a semantic descriptor: condition expression, referenced fields, values normalized to canonical units, destination, precedence, and exception relationship.
+
+Matching rules:
+
+- Two elements correspond when their destinations are equal and their conditions are semantically equivalent over the union of the relevant fields (same truth value on every cell of the union partition). Precedence and exception relationships are then used as tie-breakers, never as evidence of equivalence.
+- **Matching IDs never establish equivalence.** A spec rule sharing `R3` with a requirement but using a different threshold or destination does not match.
+- **Renaming IDs alone never causes a behavioural mismatch**, because no behavioural check consumes identifiers; renaming only affects hint resolution and evidence labels.
+- An optional `trace_map` narrows the candidate set. Hints are validated against the canonical semantics; invalid hints are reported (`INVALID_TRACE_HINT`, `COVERAGE_GAP`) and ignored. Dangling references are `MISSING_EVIDENCE`.
+- If a requirement or element still has more than one equally valid counterpart and nothing (semantics, precedence, a validated hint) disambiguates it, the correspondence is **ambiguous**: it is reported as `AMBIGUOUS_MAPPING` (`COVERAGE_GAP`, INCOMPLETE) and no assignment is invented.
+- Requirements with no valid counterpart: `MISSING_REQUIREMENT` (`BLOCKER`) when no element is behaviourally equivalent; `UNTRACEABLE_REQUIREMENT` (`COVERAGE_GAP`) when an equivalent element exists but no unique correspondence can be established.
+- Target elements with no requirement: `UNTRACEABLE_ELEMENT` (`WARNING`) unless declared supplemental in the trace map.
+- The Stage 2 stage completes code-side descriptors through the restricted-AST extractor. Until that extractor exists, code artifacts in the review target are reported as `DEFERRED_DESCRIPTOR` (`COVERAGE_GAP`), never silently treated as mapped.
 
 ### 8.3 C3 — Behavioral equivalence
 
@@ -605,7 +642,7 @@ Gates: `ruff check`, `ruff format --check`, `mypy --strict src/`, `pytest`.
 
 ## 11. Evaluation integrity
 
-**18-bundle target: 13 dev + 5 holdout (H01–H05).** The five holdout bundles exceed the required minimum of four and are authored at the end of Stage 1, before any verification code exists, and hashed in `fixtures/MANIFEST.sha256` at that point.
+**18-bundle target: 13 dev + 5 holdout (H01–H05).** The five holdout bundles exceed the required minimum of four and are authored at the end of Stage 1, before any verification code exists, and hashed in `holdout/MANIFEST.sha256` at that point.
 
 | ID | Purpose | Expected |
 |---|---|---|
@@ -633,8 +670,8 @@ Gates: `ruff check`, `ruff format --check`, `mypy --strict src/`, `pytest`.
 
 **Integrity rules:**
 1. **Holdout is never used for tuning.** It is run exactly once, at final evaluation, on both implementations. If a holdout failure is found, the fix is still allowed, but the pre-fix holdout result is preserved and the post-fix holdout is reported as a second, disclosed run — no iteration loop.
-2. **Frozen inputs and settings.** `fixtures/MANIFEST.sha256` covers every bundle file and label; `configs/eval.toml` is the single evaluation settings file. At final evaluation, the baseline checkpoint (tag `checkpoint-initial`) and the final implementation run through the same `scripts/run_eval.py --impl <git-ref> --config configs/eval.toml --split all --out reports/<tag>` over the same frozen bundle set, with the config hash recorded. `scripts/compare_reports.py` diffs baseline vs final statuses/findings per bundle and asserts the input hashes and config hash are identical.
-3. **Labels inaccessible to the reviewer.** Labels live in `fixtures/<split>/labels/`, outside bundle dirs; `verityflow review` accepts only a bundle directory and never receives a label path. An integration test asserts bundle dirs contain no label files and that no module under `src/` references the labels directory. The model never sees labels either.
+2. **Frozen inputs and settings.** `holdout/MANIFEST.sha256` covers every holdout bundle file (labels are outside bundles and are never read by the reviewer); `configs/eval.toml` is the single evaluation settings file. At final evaluation, the baseline checkpoint (tag `checkpoint-initial`) and the final implementation run through the same `scripts/run_eval.py --impl <git-ref> --config configs/eval.toml --split all --out reports/<tag>` over the same frozen bundle set, with the config hash recorded. `scripts/compare_reports.py` diffs baseline vs final statuses/findings per bundle and asserts the input hashes and config hash are identical.
+3. **Labels inaccessible to the reviewer.** Labels live in `holdout/labels/`, outside bundle dirs; `verityflow review` accepts only a bundle directory and never receives a label path. An integration test asserts bundle dirs contain no label files and that no module under `src/` references the labels directory. The model never sees labels either.
 4. **Baseline vs final comparison is mandatory** and is reported per bundle, including holdout, in `reports/final/comparison.json`.
 5. Ablations run on **dev only** (holdout is not repeatedly exposed): approval resolution off, partitioning→random sampling, interaction analysis off, unit normalization off, model-evidence validation off, model on/off.
 6. Labels come from manual reasoning (`LABEL.md`) plus `scripts/oracle/` — hand-written routing functions that share no code with `src/`. The harness verifies each reported counterexample's expected destination against the oracle.
@@ -684,29 +721,32 @@ Reports: `reports/baseline/` (first end-to-end checkpoint + naive regex/ID basel
 4. Skeleton: `src/verityflow/__init__.py`, `cli.py` (`version`, `--help`), `config.py` (limits, approval roles), `logging_setup.py` (redaction) + smoke tests.
 5. Run ruff / ruff-format / mypy / pytest; commit `p0-scaffold` (if git identity is configured). Present results before Stage 1.
 
-**Stage 1**
-6. `models/` contracts + `scripts/export_schemas.py` → `schemas/`.
-7. `ingest/` (limits, sha256, path containment, UTF-8, line index).
-8. `ir/model.py`, `ir/units.py`.
-9. `requirements/` lexer/parser/lexicon + the §4.1 starter-table test and full ambiguity/unsupported matrix.
-10. `approvals/` hash binding, invalidation, variant sets, truth-table tests.
-11. `ir/compile.py` (exceptions, `unless`, catch-all) + `verityflow resolve`.
-12. Author B01 and H01–H05 + labels + oracles; commit `fixtures/MANIFEST.sha256`. Commit `stage1`.
+**Stage 1 (implemented; awaiting review)**
+1. Pydantic data contracts for every artifact, report and policy type.
+2. JSON Schema generation and validation (`schemas/`, `scripts/export_schemas.py`).
+3. Evidence anchors and provenance (`TextSpan`, `LineIndex`, bundle hashes, path containment).
+4. Canonical typed condition IR (`ir/model.py`, `ir/normalize.py`).
+5. Kleene three-valued evaluation (`ir/evaluate.py`).
+6. Restricted source grammar and ordered-policy compilation (`requirements/`, including exceptions, `unless`, `NotTrue` guards and `Otherwise`).
+7. Duration/currency unit normalization (`ir/units.py`, exact `Fraction`s).
+8. Approval integrity and revision resolution (`approvals/resolver.py`, hash binding, supersession, conflicts, variants).
+9. Starter and change fixtures (`fixtures/dev/`), sealed holdout (`holdout/`), integration/unit/holdout tests, `holdout/MANIFEST.sha256`.
+10. Documentation sync and quality gates (ruff, ruff format, mypy strict, pytest, holdout run); commit `stage1`.
 
 **Stage 2**
-13. `ir/evaluate.py` (Kleene), `artifacts/spec.py`.
-14. `artifacts/workflow.py` (NetworkX + walker).
-15. `pyast/validator.py`, `interpreter.py` (ERROR outcome), security + differential tests.
-16. `verify/partition.py` + property tests; `equivalence.py`; `counterexample.py`; `diagnose.py`; `interaction.py`.
-17. `verify/coverage.py`, `traceability.py`; `report/evidence.py`, `status.py`, `builder.py`; `verityflow review`.
-18. Dev B02–B11, B13; integration, metamorphic, regression tests.
-19. Tag `checkpoint-initial`; `reports/baseline/`; naive baseline.
+11. `artifacts/spec.py`.
+12. `artifacts/workflow.py` (NetworkX + walker).
+13. `pyast/validator.py`, `interpreter.py` (ERROR outcome), security + differential tests.
+14. `verify/partition.py` + property tests; `equivalence.py`; `counterexample.py`; `diagnose.py`; `interaction.py`.
+15. `verify/coverage.py`, `traceability.py`; `report/evidence.py`, `status.py`, `builder.py`; `verityflow review`.
+16. Dev B02–B11, B13; integration, metamorphic, regression tests.
+17. Tag `checkpoint-initial`; `reports/baseline/`; naive baseline.
 
 **Stage 3**
-20. `model/` client, fake, prompt, validator, retry/timeout wrapper, optional Gemini; B12 + model-failure tests; status-invariance test. Commit `stage3`.
+18. `model/` client, fake, prompt, validator, retry/timeout wrapper, optional Gemini; B12 + model-failure tests; status-invariance test. Commit `stage3`.
 
 **Stage 4**
-21. Remaining bundles and variants; oracle cross-checks.
-22. Ablation switches; `run_eval.py` for baseline and final over frozen inputs; `compare_reports.py`.
-23. Dev iterate → regression tests → final dev run → single holdout run (baseline + final).
-24. Reports and docs; tag `final`.
+19. Remaining bundles and variants; oracle cross-checks.
+20. Ablation switches; `run_eval.py` for baseline and final over frozen inputs; `compare_reports.py`.
+21. Dev iterate → regression tests → final dev run → single holdout run (baseline + final).
+22. Reports and docs; tag `final`.
