@@ -5,6 +5,7 @@ from verityflow.ir.normalize import normalize_condition
 from verityflow.ir.policy import Policy
 from verityflow.mapping.models import ElementKind, Extraction, SemanticElement
 from verityflow.models.common import ArtifactRef
+from verityflow.models.conditions import to_ir
 from verityflow.models.dictionary import DataDictionary
 from verityflow.models.report import Finding, FindingCategory, Severity, make_finding
 from verityflow.models.spec import SpecArtifact
@@ -61,7 +62,9 @@ def extract_spec(
     ordered = sorted(spec.rules, key=lambda rule: rule.priority)
     conditions: list[Expr] = []
     for rule in ordered:
-        normalized = normalize_condition(rule.when, dictionary, pointer=f"rules/{rule.id}/when")
+        normalized = normalize_condition(
+            to_ir(rule.when), dictionary, pointer=f"rules/{rule.id}/when"
+        )
         if normalized.expr is None:
             details = "; ".join(problem.message for problem in normalized.problems)
             report(
@@ -199,7 +202,7 @@ def extract_workflow(
                 condition = _none_true(prior)
             else:
                 normalized = normalize_condition(
-                    branch.condition,
+                    to_ir(branch.condition),
                     dictionary,
                     pointer=f"branches/{branch.branch_id}/condition",
                 )

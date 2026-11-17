@@ -1,0 +1,28 @@
+{
+  "holdout_id": "stage1_final_v1",
+  "reserved_on": "2026-11-17",
+  "generated_by": "scripts/build_fixtures.py",
+  "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
+  "config": {
+    "path": "configs/default.toml",
+    "sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61"
+  },
+  "implementation_checkpoint": "04d9ea6",
+  "docs_checkpoint": "9f55815",
+  "domain": "claims triage (segment, risk, amount, documents)",
+  "bundles": [
+    "F01_clean",
+    "F02_renamed",
+    "F03_approved_threshold",
+    "F04_unapproved_threshold",
+    "F05_tampered_approval"
+  ],
+  "labels": [
+    "F01_clean",
+    "F02_renamed",
+    "F03_approved_threshold",
+    "F04_unapproved_threshold",
+    "F05_tampered_approval"
+  ],
+  "policy": "Authored before any final-evaluation run. The pipeline is not executed against these bundles during Stage 1 development."
+}

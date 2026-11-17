@@ -76,5 +76,5 @@ def dev_bundles() -> Path:
 
 
 @pytest.fixture
-def holdout_bundles() -> Path:
-    return ROOT / "holdout" / "bundles"
+def dev_evidence_bundles() -> Path:
+    return ROOT / "fixtures" / "dev_evidence" / "holdout_v1" / "bundles"

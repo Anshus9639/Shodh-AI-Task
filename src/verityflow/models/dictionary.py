@@ -11,9 +11,10 @@ from verityflow.ir.domains import (
     integer_domain,
     scaled_decimal_domain,
 )
-from verityflow.ir.model import Expr, NumericLit, referenced_fields
+from verityflow.ir.model import NumericLit, referenced_fields
 from verityflow.ir.units import get_unit
 from verityflow.models.common import FrozenModel
+from verityflow.models.conditions import ExternalCondition, to_ir
 
 
 class FieldType(StrEnum):
@@ -73,7 +74,7 @@ class DataDictionary(FrozenModel):
     fields: tuple[FieldDecl, ...]
     destinations: tuple[DestinationDecl, ...] = ()
     aliases: dict[str, str] = Field(default_factory=dict)
-    named_predicates: dict[str, Expr] = Field(default_factory=dict)
+    named_predicates: dict[str, ExternalCondition] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def _check(self) -> DataDictionary:
@@ -85,7 +86,7 @@ class DataDictionary(FrozenModel):
             if target not in known:
                 raise ValueError(f"alias {alias!r} targets unknown field {target!r}")
         for phrase, expression in self.named_predicates.items():
-            unknown = referenced_fields(expression) - known
+            unknown = referenced_fields(to_ir(expression)) - known
             if unknown:
                 raise ValueError(
                     f"named predicate {phrase!r} references unknown fields {sorted(unknown)}"

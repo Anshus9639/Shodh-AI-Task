@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from pydantic import Field, model_validator
 
-from verityflow.ir.model import Expr
 from verityflow.models.common import FrozenModel
+from verityflow.models.conditions import ExternalCondition
 
 
 class SpecRule(FrozenModel):
     id: str = Field(min_length=1)
     priority: int
     implements: tuple[str, ...] = ()
-    when: Expr
+    when: ExternalCondition
     destination: str = Field(min_length=1)
 
 

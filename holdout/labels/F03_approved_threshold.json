@@ -1,0 +1,33 @@
+{
+  "bundle": "F03_approved_threshold",
+  "stage": 1,
+  "expected": {
+    "parse": {
+      "rules": 4,
+      "gap": false
+    },
+    "mapping": {
+      "spec_complete": true,
+      "workflow_complete": true
+    },
+    "resolution": {
+      "confirmed_candidate_id": "confirmed",
+      "applied": [
+        "C1@1"
+      ],
+      "undetermined": [],
+      "rule_thresholds": {
+        "K3": "3000"
+      }
+    },
+    "finding_categories": [],
+    "routes": {
+      "missing_segment": "manual_hold",
+      "risk_high": "fraud_investigation",
+      "amount_high": "specialist_review",
+      "baseline": "standard_payout",
+      "amount_above_new_threshold": "specialist_review",
+      "amount_below_new_threshold": "standard_payout"
+    }
+  }
+}

@@ -1,79 +1,5 @@
 {
   "$defs": {
-    "And": {
-      "additionalProperties": false,
-      "properties": {
-        "items": {
-          "items": {
-            "discriminator": {
-              "mapping": {
-                "and": "#/$defs/And",
-                "cmp": "#/$defs/Cmp",
-                "const": "#/$defs/Const",
-                "eq": "#/$defs/Eq",
-                "in": "#/$defs/In",
-                "missing": "#/$defs/Missing",
-                "ne": "#/$defs/Ne",
-                "not": "#/$defs/NotNode",
-                "not_in": "#/$defs/NotIn",
-                "not_true": "#/$defs/NotTrue",
-                "or": "#/$defs/Or"
-              },
-              "propertyName": "kind"
-            },
-            "oneOf": [
-              {
-                "$ref": "#/$defs/Cmp"
-              },
-              {
-                "$ref": "#/$defs/Eq"
-              },
-              {
-                "$ref": "#/$defs/Ne"
-              },
-              {
-                "$ref": "#/$defs/In"
-              },
-              {
-                "$ref": "#/$defs/NotIn"
-              },
-              {
-                "$ref": "#/$defs/Missing"
-              },
-              {
-                "$ref": "#/$defs/And"
-              },
-              {
-                "$ref": "#/$defs/Or"
-              },
-              {
-                "$ref": "#/$defs/NotNode"
-              },
-              {
-                "$ref": "#/$defs/NotTrue"
-              },
-              {
-                "$ref": "#/$defs/Const"
-              }
-            ]
-          },
-          "minItems": 2,
-          "title": "Items",
-          "type": "array"
-        },
-        "kind": {
-          "const": "and",
-          "default": "and",
-          "title": "Kind",
-          "type": "string"
-        }
-      },
-      "required": [
-        "items"
-      ],
-      "title": "And",
-      "type": "object"
-    },
     "Cmp": {
       "additionalProperties": false,
       "properties": {
@@ -207,6 +133,212 @@
         "value"
       ],
       "title": "Eq",
+      "type": "object"
+    },
+    "ExternalAnd": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "and": "#/$defs/ExternalAnd",
+                "cmp": "#/$defs/Cmp",
+                "const": "#/$defs/Const",
+                "eq": "#/$defs/Eq",
+                "in": "#/$defs/In",
+                "missing": "#/$defs/Missing",
+                "ne": "#/$defs/Ne",
+                "not": "#/$defs/ExternalNot",
+                "not_in": "#/$defs/NotIn",
+                "or": "#/$defs/ExternalOr"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Cmp"
+              },
+              {
+                "$ref": "#/$defs/Eq"
+              },
+              {
+                "$ref": "#/$defs/Ne"
+              },
+              {
+                "$ref": "#/$defs/In"
+              },
+              {
+                "$ref": "#/$defs/NotIn"
+              },
+              {
+                "$ref": "#/$defs/Missing"
+              },
+              {
+                "$ref": "#/$defs/ExternalAnd"
+              },
+              {
+                "$ref": "#/$defs/ExternalOr"
+              },
+              {
+                "$ref": "#/$defs/ExternalNot"
+              },
+              {
+                "$ref": "#/$defs/Const"
+              }
+            ]
+          },
+          "minItems": 2,
+          "title": "Items",
+          "type": "array"
+        },
+        "kind": {
+          "const": "and",
+          "default": "and",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "ExternalAnd",
+      "type": "object"
+    },
+    "ExternalNot": {
+      "additionalProperties": false,
+      "properties": {
+        "item": {
+          "discriminator": {
+            "mapping": {
+              "and": "#/$defs/ExternalAnd",
+              "cmp": "#/$defs/Cmp",
+              "const": "#/$defs/Const",
+              "eq": "#/$defs/Eq",
+              "in": "#/$defs/In",
+              "missing": "#/$defs/Missing",
+              "ne": "#/$defs/Ne",
+              "not": "#/$defs/ExternalNot",
+              "not_in": "#/$defs/NotIn",
+              "or": "#/$defs/ExternalOr"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Cmp"
+            },
+            {
+              "$ref": "#/$defs/Eq"
+            },
+            {
+              "$ref": "#/$defs/Ne"
+            },
+            {
+              "$ref": "#/$defs/In"
+            },
+            {
+              "$ref": "#/$defs/NotIn"
+            },
+            {
+              "$ref": "#/$defs/Missing"
+            },
+            {
+              "$ref": "#/$defs/ExternalAnd"
+            },
+            {
+              "$ref": "#/$defs/ExternalOr"
+            },
+            {
+              "$ref": "#/$defs/ExternalNot"
+            },
+            {
+              "$ref": "#/$defs/Const"
+            }
+          ],
+          "title": "Item"
+        },
+        "kind": {
+          "const": "not",
+          "default": "not",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "item"
+      ],
+      "title": "ExternalNot",
+      "type": "object"
+    },
+    "ExternalOr": {
+      "additionalProperties": false,
+      "properties": {
+        "items": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "and": "#/$defs/ExternalAnd",
+                "cmp": "#/$defs/Cmp",
+                "const": "#/$defs/Const",
+                "eq": "#/$defs/Eq",
+                "in": "#/$defs/In",
+                "missing": "#/$defs/Missing",
+                "ne": "#/$defs/Ne",
+                "not": "#/$defs/ExternalNot",
+                "not_in": "#/$defs/NotIn",
+                "or": "#/$defs/ExternalOr"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Cmp"
+              },
+              {
+                "$ref": "#/$defs/Eq"
+              },
+              {
+                "$ref": "#/$defs/Ne"
+              },
+              {
+                "$ref": "#/$defs/In"
+              },
+              {
+                "$ref": "#/$defs/NotIn"
+              },
+              {
+                "$ref": "#/$defs/Missing"
+              },
+              {
+                "$ref": "#/$defs/ExternalAnd"
+              },
+              {
+                "$ref": "#/$defs/ExternalOr"
+              },
+              {
+                "$ref": "#/$defs/ExternalNot"
+              },
+              {
+                "$ref": "#/$defs/Const"
+              }
+            ]
+          },
+          "minItems": 2,
+          "title": "Items",
+          "type": "array"
+        },
+        "kind": {
+          "const": "or",
+          "default": "or",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "ExternalOr",
       "type": "object"
     },
     "FieldDecl": {
@@ -444,221 +576,6 @@
       ],
       "title": "NotIn",
       "type": "object"
-    },
-    "NotNode": {
-      "additionalProperties": false,
-      "properties": {
-        "item": {
-          "discriminator": {
-            "mapping": {
-              "and": "#/$defs/And",
-              "cmp": "#/$defs/Cmp",
-              "const": "#/$defs/Const",
-              "eq": "#/$defs/Eq",
-              "in": "#/$defs/In",
-              "missing": "#/$defs/Missing",
-              "ne": "#/$defs/Ne",
-              "not": "#/$defs/NotNode",
-              "not_in": "#/$defs/NotIn",
-              "not_true": "#/$defs/NotTrue",
-              "or": "#/$defs/Or"
-            },
-            "propertyName": "kind"
-          },
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Cmp"
-            },
-            {
-              "$ref": "#/$defs/Eq"
-            },
-            {
-              "$ref": "#/$defs/Ne"
-            },
-            {
-              "$ref": "#/$defs/In"
-            },
-            {
-              "$ref": "#/$defs/NotIn"
-            },
-            {
-              "$ref": "#/$defs/Missing"
-            },
-            {
-              "$ref": "#/$defs/And"
-            },
-            {
-              "$ref": "#/$defs/Or"
-            },
-            {
-              "$ref": "#/$defs/NotNode"
-            },
-            {
-              "$ref": "#/$defs/NotTrue"
-            },
-            {
-              "$ref": "#/$defs/Const"
-            }
-          ],
-          "title": "Item"
-        },
-        "kind": {
-          "const": "not",
-          "default": "not",
-          "title": "Kind",
-          "type": "string"
-        }
-      },
-      "required": [
-        "item"
-      ],
-      "title": "NotNode",
-      "type": "object"
-    },
-    "NotTrue": {
-      "additionalProperties": false,
-      "description": "Internal first-match guard: TRUE unless the item is TRUE.\n\nUsed to express \"no earlier rule or branch fired\". Unlike Kleene negation,\nUNKNOWN satisfies it, which matches ordered first-match semantics.",
-      "properties": {
-        "item": {
-          "discriminator": {
-            "mapping": {
-              "and": "#/$defs/And",
-              "cmp": "#/$defs/Cmp",
-              "const": "#/$defs/Const",
-              "eq": "#/$defs/Eq",
-              "in": "#/$defs/In",
-              "missing": "#/$defs/Missing",
-              "ne": "#/$defs/Ne",
-              "not": "#/$defs/NotNode",
-              "not_in": "#/$defs/NotIn",
-              "not_true": "#/$defs/NotTrue",
-              "or": "#/$defs/Or"
-            },
-            "propertyName": "kind"
-          },
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Cmp"
-            },
-            {
-              "$ref": "#/$defs/Eq"
-            },
-            {
-              "$ref": "#/$defs/Ne"
-            },
-            {
-              "$ref": "#/$defs/In"
-            },
-            {
-              "$ref": "#/$defs/NotIn"
-            },
-            {
-              "$ref": "#/$defs/Missing"
-            },
-            {
-              "$ref": "#/$defs/And"
-            },
-            {
-              "$ref": "#/$defs/Or"
-            },
-            {
-              "$ref": "#/$defs/NotNode"
-            },
-            {
-              "$ref": "#/$defs/NotTrue"
-            },
-            {
-              "$ref": "#/$defs/Const"
-            }
-          ],
-          "title": "Item"
-        },
-        "kind": {
-          "const": "not_true",
-          "default": "not_true",
-          "title": "Kind",
-          "type": "string"
-        }
-      },
-      "required": [
-        "item"
-      ],
-      "title": "NotTrue",
-      "type": "object"
-    },
-    "Or": {
-      "additionalProperties": false,
-      "properties": {
-        "items": {
-          "items": {
-            "discriminator": {
-              "mapping": {
-                "and": "#/$defs/And",
-                "cmp": "#/$defs/Cmp",
-                "const": "#/$defs/Const",
-                "eq": "#/$defs/Eq",
-                "in": "#/$defs/In",
-                "missing": "#/$defs/Missing",
-                "ne": "#/$defs/Ne",
-                "not": "#/$defs/NotNode",
-                "not_in": "#/$defs/NotIn",
-                "not_true": "#/$defs/NotTrue",
-                "or": "#/$defs/Or"
-              },
-              "propertyName": "kind"
-            },
-            "oneOf": [
-              {
-                "$ref": "#/$defs/Cmp"
-              },
-              {
-                "$ref": "#/$defs/Eq"
-              },
-              {
-                "$ref": "#/$defs/Ne"
-              },
-              {
-                "$ref": "#/$defs/In"
-              },
-              {
-                "$ref": "#/$defs/NotIn"
-              },
-              {
-                "$ref": "#/$defs/Missing"
-              },
-              {
-                "$ref": "#/$defs/And"
-              },
-              {
-                "$ref": "#/$defs/Or"
-              },
-              {
-                "$ref": "#/$defs/NotNode"
-              },
-              {
-                "$ref": "#/$defs/NotTrue"
-              },
-              {
-                "$ref": "#/$defs/Const"
-              }
-            ]
-          },
-          "minItems": 2,
-          "title": "Items",
-          "type": "array"
-        },
-        "kind": {
-          "const": "or",
-          "default": "or",
-          "title": "Kind",
-          "type": "string"
-        }
-      },
-      "required": [
-        "items"
-      ],
-      "title": "Or",
-      "type": "object"
     }
   },
   "additionalProperties": false,
@@ -689,17 +606,16 @@
       "additionalProperties": {
         "discriminator": {
           "mapping": {
-            "and": "#/$defs/And",
+            "and": "#/$defs/ExternalAnd",
             "cmp": "#/$defs/Cmp",
             "const": "#/$defs/Const",
             "eq": "#/$defs/Eq",
             "in": "#/$defs/In",
             "missing": "#/$defs/Missing",
             "ne": "#/$defs/Ne",
-            "not": "#/$defs/NotNode",
+            "not": "#/$defs/ExternalNot",
             "not_in": "#/$defs/NotIn",
-            "not_true": "#/$defs/NotTrue",
-            "or": "#/$defs/Or"
+            "or": "#/$defs/ExternalOr"
           },
           "propertyName": "kind"
         },
@@ -723,16 +639,13 @@
             "$ref": "#/$defs/Missing"
           },
           {
-            "$ref": "#/$defs/And"
+            "$ref": "#/$defs/ExternalAnd"
           },
           {
-            "$ref": "#/$defs/Or"
+            "$ref": "#/$defs/ExternalOr"
           },
           {
-            "$ref": "#/$defs/NotNode"
-          },
-          {
-            "$ref": "#/$defs/NotTrue"
+            "$ref": "#/$defs/ExternalNot"
           },
           {
             "$ref": "#/$defs/Const"

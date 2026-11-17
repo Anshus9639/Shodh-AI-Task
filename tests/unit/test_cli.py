@@ -145,6 +145,7 @@ def test_map_discloses_code_without_a_semantic_descriptor(tmp_path: Path) -> Non
             "kind": "python",
             "path": "rules.py",
             "sha256": hashlib.sha256(source.encode("utf-8")).hexdigest(),
+            "link": {"entrypoint": "route", "param": "ticket"},
         }
     )
     (bundle / "bundle.json").write_text(json.dumps(manifest), encoding="utf-8")

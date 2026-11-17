@@ -1,0 +1,61 @@
+{
+  "fields": [
+    {
+      "name": "segment",
+      "type": "string",
+      "nullable": true,
+      "domain": [
+        "auto",
+        "property",
+        "health"
+      ]
+    },
+    {
+      "name": "risk",
+      "type": "integer",
+      "nullable": true,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "amount",
+      "type": "decimal",
+      "unit": "usd",
+      "scale": 2,
+      "nullable": true
+    },
+    {
+      "name": "documents",
+      "type": "boolean",
+      "nullable": true
+    }
+  ],
+  "destinations": [
+    {
+      "id": "manual_hold",
+      "aliases": [
+        "manual hold"
+      ]
+    },
+    {
+      "id": "fraud_investigation",
+      "aliases": [
+        "fraud investigation"
+      ]
+    },
+    {
+      "id": "specialist_review",
+      "aliases": [
+        "specialist review"
+      ]
+    },
+    {
+      "id": "standard_payout",
+      "aliases": [
+        "standard payout"
+      ]
+    }
+  ],
+  "aliases": {},
+  "named_predicates": {}
+}

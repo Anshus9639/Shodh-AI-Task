@@ -1,0 +1,4 @@
+K1. Missing segment -> manual hold.
+K2. Otherwise, risk >= 80 -> fraud investigation.
+K3. Otherwise, amount >= 5000 usd -> specialist review.
+K4. All remaining tickets -> standard payout.

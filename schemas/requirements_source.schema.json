@@ -1,0 +1,187 @@
+{
+  "$defs": {
+    "AnchoredRequirement": {
+      "additionalProperties": false,
+      "description": "One requirement statement tied to an exact span of its source artifact.\n\nThe anchor is evidence, not a claim: ``source_ref`` identifies the declared\nartifact version and ``anchor`` must resolve against that artifact's text.",
+      "properties": {
+        "anchor": {
+          "$ref": "#/$defs/TextSpan"
+        },
+        "destination": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destination"
+        },
+        "requirement_id": {
+          "minLength": 1,
+          "title": "Requirement Id",
+          "type": "string"
+        },
+        "source_ref": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "source_text": {
+          "minLength": 1,
+          "title": "Source Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "requirement_id",
+        "source_ref",
+        "anchor",
+        "source_text"
+      ],
+      "title": "AnchoredRequirement",
+      "type": "object"
+    },
+    "ArtifactRef": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version"
+      ],
+      "title": "ArtifactRef",
+      "type": "object"
+    },
+    "TextSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "col_end": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Col End"
+        },
+        "col_start": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Col Start"
+        },
+        "excerpt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excerpt"
+        },
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "line_end": {
+          "minimum": 1,
+          "title": "Line End",
+          "type": "integer"
+        },
+        "line_start": {
+          "minimum": 1,
+          "title": "Line Start",
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "line_start",
+        "line_end"
+      ],
+      "title": "TextSpan",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Declared contract for a plain-text requirements artifact and its anchors.\n\nRequirement files are stored as UTF-8 text; this model is the standalone\nprojection of the manifest entry plus every parsed, anchored requirement.",
+  "properties": {
+    "dictionary_ref": {
+      "$ref": "#/$defs/ArtifactRef"
+    },
+    "encoding": {
+      "const": "utf-8",
+      "default": "utf-8",
+      "title": "Encoding",
+      "type": "string"
+    },
+    "path": {
+      "minLength": 1,
+      "title": "Path",
+      "type": "string"
+    },
+    "requirements": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AnchoredRequirement"
+      },
+      "title": "Requirements",
+      "type": "array"
+    },
+    "requirements_id": {
+      "minLength": 1,
+      "title": "Requirements Id",
+      "type": "string"
+    },
+    "sha256": {
+      "title": "Sha256",
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "requirements_id",
+    "version",
+    "path",
+    "sha256",
+    "dictionary_ref"
+  ],
+  "title": "RequirementsSource",
+  "type": "object"
+}

@@ -47,7 +47,7 @@ Exit codes: `0` no coverage gap, `1` a blocker/coverage gap was found, `2` inval
 
 ## Contracts
 
-The Pydantic models in `src/verityflow/models/` are the source of truth. Regenerate the committed schemas with:
+The Pydantic models in `src/verityflow/models/` are the source of truth. Beyond the bundle, spec, workflow, dictionary, change and report contracts, standalone schemas are exported for the five required input surfaces: anchored requirements (`requirements_source`, `anchored_requirement`), specification (`spec`, `spec_rule`, `spec_default`), versioned workflow (`workflow`, `workflow_node`, `workflow_branch`), linked Python code (`artifact_entry`, `code_link`) and approvals (`approval_record`). Regenerate the committed schemas with:
 
 ```
 uv run python scripts/export_schemas.py   # writes schemas/*.schema.json
@@ -56,17 +56,18 @@ uv run python scripts/export_schemas.py   # writes schemas/*.schema.json
 Fixtures are generated deterministically:
 
 ```
-uv run python scripts/build_fixtures.py   # fixtures/dev + holdout + MANIFEST.sha256
+uv run python scripts/build_fixtures.py   # fixtures/dev + sealed holdout + MANIFEST.sha256
 ```
+
+`fixtures/dev_evidence/holdout_v1/` is frozen historical evidence and is not regenerated.
 
 ## Quality gates
 
 ```
-uv run pytest -q                 # default suite (holdout excluded)
-uv run pytest -q -m holdout      # sealed holdout evaluation
-uv run ruff check src tests scripts
-uv run ruff format --check src tests scripts
-uv run mypy src
+uv run pytest -q                 # complete default suite (unit + integration)
+uv run ruff check .
+uv run ruff format --check .
+uv run mypy
 ```
 
-Current results: 174 default tests passed (7 holdout deselected); 7 holdout tests passed; ruff, ruff format and strict mypy clean.
+Current results: 215 default tests passed; ruff, ruff format and strict mypy clean. The sealed `holdout/` set has not been executed and is reserved for final evaluation.

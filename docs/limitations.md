@@ -50,9 +50,12 @@ These are known, intentional boundaries. Anything listed here is either reported
 - Byte and artifact-count limits are enforced before parsing. Exceeding them rejects or discloses exactly what is unreviewed; input is never silently truncated.
 - Hashes are recomputed for every declared artifact. A mismatch blocks trust in that artifact.
 - Evidence anchors are `TextSpan`s into requirement text and are checked against the loaded file. Spec/workflow findings carry artifact id + version and element id; JSON-pointer locations are defined in the contract but not yet emitted by every finding.
+- Python artifacts must declare `CodeLink` provenance (`entrypoint`, parameter name, field and destination maps). Stage 1 only records this contract and emits `DEFERRED_DESCRIPTOR`; it does not inspect the linked code.
+- External conditions cannot express the internal `NotTrue` guard. A spec, workflow or dictionary that submits `{"kind": "not_true", ...}` is rejected during artifact validation.
 
 ## Evaluation
 
-- The holdout contains five bundles, all authored in this repository. It is not an external benchmark and does not establish general accuracy on unseen domain language.
-- Labels grade Stage 1 outputs only (parse counts/gaps, mapping completeness, resolution state, finding categories). They do not grade Stage 2 behavior, which does not exist yet.
-- The holdout was read during the first green-up run; the disclosure and the two root causes are in `docs/evaluation_protocol.md` and `docs/debugging_log.md`.
+- The reserved holdout (`holdout/bundles/`, F01–F05) contains five bundles in a claims-triage domain, all authored in this repository. It is not an external benchmark and does not establish general accuracy on unseen domain language.
+- The reserved holdout has not been executed. Labels grade Stage 1 outputs only (parse counts/gaps, mapping completeness, resolution state, finding categories, route expectations); they do not grade Stage 2 behavior, which does not exist yet.
+- The original H01–H05 set is frozen under `fixtures/dev_evidence/holdout_v1/` as development evidence because it was read during the first green-up run. Its recorded labels now run as ordinary regression tests, and the historical disclosure is preserved in `docs/evaluation_protocol.md` and `docs/debugging_log.md`.
+- The fresh holdout was authored before any final-evaluation run; its generator, labels, manifest and implementation checkpoint are recorded in `holdout/GENERATION.json`.

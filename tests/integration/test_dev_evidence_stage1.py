@@ -10,12 +10,10 @@ from support import Stage1Result, run_stage1
 from verityflow.ir.model import And, Cmp, Expr, NotNode, NotTrue, Or
 from verityflow.models.report import FindingCategory, Severity
 
-pytestmark = pytest.mark.holdout
-
 ROOT = Path(__file__).resolve().parent.parent.parent
-HOLDOUT = ROOT / "holdout"
-BUNDLES = HOLDOUT / "bundles"
-LABELS = HOLDOUT / "labels"
+EVIDENCE = ROOT / "fixtures" / "dev_evidence" / "holdout_v1"
+BUNDLES = EVIDENCE / "bundles"
+LABELS = EVIDENCE / "labels"
 
 _CASES = sorted(path.stem for path in LABELS.glob("*.json"))
 
@@ -51,7 +49,7 @@ def _finding_categories(result: Stage1Result) -> list[str]:
 
 
 @pytest.mark.parametrize("name", _CASES)
-def test_holdout_expectations(name: str) -> None:
+def test_recorded_development_expectations(name: str) -> None:
     expected = _label(name)["expected"]
     result = run_stage1(BUNDLES / name)
     document = result.typed.requirements[0].document
@@ -83,11 +81,11 @@ def test_holdout_expectations(name: str) -> None:
     assert _finding_categories(result) == sorted(expected["finding_categories"])
 
 
-def test_every_holdout_label_has_a_bundle() -> None:
+def test_every_recorded_label_has_a_bundle() -> None:
     assert {path.name for path in BUNDLES.iterdir()} == set(_CASES)
 
 
-def test_holdout_findings_never_use_an_unknown_category() -> None:
+def test_development_evidence_never_uses_an_unknown_category() -> None:
     known = {category.value for category in FindingCategory}
     for name in _CASES:
         for finding in run_stage1(BUNDLES / name).findings:

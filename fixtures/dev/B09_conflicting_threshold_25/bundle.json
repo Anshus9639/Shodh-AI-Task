@@ -1,0 +1,72 @@
+{
+  "bundle_id": "B09_conflicting_threshold_25",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "968c415f04c46e2f3fbf6151eb7db9e5b55254f9052d3e5d0dd2b71b12960c8d"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "39922aa90772623f7134d35f66e5a811457fd3a74b750d05356765f7f0e05499"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "92c32c20b9683f539d97f4d754eb72077dfc98c3c2770f8953204c6a3efa9aeb"
+    },
+    {
+      "artifact_id": "CHG",
+      "version": "1.0",
+      "kind": "change_requests",
+      "path": "changes.json",
+      "sha256": "17af9e7e3627f013ef5efe891945f7bd5e1960c46ec36415d3e142e61802606c"
+    }
+  ],
+  "approvals": [
+    {
+      "approval_id": "A8",
+      "change_id": "C1",
+      "change_version": "1",
+      "change_sha256": "ed2c0c244afc894410d41cbaa143d3e4969f889bc70c8fd5b6c81900c06a09b9",
+      "decision": "approve",
+      "approver_id": "alice",
+      "approver_role": "policy_owner",
+      "recorded_at": "2026-02-01T10:00:00Z",
+      "supersedes": []
+    },
+    {
+      "approval_id": "A9",
+      "change_id": "C1",
+      "change_version": "1",
+      "change_sha256": "ed2c0c244afc894410d41cbaa143d3e4969f889bc70c8fd5b6c81900c06a09b9",
+      "decision": "reject",
+      "approver_id": "bob",
+      "approver_role": "policy_owner",
+      "recorded_at": "2026-02-01T10:00:00Z",
+      "supersedes": []
+    }
+  ]
+}

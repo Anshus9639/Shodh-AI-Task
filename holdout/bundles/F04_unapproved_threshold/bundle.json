@@ -1,0 +1,49 @@
+{
+  "bundle_id": "F04_unapproved_threshold",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "3a92a86d5322f795ff160fa85b7e53bcf34e339cea1e1c1b6a6a82c03010ee41"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "471570a46662242559f43557fd25507486cb7538b42c0edbae10b4a3071807ea"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "fb6f347b5ef62fc37f3164c481e81b464a02152f87418270733ec7e03d8cb59b"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "5a6ef31e11b9f9e8e8691cde1befb9a68c71d4ca88c8b432a2b54e994e3720b8"
+    },
+    {
+      "artifact_id": "CHG",
+      "version": "1.0",
+      "kind": "change_requests",
+      "path": "changes.json",
+      "sha256": "1282e1ae320c4b2b55354ad369a5daf2025c131c0875909d7c12b2a4462d321c"
+    }
+  ],
+  "approvals": []
+}

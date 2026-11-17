@@ -1,0 +1,75 @@
+{
+  "workflow_id": "CLAIM_WF",
+  "version": "1.0",
+  "start": "intake",
+  "nodes": [
+    {
+      "id": "intake",
+      "version": "1.0",
+      "kind": "decision",
+      "branches": [
+        {
+          "branch_id": "route-1",
+          "version": "1.0",
+          "condition": {
+            "kind": "missing",
+            "field": "segment"
+          },
+          "target": "hold"
+        },
+        {
+          "branch_id": "route-2",
+          "version": "1.0",
+          "condition": {
+            "kind": "cmp",
+            "field": "risk",
+            "op": ">=",
+            "value": 80
+          },
+          "target": "fraud"
+        },
+        {
+          "branch_id": "route-3",
+          "version": "1.0",
+          "condition": {
+            "kind": "cmp",
+            "field": "amount",
+            "op": ">=",
+            "value": 5000,
+            "unit": "usd"
+          },
+          "target": "specialist"
+        },
+        {
+          "branch_id": "route-4",
+          "version": "1.0",
+          "target": "payout"
+        }
+      ]
+    },
+    {
+      "id": "hold",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "manual_hold"
+    },
+    {
+      "id": "fraud",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "fraud_investigation"
+    },
+    {
+      "id": "specialist",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "specialist_review"
+    },
+    {
+      "id": "payout",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "standard_payout"
+    }
+  ]
+}

@@ -9,11 +9,12 @@ from verityflow.ir.policy import EffectiveRequirements, Policy
 from verityflow.mapping.models import MappingResult
 from verityflow.models.changes import ChangeArtifact
 from verityflow.models.dictionary import DataDictionary
-from verityflow.models.manifest import BundleManifest
+from verityflow.models.manifest import ApprovalRecord, ArtifactEntry, BundleManifest, CodeLink
 from verityflow.models.report import Finding
-from verityflow.models.spec import SpecArtifact
+from verityflow.models.requirements import AnchoredRequirement, RequirementsSource
+from verityflow.models.spec import SpecArtifact, SpecDefault, SpecRule
 from verityflow.models.trace import TraceMapArtifact
-from verityflow.models.workflow import WorkflowArtifact
+from verityflow.models.workflow import Branch, WorkflowArtifact, WorkflowNode
 
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "bundle_manifest": BundleManifest,
@@ -26,6 +27,15 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "effective_requirements": EffectiveRequirements,
     "mapping_result": MappingResult,
     "finding": Finding,
+    "requirements_source": RequirementsSource,
+    "anchored_requirement": AnchoredRequirement,
+    "spec_rule": SpecRule,
+    "spec_default": SpecDefault,
+    "workflow_node": WorkflowNode,
+    "workflow_branch": Branch,
+    "artifact_entry": ArtifactEntry,
+    "code_link": CodeLink,
+    "approval_record": ApprovalRecord,
 }
 
 

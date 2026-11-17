@@ -4,8 +4,8 @@ from enum import StrEnum
 
 from pydantic import Field, model_validator
 
-from verityflow.ir.model import Expr
 from verityflow.models.common import FrozenModel
+from verityflow.models.conditions import ExternalCondition
 
 
 class NodeKind(StrEnum):
@@ -16,7 +16,7 @@ class NodeKind(StrEnum):
 class Branch(FrozenModel):
     branch_id: str = Field(min_length=1)
     version: str = Field(min_length=1)
-    condition: Expr | None = None
+    condition: ExternalCondition | None = None
     target: str = Field(min_length=1)
 
 

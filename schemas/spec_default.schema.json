@@ -1,0 +1,23 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "destination": {
+      "minLength": 1,
+      "title": "Destination",
+      "type": "string"
+    },
+    "implements": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Implements",
+      "type": "array"
+    }
+  },
+  "required": [
+    "destination"
+  ],
+  "title": "SpecDefault",
+  "type": "object"
+}

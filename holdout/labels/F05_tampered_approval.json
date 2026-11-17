@@ -1,0 +1,32 @@
+{
+  "bundle": "F05_tampered_approval",
+  "stage": 1,
+  "expected": {
+    "parse": {
+      "rules": 4,
+      "gap": false
+    },
+    "mapping": {
+      "spec_complete": true,
+      "workflow_complete": true
+    },
+    "resolution": {
+      "confirmed_candidate_id": "confirmed",
+      "applied": [],
+      "undetermined": [],
+      "decision_states": {
+        "C1": "unapproved"
+      }
+    },
+    "finding_categories": [
+      "INVALID_APPROVAL",
+      "UNAPPROVED_CHANGE"
+    ],
+    "routes": {
+      "missing_segment": "manual_hold",
+      "risk_high": "fraud_investigation",
+      "amount_high": "specialist_review",
+      "baseline": "standard_payout"
+    }
+  }
+}

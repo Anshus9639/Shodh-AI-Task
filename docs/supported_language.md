@@ -79,6 +79,16 @@ A catch-all has condition `Const(True)`, and its guard is the conjunction of `No
 
 Specification artifacts order by the explicit integer `priority` field; array position is ignored. Duplicate priorities make the ordered list undetermined and produce `AMBIGUITY` with no extracted elements. Workflow artifacts order by graph structure and ordered branch lists; an else-branch is the negation of the preceding branch conditions.
 
+## External artifact conditions
+
+JSON specification rules (`spec.json`), workflow branches (`workflow.json`) and dictionary named predicates accept the **external** condition union:
+
+```
+cmp | eq | ne | in | not_in | missing | and | or | not | const
+```
+
+`not_true` is not part of that union. Externally supplied artifacts that submit it fail Pydantic validation during ingestion (`STRUCTURAL` coverage gap) and are rejected by the exported schemas (`spec`, `spec_rule`, `workflow`, `workflow_branch`, `data_dictionary`). The internal `NotTrue` guard described above is generated only by the compiler and the workflow extractor; external input cannot create it. Conversion at the boundary is `models.conditions.to_ir`, which re-keys `and`/`or`/`not` composites and leaves leaves unchanged.
+
 ## Units
 
 | Family | Units | Canonical |

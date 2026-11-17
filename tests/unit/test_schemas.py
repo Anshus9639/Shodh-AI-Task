@@ -11,7 +11,7 @@ from verityflow.schemas import SCHEMA_MODELS, build_schemas
 ROOT = Path(__file__).resolve().parent.parent.parent
 SCHEMAS = ROOT / "schemas"
 DEV = ROOT / "fixtures" / "dev"
-HOLDOUT = ROOT / "holdout" / "bundles"
+HOLDOUT = ROOT / "fixtures" / "dev_evidence" / "holdout_v1" / "bundles"
 
 _ARTIFACT_SCHEMAS = {
     "bundle.json": "bundle_manifest",
@@ -34,7 +34,7 @@ def test_exported_schemas_are_current() -> None:
 
 def test_every_contract_has_a_schema() -> None:
     assert set(build_schemas()) == set(SCHEMA_MODELS)
-    assert len(build_schemas()) == 10
+    assert len(build_schemas()) == 19
 
 
 @pytest.mark.parametrize("bundle", _FIXTURES, ids=lambda path: path.name)

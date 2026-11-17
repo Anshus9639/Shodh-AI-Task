@@ -65,3 +65,16 @@ Real incidents observed while building Stage 1. Each entry states the symptom, t
 - **Cause:** They always raise through `_fail`, but `_fail` was annotated `-> None`.
 - **Fix:** Annotate `_fail(...) -> NoReturn`.
 - **Guard:** `uv run mypy src` in the documented quality gates.
+
+## 2026-11-17 — Holdout set reclassified; fresh sealed set reserved
+
+- **Symptom:** The Stage 1 review observed that H01–H05 had already been inspected during debugging and that H03 was regenerated after its first run, so the set could not serve as an unbiased final holdout.
+- **Fix:** Moved H01–H05 unchanged to `fixtures/dev_evidence/holdout_v1/` as frozen development evidence. The recorded labels now run as ordinary regression tests in `tests/integration/test_dev_evidence_stage1.py` (formerly `tests/holdout/test_holdout_stage1.py`); the historical entries above refer to that former path. A new sealed set F01–F05 was authored in a claims-triage domain under `holdout/` with `GENERATION.json` and `MANIFEST.sha256`.
+- **No execution:** The fresh set has not been run. `tests/unit/test_holdout_isolation.py` verifies its hashes and fails if a development test calls `run_stage1` on it.
+- **Disclosure:** No historical debugging entry or report was deleted; this entry only records the reclassification.
+
+## 2026-11-17 — External condition contract separated from internal `NotTrue`
+
+- **Symptom:** Public spec/workflow contracts accepted the internal `not_true` node, so an artifact could submit a generated first-match guard.
+- **Fix:** Added `models/conditions.py` with an external union excluding `not_true`; spec, workflow and dictionary fields now use it, with `to_ir` conversion at ingestion/extraction boundaries.
+- **Guard:** `tests/unit/test_conditions.py` and scheme-level negative cases in `tests/unit/test_contracts.py`.

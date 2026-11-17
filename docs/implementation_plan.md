@@ -112,10 +112,12 @@ D:\Shodh AI\
 │   ├── eval.toml               # frozen evaluation settings (hashed in reports)
 │   └── model.toml              # provider settings (no secrets)
 ├── fixtures/
-│   └── dev/                    # B01, B03, B05, B06 (bundle dirs only; no labels here)
+│   ├── dev/                    # B01, B03, B05, B06, B07–B09 (bundle dirs only; no labels here)
+│   └── dev_evidence/           # frozen H01–H05 evidence (see execution note)
 ├── holdout/                    # sealed; not read by the reviewer
-│   ├── MANIFEST.sha256         # hashes of every bundle file
-│   ├── bundles/                # H01–H05
+│   ├── MANIFEST.sha256         # hashes of every reserved file
+│   ├── GENERATION.json         # generator hash + implementation checkpoint
+│   ├── bundles/                # F01–F05 (claims triage)
 │   └── labels/                 # expected Stage 1 outputs, outside bundle dirs
 ├── tests/
 │   ├── unit/
@@ -644,6 +646,8 @@ Gates: `ruff check`, `ruff format --check`, `mypy --strict src/`, `pytest`.
 
 **18-bundle target: 13 dev + 5 holdout (H01–H05).** The five holdout bundles exceed the required minimum of four and are authored at the end of Stage 1, before any verification code exists, and hashed in `holdout/MANIFEST.sha256` at that point.
 
+**Execution note (2026-11-17).** Stage 1 dev bundles are `B01`, `B03`/`B05`/`B06` (20-minute generalization) and `B07`–`B09` (30 → 25 minute primary approval cases). The original H01–H05 set is frozen as development evidence under `fixtures/dev_evidence/holdout_v1/`; the sealed holdout is now F01–F05 under `holdout/` in a claims-triage domain. Remaining bundle targets in this plan belong to Stage 2/3.
+
 | ID | Purpose | Expected |
 |---|---|---|
 | B01 | Starter policy, all artifacts consistent | PASS |
@@ -686,7 +690,7 @@ Reports: `reports/baseline/` (first end-to-end checkpoint + naive regex/ID basel
 | Stage | Done when |
 |---|---|
 | P0 | `git init`; 3.12 installed and pinned; `uv.lock`; skeleton package with `verityflow --help`; config and logging-redaction modules with tests; ruff, ruff-format, `mypy --strict`, pytest green; initial commit |
-| 1 | All Pydantic contracts + exported JSON Schemas; ingestion with sha256/limits; grammar parser incl. §4.1 starter table and OTHERWISE; units; approval resolver with hash binding, invalidation, conflict variant sets; effective requirements + `verityflow resolve`; coverage/trace-map models; unit tests green; holdout H01–H05 authored, labelled and hashed; commit |
+| 1 | All Pydantic contracts + exported JSON Schemas; ingestion with sha256/limits; grammar parser incl. §4.1 starter table and OTHERWISE; units; approval resolver with hash binding, invalidation, conflict variant sets; effective requirements + `verityflow resolve`; coverage/trace-map models; unit tests green; holdout reserved, labelled and hashed (see execution note); commit |
 | 2 | IR evaluator (Kleene), spec adapter, workflow verifier, AST validator/interpreter with distinct `ERROR`, partitioner with property tests, C1–C4 checks, counterexamples/diagnosis/interaction, events validator, status, report; `verityflow review`; dev B01–B11, B13 match labels; differential/metamorphic/security green; tag `checkpoint-initial`; `reports/baseline/` |
 | 3 | ModelClient, fake client (all failure modes), prompt doc, validator, retries/timeouts/limits, optional Gemini adapter; B12 + model-failure tests green; test proves model output cannot change status; commit |
 | 4 | All 18 bundles + B08b; `run_eval.py` dev/holdout; frozen baseline-vs-final comparison; ablations; final/baseline/ablation reports; two real debugging entries; all docs; tag `final` |

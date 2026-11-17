@@ -1,0 +1,72 @@
+{
+  "$defs": {
+    "ApprovalDecision": {
+      "enum": [
+        "approve",
+        "reject"
+      ],
+      "title": "ApprovalDecision",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approval_id": {
+      "minLength": 1,
+      "title": "Approval Id",
+      "type": "string"
+    },
+    "approver_id": {
+      "minLength": 1,
+      "title": "Approver Id",
+      "type": "string"
+    },
+    "approver_role": {
+      "minLength": 1,
+      "title": "Approver Role",
+      "type": "string"
+    },
+    "change_id": {
+      "minLength": 1,
+      "title": "Change Id",
+      "type": "string"
+    },
+    "change_sha256": {
+      "title": "Change Sha256",
+      "type": "string"
+    },
+    "change_version": {
+      "minLength": 1,
+      "title": "Change Version",
+      "type": "string"
+    },
+    "decision": {
+      "$ref": "#/$defs/ApprovalDecision"
+    },
+    "recorded_at": {
+      "format": "date-time",
+      "title": "Recorded At",
+      "type": "string"
+    },
+    "supersedes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Supersedes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "approval_id",
+    "change_id",
+    "change_version",
+    "change_sha256",
+    "decision",
+    "approver_id",
+    "approver_role",
+    "recorded_at"
+  ],
+  "title": "ApprovalRecord",
+  "type": "object"
+}

@@ -1,9 +1,14 @@
-"""Write the development bundles and the sealed Stage 1 holdout.
+"""Write the development bundles and reserve the sealed Stage 1 holdout.
 
 Provenance hashes (artifact sha256 and approval-bound change hashes) are computed
 here so that committed bundles always match their manifests. Expected holdout
 labels are literals in this script and are written outside the bundle directories;
 they are never produced from the implementation under test.
+
+The original H01-H05 set was inspected during Stage 1 debugging. It now lives
+under ``fixtures/dev_evidence/holdout_v1`` as development evidence and is frozen;
+this script no longer regenerates it. The sealed holdout under ``holdout/`` uses a
+separate claims-triage domain and was authored before any final evaluation run.
 """
 
 from __future__ import annotations
@@ -145,6 +150,155 @@ THRESHOLD_CHANGE = {
     ]
 }
 
+THRESHOLD_CHANGE_25 = {
+    "changes": [
+        {
+            "change_id": "C1",
+            "change_version": "1",
+            "base_artifact": "REQ",
+            "base_version": "1.0",
+            "target_rule": "R3",
+            "operation": "replace_threshold",
+            "from": {"value": 30, "unit": "minutes"},
+            "to": {"value": 25, "unit": "minutes"},
+            "sequence": 1,
+            "rationale": "Policy owner approved lowering the escalation threshold to 25 minutes.",
+        }
+    ]
+}
+
+CLAIM_DICTIONARY = {
+    "fields": [
+        {
+            "name": "segment",
+            "type": "string",
+            "nullable": True,
+            "domain": ["auto", "property", "health"],
+        },
+        {"name": "risk", "type": "integer", "nullable": True, "min": 0, "max": 100},
+        {"name": "amount", "type": "decimal", "unit": "usd", "scale": 2, "nullable": True},
+        {"name": "documents", "type": "boolean", "nullable": True},
+    ],
+    "destinations": [
+        {"id": "manual_hold", "aliases": ["manual hold"]},
+        {"id": "fraud_investigation", "aliases": ["fraud investigation"]},
+        {"id": "specialist_review", "aliases": ["specialist review"]},
+        {"id": "standard_payout", "aliases": ["standard payout"]},
+    ],
+    "aliases": {},
+    "named_predicates": {},
+}
+
+CLAIM_REQUIREMENTS = """\
+K1. Missing segment -> manual hold.
+K2. Otherwise, risk >= 80 -> fraud investigation.
+K3. Otherwise, amount >= 5000 usd -> specialist review.
+K4. All remaining tickets -> standard payout.
+"""
+
+CLAIM_SPEC = {
+    "spec_id": "CLAIMS",
+    "version": "1.0",
+    "rules": [
+        {
+            "id": "Q1",
+            "priority": 1,
+            "when": {"kind": "missing", "field": "segment"},
+            "destination": "manual_hold",
+        },
+        {
+            "id": "Q2",
+            "priority": 2,
+            "when": {"kind": "cmp", "field": "risk", "op": ">=", "value": 80},
+            "destination": "fraud_investigation",
+        },
+        {
+            "id": "Q3",
+            "priority": 3,
+            "when": {
+                "kind": "cmp",
+                "field": "amount",
+                "op": ">=",
+                "value": 5000,
+                "unit": "usd",
+            },
+            "destination": "specialist_review",
+        },
+    ],
+    "default": {"destination": "standard_payout"},
+}
+
+CLAIM_WORKFLOW = {
+    "workflow_id": "CLAIM_WF",
+    "version": "1.0",
+    "start": "intake",
+    "nodes": [
+        {
+            "id": "intake",
+            "version": "1.0",
+            "kind": "decision",
+            "branches": [
+                {
+                    "branch_id": "r1",
+                    "version": "1.0",
+                    "condition": {"kind": "missing", "field": "segment"},
+                    "target": "hold",
+                },
+                {
+                    "branch_id": "r2",
+                    "version": "1.0",
+                    "condition": {"kind": "cmp", "field": "risk", "op": ">=", "value": 80},
+                    "target": "fraud",
+                },
+                {
+                    "branch_id": "r3",
+                    "version": "1.0",
+                    "condition": {
+                        "kind": "cmp",
+                        "field": "amount",
+                        "op": ">=",
+                        "value": 5000,
+                        "unit": "usd",
+                    },
+                    "target": "specialist",
+                },
+                {"branch_id": "r4", "version": "1.0", "target": "payout"},
+            ],
+        },
+        {"id": "hold", "version": "1.0", "kind": "terminal", "destination": "manual_hold"},
+        {
+            "id": "fraud",
+            "version": "1.0",
+            "kind": "terminal",
+            "destination": "fraud_investigation",
+        },
+        {
+            "id": "specialist",
+            "version": "1.0",
+            "kind": "terminal",
+            "destination": "specialist_review",
+        },
+        {"id": "payout", "version": "1.0", "kind": "terminal", "destination": "standard_payout"},
+    ],
+}
+
+CLAIM_CHANGE = {
+    "changes": [
+        {
+            "change_id": "C1",
+            "change_version": "1",
+            "base_artifact": "REQ",
+            "base_version": "1.0",
+            "target_rule": "K3",
+            "operation": "replace_threshold",
+            "from": {"value": 5000, "unit": "usd"},
+            "to": {"value": 3000, "unit": "usd"},
+            "sequence": 1,
+            "rationale": "Claims leadership approved lowering specialist review to 3000 usd.",
+        }
+    ]
+}
+
 
 def _json(value: object) -> str:
     return json.dumps(value, indent=2, sort_keys=False, ensure_ascii=False) + "\n"
@@ -163,6 +317,7 @@ def write_bundle(
     root: Path,
     bundle_id: str,
     *,
+    dictionary: dict[str, object] = DICTIONARY,
     requirements: str = REQUIREMENTS,
     spec: dict[str, object] = SPEC,
     workflow: dict[str, object] = WORKFLOW,
@@ -170,7 +325,7 @@ def write_bundle(
     approvals: list[dict[str, object]] | None = None,
 ) -> list[Path]:
     files: dict[str, tuple[str, str, str, str]] = {
-        "dictionary.json": ("DICT", "1.0", "data_dictionary", _json(DICTIONARY)),
+        "dictionary.json": ("DICT", "1.0", "data_dictionary", _json(dictionary)),
         "requirements.txt": ("REQ", "1.0", "requirements", requirements),
         "spec.json": ("SPEC", "1.0", "spec", _json(spec)),
         "workflow.json": ("WF", "1.0", "workflow", _json(workflow)),
@@ -233,52 +388,33 @@ def _approval(
     }
 
 
-def _reordered_spec() -> dict[str, object]:
-    rules = list(SPEC["rules"])  # type: ignore[arg-type]
-    first = {**rules[1], "priority": rules[0]["priority"]}
-    second = {**rules[0], "priority": rules[1]["priority"]}
-    return {**SPEC, "rules": [first, second, rules[2]]}
-
-
-def _renamed_spec() -> dict[str, object]:
-    rules = list(SPEC["rules"])  # type: ignore[arg-type]
+def _renamed_claim_spec() -> dict[str, object]:
+    rules = list(CLAIM_SPEC["rules"])  # type: ignore[arg-type]
     return {
-        "spec_id": "RENAMED",
+        "spec_id": "CLAIMS-RENAMED",
         "version": "1.0",
         "rules": [
             {
-                "id": "S-ALPHA",
-                "priority": 10,
-                "when": rules[0]["when"],
-                "destination": "manual_review",
-            },
-            {
-                "id": "S-BETA",
-                "priority": 20,
-                "when": rules[1]["when"],
-                "destination": "priority_queue",
-            },
-            {
-                "id": "S-GAMMA",
-                "priority": 30,
-                "when": rules[2]["when"],
-                "destination": "escalation_queue",
-            },
+                "id": f"QX-{index}",
+                "priority": index * 10,
+                "when": rule["when"],
+                "destination": rule["destination"],
+            }
+            for index, rule in enumerate(rules, start=1)
         ],
-        "default": {"destination": "normal_queue"},
+        "default": {"destination": "standard_payout"},
     }
 
 
-def _renamed_workflow() -> dict[str, object]:
-    workflow = json.loads(_json(WORKFLOW))
-    branches = workflow["nodes"][0]["branches"]
-    for index, branch in enumerate(branches, start=1):
+def _renamed_claim_workflow() -> dict[str, object]:
+    workflow = json.loads(_json(CLAIM_WORKFLOW))
+    for index, branch in enumerate(workflow["nodes"][0]["branches"], start=1):
         branch["branch_id"] = f"route-{index}"
     return workflow
 
 
-def _write_labels(name: str, expected: dict[str, object]) -> Path:
-    labels_dir = HOLDOUT / "labels"
+def _write_labels(root: Path, name: str, expected: dict[str, object]) -> Path:
+    labels_dir = root / "labels"
     labels_dir.mkdir(parents=True, exist_ok=True)
     path = labels_dir / f"{name}.json"
     path.write_text(
@@ -289,12 +425,39 @@ def _write_labels(name: str, expected: dict[str, object]) -> Path:
     return path
 
 
-def _holdout_manifest(paths: list[Path]) -> None:
+def _write_manifest(root: Path, paths: list[Path]) -> Path:
     lines = []
     for path in sorted(paths):
-        relative = path.relative_to(HOLDOUT).as_posix()
+        relative = path.relative_to(root).as_posix()
         lines.append(f"{_digest(path.read_text(encoding='utf-8'))}  {relative}")
-    (HOLDOUT / "MANIFEST.sha256").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    manifest = root / "MANIFEST.sha256"
+    manifest.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    return manifest
+
+
+def _write_generation(labels: list[Path], names: list[str]) -> Path:
+    payload = {
+        "holdout_id": "stage1_final_v1",
+        "reserved_on": "2026-11-17",
+        "generated_by": "scripts/build_fixtures.py",
+        "generator_sha256": _digest(Path(__file__).read_text(encoding="utf-8")),
+        "config": {
+            "path": "configs/default.toml",
+            "sha256": _digest((ROOT / "configs" / "default.toml").read_text(encoding="utf-8")),
+        },
+        "implementation_checkpoint": "04d9ea6",
+        "docs_checkpoint": "9f55815",
+        "domain": "claims triage (segment, risk, amount, documents)",
+        "bundles": names,
+        "labels": sorted(path.stem for path in labels),
+        "policy": (
+            "Authored before any final-evaluation run. The pipeline is not executed "
+            "against these bundles during Stage 1 development."
+        ),
+    }
+    target = HOLDOUT / "GENERATION.json"
+    target.write_text(_json(payload), encoding="utf-8", newline="\n")
+    return target
 
 
 def main() -> int:
@@ -322,82 +485,174 @@ def main() -> int:
             _approval("A3", THRESHOLD_CHANGE, "reject", approver="bob"),
         ],
     )
+    dev_paths += write_bundle(
+        DEV / "B07_approved_threshold_25",
+        "B07_approved_threshold_25",
+        changes=THRESHOLD_CHANGE_25,
+        approvals=[
+            _approval("A7", THRESHOLD_CHANGE_25, "approve", approver="alice"),
+        ],
+    )
+    dev_paths += write_bundle(
+        DEV / "B08_unapproved_threshold_25",
+        "B08_unapproved_threshold_25",
+        changes=THRESHOLD_CHANGE_25,
+    )
+    dev_paths += write_bundle(
+        DEV / "B09_conflicting_threshold_25",
+        "B09_conflicting_threshold_25",
+        changes=THRESHOLD_CHANGE_25,
+        approvals=[
+            _approval("A8", THRESHOLD_CHANGE_25, "approve", approver="alice"),
+            _approval("A9", THRESHOLD_CHANGE_25, "reject", approver="bob"),
+        ],
+    )
 
-    holdout_paths: list[Path] = []
+    routes = {
+        "missing_segment": "manual_hold",
+        "risk_high": "fraud_investigation",
+        "amount_high": "specialist_review",
+        "baseline": "standard_payout",
+    }
     clean = {
         "parse": {"rules": 4, "gap": False},
         "mapping": {"spec_complete": True, "workflow_complete": True},
         "resolution": {"confirmed_candidate_id": "confirmed", "undetermined": []},
         "finding_categories": [],
+        "routes": routes,
     }
-    holdout_paths += write_bundle(HOLDOUT / "bundles" / "H01_clean", "H01_clean")
-    _write_labels("H01_clean", clean)
+
+    holdout_paths: list[Path] = []
+    label_paths: list[Path] = []
     holdout_paths += write_bundle(
-        HOLDOUT / "bundles" / "H02_renamed",
-        "H02_renamed",
-        spec=_renamed_spec(),
-        workflow=_renamed_workflow(),
+        HOLDOUT / "bundles" / "F01_clean",
+        "F01_clean",
+        requirements=CLAIM_REQUIREMENTS,
+        dictionary=CLAIM_DICTIONARY,
+        spec=CLAIM_SPEC,
+        workflow=CLAIM_WORKFLOW,
     )
-    _write_labels("H02_renamed", clean)
+    label_paths.append(_write_labels(HOLDOUT, "F01_clean", clean))
+
     holdout_paths += write_bundle(
-        HOLDOUT / "bundles" / "H03_spec_reordered",
-        "H03_spec_reordered",
-        spec=_reordered_spec(),
+        HOLDOUT / "bundles" / "F02_renamed",
+        "F02_renamed",
+        requirements=CLAIM_REQUIREMENTS,
+        dictionary=CLAIM_DICTIONARY,
+        spec=_renamed_claim_spec(),
+        workflow=_renamed_claim_workflow(),
     )
-    _write_labels(
-        "H03_spec_reordered",
-        {
-            "parse": {"rules": 4, "gap": False},
-            "mapping": {"spec_complete": False, "workflow_complete": True},
-            "resolution": {"confirmed_candidate_id": "confirmed", "undetermined": []},
-            "finding_categories": ["UNTRACEABLE_ELEMENT", "UNTRACEABLE_REQUIREMENT"],
-        },
-    )
+    label_paths.append(_write_labels(HOLDOUT, "F02_renamed", clean))
+
     holdout_paths += write_bundle(
-        HOLDOUT / "bundles" / "H04_approved_threshold",
-        "H04_approved_threshold",
-        changes=THRESHOLD_CHANGE,
-        approvals=[_approval("A4", THRESHOLD_CHANGE, "approve", approver="carol")],
+        HOLDOUT / "bundles" / "F03_approved_threshold",
+        "F03_approved_threshold",
+        requirements=CLAIM_REQUIREMENTS,
+        dictionary=CLAIM_DICTIONARY,
+        spec=CLAIM_SPEC,
+        workflow=CLAIM_WORKFLOW,
+        changes=CLAIM_CHANGE,
+        approvals=[_approval("F3", CLAIM_CHANGE, "approve", approver="carol")],
     )
-    _write_labels(
-        "H04_approved_threshold",
-        {
-            "parse": {"rules": 4, "gap": False},
-            "mapping": {"spec_complete": True, "workflow_complete": True},
-            "resolution": {
-                "confirmed_candidate_id": "confirmed",
-                "applied": ["C1@1"],
-                "undetermined": [],
-                "rule_thresholds": {"R3": "20"},
+    label_paths.append(
+        _write_labels(
+            HOLDOUT,
+            "F03_approved_threshold",
+            {
+                "parse": {"rules": 4, "gap": False},
+                "mapping": {"spec_complete": True, "workflow_complete": True},
+                "resolution": {
+                    "confirmed_candidate_id": "confirmed",
+                    "applied": ["C1@1"],
+                    "undetermined": [],
+                    "rule_thresholds": {"K3": "3000"},
+                },
+                "finding_categories": [],
+                "routes": {
+                    **routes,
+                    "amount_above_new_threshold": "specialist_review",
+                    "amount_below_new_threshold": "standard_payout",
+                },
             },
-            "finding_categories": [],
-        },
+        )
     )
-    tampered = _approval("A5", THRESHOLD_CHANGE, "approve", approver="dave")
+    holdout_paths += write_bundle(
+        HOLDOUT / "bundles" / "F04_unapproved_threshold",
+        "F04_unapproved_threshold",
+        requirements=CLAIM_REQUIREMENTS,
+        dictionary=CLAIM_DICTIONARY,
+        spec=CLAIM_SPEC,
+        workflow=CLAIM_WORKFLOW,
+        changes=CLAIM_CHANGE,
+    )
+    label_paths.append(
+        _write_labels(
+            HOLDOUT,
+            "F04_unapproved_threshold",
+            {
+                "parse": {"rules": 4, "gap": False},
+                "mapping": {"spec_complete": True, "workflow_complete": True},
+                "resolution": {
+                    "confirmed_candidate_id": "confirmed",
+                    "applied": [],
+                    "undetermined": [],
+                    "decision_states": {"C1": "unapproved"},
+                    "rule_thresholds": {"K3": "5000"},
+                },
+                "finding_categories": ["UNAPPROVED_CHANGE"],
+                "routes": routes,
+            },
+        )
+    )
+
+    tampered = _approval("F5", CLAIM_CHANGE, "approve", approver="dave")
     tampered["change_sha256"] = "0" * 64
     holdout_paths += write_bundle(
-        HOLDOUT / "bundles" / "H05_tampered_approval",
-        "H05_tampered_approval",
-        changes=THRESHOLD_CHANGE,
+        HOLDOUT / "bundles" / "F05_tampered_approval",
+        "F05_tampered_approval",
+        requirements=CLAIM_REQUIREMENTS,
+        dictionary=CLAIM_DICTIONARY,
+        spec=CLAIM_SPEC,
+        workflow=CLAIM_WORKFLOW,
+        changes=CLAIM_CHANGE,
         approvals=[tampered],
     )
-    _write_labels(
-        "H05_tampered_approval",
-        {
-            "parse": {"rules": 4, "gap": False},
-            "mapping": {"spec_complete": True, "workflow_complete": True},
-            "resolution": {
-                "confirmed_candidate_id": "confirmed",
-                "applied": [],
-                "undetermined": [],
-                "decision_states": {"C1": "unapproved"},
+    label_paths.append(
+        _write_labels(
+            HOLDOUT,
+            "F05_tampered_approval",
+            {
+                "parse": {"rules": 4, "gap": False},
+                "mapping": {"spec_complete": True, "workflow_complete": True},
+                "resolution": {
+                    "confirmed_candidate_id": "confirmed",
+                    "applied": [],
+                    "undetermined": [],
+                    "decision_states": {"C1": "unapproved"},
+                },
+                "finding_categories": ["INVALID_APPROVAL", "UNAPPROVED_CHANGE"],
+                "routes": routes,
             },
-            "finding_categories": ["INVALID_APPROVAL", "UNAPPROVED_CHANGE"],
-        },
+        )
     )
-    _holdout_manifest(holdout_paths)
 
-    for path in [*dev_paths, *holdout_paths]:
+    generation = _write_generation(
+        label_paths,
+        [
+            "F01_clean",
+            "F02_renamed",
+            "F03_approved_threshold",
+            "F04_unapproved_threshold",
+            "F05_tampered_approval",
+        ],
+    )
+    holdout_paths.extend(label_paths)
+    holdout_paths.append(generation)
+    _write_manifest(HOLDOUT, holdout_paths)
+
+    for path in dev_paths:
+        print(path.relative_to(ROOT))
+    for path in holdout_paths:
         print(path.relative_to(ROOT))
     return 0
 

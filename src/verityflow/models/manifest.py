@@ -53,6 +53,8 @@ class ArtifactEntry(FrozenModel):
 
     @model_validator(mode="after")
     def _check(self) -> ArtifactEntry:
+        if self.kind is ArtifactKind.PYTHON and self.link is None:
+            raise ValueError("python artifacts require link metadata")
         if self.link is not None and self.kind is not ArtifactKind.PYTHON:
             raise ValueError("link metadata applies to python artifacts only")
         return self

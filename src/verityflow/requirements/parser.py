@@ -19,6 +19,7 @@ from verityflow.ir.model import (
 )
 from verityflow.ir.units import UnitError, get_unit, normalize
 from verityflow.models.common import TextSpan
+from verityflow.models.conditions import to_ir
 from verityflow.models.dictionary import DataDictionary, FieldDecl, FieldType
 from verityflow.models.report import Severity
 from verityflow.requirements.document import (
@@ -103,7 +104,7 @@ class _Parser:
         self._index = 0
         self._destination_phrases = self._build_destination_phrases()
         self._predicate_phrases = [
-            (phrase.split(), expression)
+            (phrase.split(), to_ir(expression))
             for phrase, expression in dictionary.named_predicates.items()
         ]
 

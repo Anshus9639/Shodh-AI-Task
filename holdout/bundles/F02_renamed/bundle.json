@@ -1,0 +1,42 @@
+{
+  "bundle_id": "F02_renamed",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "3a92a86d5322f795ff160fa85b7e53bcf34e339cea1e1c1b6a6a82c03010ee41"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "471570a46662242559f43557fd25507486cb7538b42c0edbae10b4a3071807ea"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "4ba163052febf555e89e37215482414504b59704bba6cc760fb4c908bdf128ec"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "87d7682850786669404746fa3135f011c8888030db70bed9cccbf93c1264e16b"
+    }
+  ],
+  "approvals": []
+}

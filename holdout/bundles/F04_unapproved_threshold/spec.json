@@ -1,0 +1,41 @@
+{
+  "spec_id": "CLAIMS",
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "Q1",
+      "priority": 1,
+      "when": {
+        "kind": "missing",
+        "field": "segment"
+      },
+      "destination": "manual_hold"
+    },
+    {
+      "id": "Q2",
+      "priority": 2,
+      "when": {
+        "kind": "cmp",
+        "field": "risk",
+        "op": ">=",
+        "value": 80
+      },
+      "destination": "fraud_investigation"
+    },
+    {
+      "id": "Q3",
+      "priority": 3,
+      "when": {
+        "kind": "cmp",
+        "field": "amount",
+        "op": ">=",
+        "value": 5000,
+        "unit": "usd"
+      },
+      "destination": "specialist_review"
+    }
+  ],
+  "default": {
+    "destination": "standard_payout"
+  }
+}

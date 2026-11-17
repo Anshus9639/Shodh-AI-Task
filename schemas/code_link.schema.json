@@ -1,0 +1,64 @@
+{
+  "$defs": {
+    "FieldMapEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "title": "FieldMapEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "destination_map": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Destination Map",
+      "type": "object"
+    },
+    "entrypoint": {
+      "minLength": 1,
+      "title": "Entrypoint",
+      "type": "string"
+    },
+    "field_map": {
+      "additionalProperties": {
+        "$ref": "#/$defs/FieldMapEntry"
+      },
+      "title": "Field Map",
+      "type": "object"
+    },
+    "param": {
+      "default": "ticket",
+      "minLength": 1,
+      "title": "Param",
+      "type": "string"
+    }
+  },
+  "required": [
+    "entrypoint"
+  ],
+  "title": "CodeLink",
+  "type": "object"
+}

@@ -1,0 +1,25 @@
+{
+  "bundle": "F02_renamed",
+  "stage": 1,
+  "expected": {
+    "parse": {
+      "rules": 4,
+      "gap": false
+    },
+    "mapping": {
+      "spec_complete": true,
+      "workflow_complete": true
+    },
+    "resolution": {
+      "confirmed_candidate_id": "confirmed",
+      "undetermined": []
+    },
+    "finding_categories": [],
+    "routes": {
+      "missing_segment": "manual_hold",
+      "risk_high": "fraud_investigation",
+      "amount_high": "specialist_review",
+      "baseline": "standard_payout"
+    }
+  }
+}

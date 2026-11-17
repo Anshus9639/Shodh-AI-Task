@@ -1,0 +1,41 @@
+{
+  "spec_id": "CLAIMS-RENAMED",
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "QX-1",
+      "priority": 10,
+      "when": {
+        "kind": "missing",
+        "field": "segment"
+      },
+      "destination": "manual_hold"
+    },
+    {
+      "id": "QX-2",
+      "priority": 20,
+      "when": {
+        "kind": "cmp",
+        "field": "risk",
+        "op": ">=",
+        "value": 80
+      },
+      "destination": "fraud_investigation"
+    },
+    {
+      "id": "QX-3",
+      "priority": 30,
+      "when": {
+        "kind": "cmp",
+        "field": "amount",
+        "op": ">=",
+        "value": 5000,
+        "unit": "usd"
+      },
+      "destination": "specialist_review"
+    }
+  ],
+  "default": {
+    "destination": "standard_payout"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "$defs": {
+    "ArtifactKind": {
+      "enum": [
+        "requirements",
+        "data_dictionary",
+        "change_requests",
+        "trace_map",
+        "spec",
+        "workflow",
+        "python"
+      ],
+      "title": "ArtifactKind",
+      "type": "string"
+    },
+    "CodeLink": {
+      "additionalProperties": false,
+      "properties": {
+        "destination_map": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Destination Map",
+          "type": "object"
+        },
+        "entrypoint": {
+          "minLength": 1,
+          "title": "Entrypoint",
+          "type": "string"
+        },
+        "field_map": {
+          "additionalProperties": {
+            "$ref": "#/$defs/FieldMapEntry"
+          },
+          "title": "Field Map",
+          "type": "object"
+        },
+        "param": {
+          "default": "ticket",
+          "minLength": 1,
+          "title": "Param",
+          "type": "string"
+        }
+      },
+      "required": [
+        "entrypoint"
+      ],
+      "title": "CodeLink",
+      "type": "object"
+    },
+    "FieldMapEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        }
+      },
+      "required": [
+        "field"
+      ],
+      "title": "FieldMapEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "minLength": 1,
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/ArtifactKind"
+    },
+    "link": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CodeLink"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "path": {
+      "minLength": 1,
+      "title": "Path",
+      "type": "string"
+    },
+    "sha256": {
+      "title": "Sha256",
+      "type": "string"
+    },
+    "version": {
+      "minLength": 1,
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "version",
+    "kind",
+    "path",
+    "sha256"
+  ],
+  "title": "ArtifactEntry",
+  "type": "object"
+}

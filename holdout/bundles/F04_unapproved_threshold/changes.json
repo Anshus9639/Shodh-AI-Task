@@ -1,0 +1,22 @@
+{
+  "changes": [
+    {
+      "change_id": "C1",
+      "change_version": "1",
+      "base_artifact": "REQ",
+      "base_version": "1.0",
+      "target_rule": "K3",
+      "operation": "replace_threshold",
+      "from": {
+        "value": 5000,
+        "unit": "usd"
+      },
+      "to": {
+        "value": 3000,
+        "unit": "usd"
+      },
+      "sequence": 1,
+      "rationale": "Claims leadership approved lowering specialist review to 3000 usd."
+    }
+  ]
+}
