@@ -1,0 +1,840 @@
+{
+  "$defs": {
+    "Ambiguity": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguity_id": {
+          "maxLength": 16,
+          "minLength": 2,
+          "pattern": "^A[0-9]{2,}$",
+          "title": "Ambiguity Id",
+          "type": "string"
+        },
+        "explanation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "requires_human_review": {
+          "default": true,
+          "title": "Requires Human Review",
+          "type": "boolean"
+        },
+        "rule_reference": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Reference"
+        }
+      },
+      "required": [
+        "ambiguity_id",
+        "explanation"
+      ],
+      "title": "Ambiguity",
+      "type": "object"
+    },
+    "ClassifiedObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "classification": {
+          "$ref": "#/$defs/ObservationClassification"
+        },
+        "deterministic_consistency": {
+          "title": "Deterministic Consistency",
+          "type": "string"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        },
+        "observation": {
+          "$ref": "#/$defs/Observation"
+        }
+      },
+      "required": [
+        "observation",
+        "classification",
+        "deterministic_consistency",
+        "note"
+      ],
+      "title": "ClassifiedObservation",
+      "type": "object"
+    },
+    "EvidenceQuote": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "excerpt": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "anchor",
+        "excerpt"
+      ],
+      "title": "EvidenceQuote",
+      "type": "object"
+    },
+    "FindingSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "artifact_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Version"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "explanation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Explanation"
+        },
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "rule_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Ref"
+        },
+        "severity": {
+          "title": "Severity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "severity",
+        "category",
+        "message"
+      ],
+      "title": "FindingSummary",
+      "type": "object"
+    },
+    "ModelAnalysisStatus": {
+      "enum": [
+        "completed",
+        "skipped",
+        "failed"
+      ],
+      "title": "ModelAnalysisStatus",
+      "type": "string"
+    },
+    "ModelFailure": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "category": {
+          "$ref": "#/$defs/ModelFailureCategory"
+        },
+        "cause": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cause"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "default": false,
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "category",
+        "message"
+      ],
+      "title": "ModelFailure",
+      "type": "object"
+    },
+    "ModelFailureCategory": {
+      "enum": [
+        "timeout",
+        "connection_failure",
+        "authentication_failure",
+        "rate_limit",
+        "server_error",
+        "malformed_json",
+        "truncated_json",
+        "schema_validation",
+        "invented_reference",
+        "evidence_validation",
+        "excessive_response",
+        "request_too_large",
+        "retry_exhausted",
+        "prompt_construction"
+      ],
+      "title": "ModelFailureCategory",
+      "type": "string"
+    },
+    "ModelRequestProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "generation": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "title": "Generation",
+          "type": "object"
+        },
+        "input_bytes": {
+          "minimum": 0,
+          "title": "Input Bytes",
+          "type": "integer"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "prompt_version": {
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "request_sha256": {
+          "title": "Request Sha256",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "title": "Timeout Seconds",
+          "type": "number"
+        },
+        "timestamp": {
+          "title": "Timestamp",
+          "type": "string"
+        }
+      },
+      "required": [
+        "provider",
+        "model",
+        "prompt_version",
+        "generation",
+        "request_sha256",
+        "input_bytes",
+        "timestamp",
+        "timeout_seconds"
+      ],
+      "title": "ModelRequestProvenance",
+      "type": "object"
+    },
+    "ModelResponseProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "failure_category": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failure Category"
+        },
+        "finish_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Finish Reason"
+        },
+        "latency_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "model_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Version"
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Request Id"
+        },
+        "provider_status": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Status"
+        },
+        "response_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Sha256"
+        },
+        "retry_count": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Retry Count",
+          "type": "integer"
+        },
+        "synthetic": {
+          "default": false,
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "usage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ModelUsage"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "ModelResponseProvenance",
+      "type": "object"
+    },
+    "ModelUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Tokens"
+        },
+        "synthetic": {
+          "default": false,
+          "title": "Synthetic",
+          "type": "boolean"
+        },
+        "total_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Tokens"
+        }
+      },
+      "title": "ModelUsage",
+      "type": "object"
+    },
+    "Observation": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "artifact_version": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Version"
+        },
+        "category": {
+          "$ref": "#/$defs/ObservationCategory"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceQuote"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "explanation": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location"
+        },
+        "observation_id": {
+          "maxLength": 16,
+          "minLength": 2,
+          "pattern": "^M[0-9]{2,}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "rule_reference": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Reference"
+        },
+        "suggested_follow_up": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suggested Follow Up"
+        }
+      },
+      "required": [
+        "observation_id",
+        "category",
+        "explanation"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "ObservationCategory": {
+      "enum": [
+        "candidate_mapping",
+        "ambiguous_requirement",
+        "finding_explanation",
+        "rule_interaction",
+        "suggested_test",
+        "evidence_for_review"
+      ],
+      "title": "ObservationCategory",
+      "type": "string"
+    },
+    "ObservationClassification": {
+      "enum": [
+        "assisted",
+        "unverified"
+      ],
+      "title": "ObservationClassification",
+      "type": "string"
+    },
+    "RejectedObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Category"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        },
+        "observation_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Observation Id"
+        },
+        "reason": {
+          "$ref": "#/$defs/ModelFailureCategory"
+        }
+      },
+      "required": [
+        "reason",
+        "detail"
+      ],
+      "title": "RejectedObservation",
+      "type": "object"
+    },
+    "SuggestedTest": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "expected_focus": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Focus"
+        },
+        "inputs": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Inputs",
+          "type": "object"
+        },
+        "test_id": {
+          "maxLength": 16,
+          "minLength": 2,
+          "pattern": "^T[0-9]{2,}$",
+          "title": "Test Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "test_id",
+        "description"
+      ],
+      "title": "SuggestedTest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguities": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Ambiguity"
+      },
+      "title": "Ambiguities",
+      "type": "array"
+    },
+    "assisted_observations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ClassifiedObservation"
+      },
+      "title": "Assisted Observations",
+      "type": "array"
+    },
+    "cache_hit": {
+      "default": false,
+      "title": "Cache Hit",
+      "type": "boolean"
+    },
+    "cache_key": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cache Key"
+    },
+    "confirmed_findings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/FindingSummary"
+      },
+      "title": "Confirmed Findings",
+      "type": "array"
+    },
+    "deterministic_status": {
+      "title": "Deterministic Status",
+      "type": "string"
+    },
+    "failure": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ModelFailure"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "model": {
+      "title": "Model",
+      "type": "string"
+    },
+    "prompt_version": {
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "provider": {
+      "title": "Provider",
+      "type": "string"
+    },
+    "rejected_observations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RejectedObservation"
+      },
+      "title": "Rejected Observations",
+      "type": "array"
+    },
+    "request": {
+      "$ref": "#/$defs/ModelRequestProvenance"
+    },
+    "response": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ModelResponseProvenance"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "skipped_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Skipped Reason"
+    },
+    "status": {
+      "$ref": "#/$defs/ModelAnalysisStatus"
+    },
+    "status_unchanged": {
+      "default": true,
+      "title": "Status Unchanged",
+      "type": "boolean"
+    },
+    "suggested_tests": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SuggestedTest"
+      },
+      "title": "Suggested Tests",
+      "type": "array"
+    },
+    "summary": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Summary"
+    },
+    "synthetic": {
+      "default": false,
+      "title": "Synthetic",
+      "type": "boolean"
+    },
+    "unverified_observations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ClassifiedObservation"
+      },
+      "title": "Unverified Observations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "provider",
+    "model",
+    "prompt_version",
+    "deterministic_status",
+    "request"
+  ],
+  "title": "ModelAnalysis",
+  "type": "object"
+}

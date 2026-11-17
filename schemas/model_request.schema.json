@@ -1,0 +1,503 @@
+{
+  "$defs": {
+    "ArtifactSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "version",
+        "kind",
+        "sha256"
+      ],
+      "title": "ArtifactSummary",
+      "type": "object"
+    },
+    "CoverageSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "code_artifact": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code Artifact"
+        },
+        "covered": {
+          "title": "Covered",
+          "type": "boolean"
+        },
+        "destination": {
+          "title": "Destination",
+          "type": "string"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "rule_ref": {
+          "title": "Rule Ref",
+          "type": "string"
+        },
+        "spec_elements": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Spec Elements",
+          "type": "array"
+        },
+        "workflow_elements": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Workflow Elements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rule_ref",
+        "destination",
+        "covered"
+      ],
+      "title": "CoverageSummary",
+      "type": "object"
+    },
+    "EvidenceSource": {
+      "additionalProperties": false,
+      "description": "One exact (anchor, excerpt) pair the model may cite.",
+      "properties": {
+        "anchor": {
+          "title": "Anchor",
+          "type": "string"
+        },
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_version": {
+          "title": "Artifact Version",
+          "type": "string"
+        },
+        "excerpt": {
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "artifact_version",
+        "anchor",
+        "excerpt"
+      ],
+      "title": "EvidenceSource",
+      "type": "object"
+    },
+    "FindingSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "artifact_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Version"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "explanation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Explanation"
+        },
+        "finding_id": {
+          "title": "Finding Id",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "rule_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Ref"
+        },
+        "severity": {
+          "title": "Severity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "finding_id",
+        "severity",
+        "category",
+        "message"
+      ],
+      "title": "FindingSummary",
+      "type": "object"
+    },
+    "ModelCacheContext": {
+      "additionalProperties": false,
+      "description": "Every input whose change must invalidate a cached model analysis.",
+      "properties": {
+        "approval_hashes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Approval Hashes",
+          "type": "array"
+        },
+        "artifact_versions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Artifact Versions",
+          "type": "array"
+        },
+        "bundle_digest": {
+          "title": "Bundle Digest",
+          "type": "string"
+        },
+        "effective_requirements_digest": {
+          "title": "Effective Requirements Digest",
+          "type": "string"
+        },
+        "report_digest": {
+          "title": "Report Digest",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bundle_digest",
+        "effective_requirements_digest",
+        "report_digest"
+      ],
+      "title": "ModelCacheContext",
+      "type": "object"
+    },
+    "ModelConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "max_output_tokens": {
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "max_retries": {
+          "title": "Max Retries",
+          "type": "integer"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "prompt_version": {
+          "title": "Prompt Version",
+          "type": "string"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "temperature": {
+          "title": "Temperature",
+          "type": "number"
+        },
+        "timeout_seconds": {
+          "title": "Timeout Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "provider",
+        "model",
+        "prompt_version",
+        "temperature",
+        "max_output_tokens",
+        "timeout_seconds",
+        "max_retries"
+      ],
+      "title": "ModelConfiguration",
+      "type": "object"
+    },
+    "RuleSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "destination": {
+          "title": "Destination",
+          "type": "string"
+        },
+        "exception_of": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exception Of"
+        },
+        "rule_ref": {
+          "title": "Rule Ref",
+          "type": "string"
+        },
+        "source_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Text"
+        }
+      },
+      "required": [
+        "rule_ref",
+        "destination"
+      ],
+      "title": "RuleSummary",
+      "type": "object"
+    },
+    "UnreviewedSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "rule_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Rule Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "description"
+      ],
+      "title": "UnreviewedSummary",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "applied_changes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Applied Changes",
+      "type": "array"
+    },
+    "available_artifacts": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ArtifactSummary"
+      },
+      "title": "Available Artifacts",
+      "type": "array"
+    },
+    "available_fields": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Available Fields",
+      "type": "array"
+    },
+    "available_rule_refs": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Available Rule Refs",
+      "type": "array"
+    },
+    "bundle_id": {
+      "title": "Bundle Id",
+      "type": "string"
+    },
+    "bundle_version": {
+      "title": "Bundle Version",
+      "type": "string"
+    },
+    "cache": {
+      "$ref": "#/$defs/ModelCacheContext"
+    },
+    "confirmed_candidate_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confirmed Candidate Id"
+    },
+    "coverage": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/CoverageSummary"
+      },
+      "title": "Coverage",
+      "type": "array"
+    },
+    "deterministic_detail": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Deterministic Detail"
+    },
+    "deterministic_status": {
+      "title": "Deterministic Status",
+      "type": "string"
+    },
+    "evidence": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EvidenceSource"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "exhaustive": {
+      "default": false,
+      "title": "Exhaustive",
+      "type": "boolean"
+    },
+    "findings": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/FindingSummary"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "model": {
+      "$ref": "#/$defs/ModelConfiguration"
+    },
+    "prompt_version": {
+      "title": "Prompt Version",
+      "type": "string"
+    },
+    "rules": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/RuleSummary"
+      },
+      "title": "Rules",
+      "type": "array"
+    },
+    "unreviewed": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/UnreviewedSummary"
+      },
+      "title": "Unreviewed",
+      "type": "array"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "bundle_version",
+    "deterministic_status",
+    "prompt_version",
+    "model",
+    "cache"
+  ],
+  "title": "ModelRequest",
+  "type": "object"
+}

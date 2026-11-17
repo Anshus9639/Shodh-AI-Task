@@ -1,0 +1,277 @@
+{
+  "$defs": {
+    "Ambiguity": {
+      "additionalProperties": false,
+      "properties": {
+        "ambiguity_id": {
+          "maxLength": 16,
+          "minLength": 2,
+          "pattern": "^A[0-9]{2,}$",
+          "title": "Ambiguity Id",
+          "type": "string"
+        },
+        "explanation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "requires_human_review": {
+          "default": true,
+          "title": "Requires Human Review",
+          "type": "boolean"
+        },
+        "rule_reference": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Reference"
+        }
+      },
+      "required": [
+        "ambiguity_id",
+        "explanation"
+      ],
+      "title": "Ambiguity",
+      "type": "object"
+    },
+    "EvidenceQuote": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "excerpt": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "anchor",
+        "excerpt"
+      ],
+      "title": "EvidenceQuote",
+      "type": "object"
+    },
+    "Observation": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Id"
+        },
+        "artifact_version": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Artifact Version"
+        },
+        "category": {
+          "$ref": "#/$defs/ObservationCategory"
+        },
+        "evidence": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidenceQuote"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "explanation": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location"
+        },
+        "observation_id": {
+          "maxLength": 16,
+          "minLength": 2,
+          "pattern": "^M[0-9]{2,}$",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "rule_reference": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Reference"
+        },
+        "suggested_follow_up": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suggested Follow Up"
+        }
+      },
+      "required": [
+        "observation_id",
+        "category",
+        "explanation"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "ObservationCategory": {
+      "enum": [
+        "candidate_mapping",
+        "ambiguous_requirement",
+        "finding_explanation",
+        "rule_interaction",
+        "suggested_test",
+        "evidence_for_review"
+      ],
+      "title": "ObservationCategory",
+      "type": "string"
+    },
+    "SuggestedTest": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "expected_focus": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Focus"
+        },
+        "inputs": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Inputs",
+          "type": "object"
+        },
+        "test_id": {
+          "maxLength": 16,
+          "minLength": 2,
+          "pattern": "^T[0-9]{2,}$",
+          "title": "Test Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "test_id",
+        "description"
+      ],
+      "title": "SuggestedTest",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguities": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Ambiguity"
+      },
+      "title": "Ambiguities",
+      "type": "array"
+    },
+    "analysis_summary": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Analysis Summary",
+      "type": "string"
+    },
+    "observations": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/Observation"
+      },
+      "title": "Observations",
+      "type": "array"
+    },
+    "suggested_tests": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/SuggestedTest"
+      },
+      "title": "Suggested Tests",
+      "type": "array"
+    }
+  },
+  "required": [
+    "analysis_summary"
+  ],
+  "title": "ModelResponse",
+  "type": "object"
+}

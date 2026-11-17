@@ -111,6 +111,10 @@ cmp | eq | ne | in | not_in | missing | and | or | not | const
 
 Values are exact `Fraction`s. A unit may be written only when the field declares a unit, and it must belong to the same family. Mixed-family or unknown units are `AMBIGUITY`. Canonicalization is applied before any comparison or cross-artifact correspondence.
 
+## Model assistance and unsupported prose
+
+The optional Stage 3 model layer does not expand this grammar. Unsupported normative prose is still `UNSUPPORTED_LANGUAGE`; a model may suggest how a human could read it, but that suggestion is an **unverified** observation and never becomes a parsed rule, a mapping, an approval or a finding. Artifact text sent to a model is delimited as untrusted data, so instructions or approval claims inside a requirement line cannot change the grammar, the effective policy or the status. Only a human edit followed by a deterministic re-review can bring new prose into the supported language.
+
 ## Evidence
 
 Every parsed rule keeps a `TextSpan` anchor (path, line, columns, excerpt) pointing at the source line, plus the normalized `source_text`. Anchors are checked against the loaded artifact text with `LineIndex.check_span`; a mismatch is a provenance failure, not a warning.

@@ -1,6 +1,6 @@
 # Evaluation protocol
 
-Stage 1 evaluates contracts, parsing, compilation, approval resolution and semantic mapping. It has no model component, so there is no baseline-vs-final model comparison yet; that is the Stage 2/3 protocol and is unchanged.
+Stage 1 evaluates contracts, parsing, compilation, approval resolution and semantic mapping. Stage 2 evaluates behavioural verification and status precedence. Stage 3 evaluates the supplementary model layer: evidence validation, prompt-injection resistance, failure handling and status invariance. All ordinary tests run offline; no live model request is part of the default suite.
 
 ## Datasets
 
@@ -57,9 +57,10 @@ uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B14 only
 uv run verityflow resolve fixtures/dev/B07_approved_threshold_25
 uv run verityflow map fixtures/dev/B01_starter --artifact all
 uv run verityflow review fixtures/dev/B10_router_clean
+uv run verityflow review fixtures/dev/B10_router_clean --model fake --model-scenario valid
 ```
 
-`verityflow review` prints the full `ReviewReport` as JSON. Exit codes: `0` for PASS, `1` for any other status, `2` for an input/configuration error.
+`verityflow review` prints the full `ReviewReport` as JSON with `--model off` (the default). Enabled modes print `{"review": ..., "model_analysis": ...}`. Exit codes: `0` for PASS, `1` for any other status, `2` for an input/configuration error; the code always follows the deterministic status, never the model output.
 
 Integration tests (`tests/integration/test_bundle_pipeline.py`) run load → parse → compile → resolve → map on dev bundles and verify evidence anchors with `LineIndex`. `tests/integration/test_review.py` runs the end-to-end reviewer on B01 and B10–B14, asserting status, finding category, validated witness content, sampled-mode disclosure, status precedence and CLI exit codes. `tests/integration/test_dev_evidence_stage1.py` compares the frozen H01–H05 development evidence against its recorded labels field by field.
 
@@ -105,14 +106,44 @@ The B10–B14 fixtures are development evidence, not an evaluation set. Their ob
 | `B13_router_runtime` | CHANGES_REQUIRED, `RUNTIME_ERROR` | validated witness `{category: absent, vip: absent}`: `KeyError` in the router |
 | `B14_router_unsupported` | CHANGES_REQUIRED, `SCRIPT_DISAGREEMENT` | validated `{wait_time: 30}` witness; the uncatalogued `legacy` destination makes part of the router `UNSUPPORTED_CODE`, disclosed as an unreviewed code region |
 
+## Stage 3 model-layer evidence
+
+Stage 3 is evaluated with the fake client only. Each mandatory case is a pytest test; the fake client is deterministic, labelled synthetic and reports no token counts. None of these results is evidence about real-model accuracy.
+
+| Case | Test | Pinned behaviour |
+| --- | --- | --- |
+| A fake success | `test_model_review.py::test_fake_success_is_advisory` | PASS stays PASS; analysis completed; deterministic status copied. |
+| B real provider without credentials | `::test_gemini_without_credentials_fails_closed` | AUTHENTICATION_FAILURE before any network; `urlopen` never called. |
+| C malformed JSON | `::test_malformed_json_is_a_failed_analysis` | MALFORMED_JSON; report unchanged. |
+| D truncated JSON | `::test_truncated_json_is_distinguished` | TRUNCATED_JSON, not MALFORMED_JSON. |
+| E invented rule reference | `::test_invented_rule_reference_is_rejected` | Observation rejected; no finding added. |
+| F invented artifact | `::test_invented_artifact_is_rejected` | Artifact id/version rejected. |
+| G incorrect evidence | `::test_modified_quotation_is_rejected` | Altered excerpt rejected. |
+| H wrong artifact version | `::test_wrong_artifact_version_is_rejected` | Version mismatch rejected. |
+| I timeout | `::test_timeout_keeps_the_deterministic_status` | TIMEOUT; status unchanged. |
+| J rate limit | `::test_rate_limit_keeps_the_deterministic_status` | RATE_LIMIT after bounded retries. |
+| K retry exhaustion | `::test_retry_exhaustion_reports_the_cause` | RETRY_EXHAUSTED with cause; retry count recorded. |
+| L–N3 injection | `::test_injection_in_requirements_...`, `..._code_comment_...`, `..._workflow_label_...`, `..._spec_label_...`, `..._artifact_metadata_...` | Prompt keeps one delimiter pair; hostile text is data; approval/status unchanged. |
+| O excessive output | `::test_excessive_output_is_rejected_without_retry` | EXCESSIVE_RESPONSE; one call. |
+| P–R status authority | `::test_pass_with_model_failure_stays_pass`, `::test_changes_required_with_pass_claim_stays_changes_required`, `::test_incomplete_with_pass_claim_stays_incomplete` | Deterministic status wins in every combination. |
+| S blocker claim | `::test_blocker_claim_never_becomes_a_finding` | PASS + blocker text stays PASS; no finding added. |
+| T provenance | `::test_provenance_records_request_and_response` | Hashes, sizes, provider metadata, retry/latency recorded; no credentials. |
+| U cache invalidation | `::test_cache_invalidates_when_approvals_change` | Hit then miss after approval change; report unchanged. |
+| V offline | `::test_offline_run_never_touches_network` | Fake path works with `urlopen` forbidden. |
+
+Additional unit coverage: prompt versioning and escaping (`test_model_prompt.py`), response validation (`test_model_validation.py`), fake scenario reproducibility (`test_model_fake.py`), and request bounding/skip (`test_model_review.py`). Cache keys include bundle digest, artifact versions, approval hashes, effective-policy digest, report digest, prompt version, provider/model and generation settings; a cached entry is reused only when its deterministic status matches.
+
+Live Gemini status: **not exercised.** No credentials were provided, and the adapter is tested only for fail-closed behaviour. No live accuracy, latency or cost result is claimed.
+
 ## Current results
 
-- Default suite: **306 passed** (Stage 1 baseline 221 retained; Stage 2 adds 85).
+- Default suite: **372 passed** (Stage 1 baseline 221 retained; Stage 2 adds 85; Stage 3 adds 66).
 - Sealed Stage 1 holdout: **not executed** (reserved for final evaluation).
 - Sealed Stage 2 semantic holdout: **not executed** (reserved for final evaluation against `stage2-baseline`).
-- `ruff check src tests scripts`: clean.
-- `ruff format --check src tests scripts`: clean.
-- `mypy` (strict, `src`): clean, 51 source files.
+- Live model calls: **none**. Stage 3 uses the fake client and a fail-closed credential check.
+- `ruff check .`: clean.
+- `ruff format --check .`: clean, 113 files.
+- `mypy` (strict, `src`): clean, 60 source files.
 
 ## Checkpoint provenance
 

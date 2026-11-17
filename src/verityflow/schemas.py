@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from verityflow.ir.policy import EffectiveRequirements, Policy
 from verityflow.mapping.models import MappingResult
+from verityflow.model.models import ModelAnalysis, ModelRequest, ModelResponse
 from verityflow.models.changes import ChangeArtifact
 from verityflow.models.dictionary import DataDictionary
 from verityflow.models.manifest import ApprovalRecord, ArtifactEntry, BundleManifest, CodeLink
@@ -36,6 +37,9 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "artifact_entry": ArtifactEntry,
     "code_link": CodeLink,
     "approval_record": ApprovalRecord,
+    "model_request": ModelRequest,
+    "model_response": ModelResponse,
+    "model_analysis": ModelAnalysis,
 }
 
 

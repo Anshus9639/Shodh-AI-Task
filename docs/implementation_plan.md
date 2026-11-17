@@ -1,11 +1,12 @@
 # VerityFlow — Implementation Plan
 
-Status: **Stage 2 complete (awaiting review)**. Revision 3 (2026-11-17). Revision 2 approved; the two final requirements (optional trace maps with inferred semantic correspondence, and refined continuous-domain partitioning) are incorporated and implemented. Stage 1 completed in `04d9ea6`. The deterministic reviewer (steps 1–8) and `verityflow review` are tagged `stage2-baseline` (`4702939`); Stage 3 (model advisory) has not started.
+Status: **Stage 3 complete (awaiting review)**. Revision 4 (2026-11-18). Revision 3 covered the approved Stage 2 plan. Stage 1 completed in `04d9ea6`; the deterministic reviewer (steps 1–8) and `verityflow review` are tagged `stage2-baseline` (`4702939`); the Stage 2 status correction is `f0dbb0c`. Stage 3 (supplementary model layer) is implemented per §15; Stage 4 has not started.
 
 Revision history:
 - Rev 1 (2026-11-17): initial plan.
 - Rev 2 (2026-11-17): approval binding and conflict-integrity rules (§6); explicit three-valued logic (§3.6); four independent review check families (§8); conservative Python subset v1 with a separate ERROR outcome (§5); exact partition-representative construction and INCOMPLETE-on-limit rule (§7); evaluation-integrity rules with frozen inputs and inaccessible labels (§11); explicit parsing of the assignment's starter wording and OTHERWISE semantics (§4); setup authorization recorded.
 - Rev 3 (2026-11-17): `trace_map` is optional and acts only as a validated hint (§3.3, §8.2); cross-artifact correspondence is inferred from canonical semantics (conditions, fields, units, destinations, precedence, exceptions); ambiguous correspondences are coverage gaps, never arbitrary choices; matching IDs never establish equivalence and renames never cause behavioral mismatches. Continuous partitioning now distinguishes adjacent-representable-value domains, continuous rational domains with witnesses in every open interval, and explicit bounded/unbounded ends (§7).
+- Rev 4 (2026-11-18): Stage 3 implemented as a strictly advisory model layer (§15). Model defaults live in code so the sealed Stage 2 config hash is untouched (D-042); observations are classified as assisted, unverified or rejected with no model-to-blocker bridge (D-043); evidence validation requires exact supplied quotations (D-044).
 
 ---
 
@@ -608,20 +609,20 @@ elif any COVERAGE_GAP / failed required check / undetermined cells / sampled reg
 else:                                        PASS
 ```
 
-- Model findings never create or remove blockers/gaps. With `model.required=false` (default) a model failure only appears in `model_analysis`; with `model.required=true` a model failure is a failed required check → INCOMPLETE.
+- Model findings never create or remove blockers/gaps. There is no `model.required` setting: a model failure only appears in `model_analysis` and never changes the deterministic status.
 - A conflict alone never yields PASS (undetermined cells exist) and never silently selects a policy.
 - Internal errors in a required check → failed check → never PASS.
 
 ---
 
-## 9. Stage 3 model integration (unchanged in scope, tightened)
+## 9. Stage 3 model integration (implemented per §15)
 
-- `ModelClient` Protocol with request/response provenance (provider, model, request id, prompt hash, timing, finish reason, raw text, usage).
-- `FakeModelClient` deterministic scenarios: `valid`, `malformed_json`, `truncated`, `timeout`, `invented_reference`, `injection_compliant`, `oversized`; output always labelled `"synthetic": true`.
-- Optional Gemini adapter over stdlib HTTP, env-var key, disabled by default, no secrets logged.
-- Reviewer prompt documented in `src/verityflow/model/prompts/reviewer_v1.md`; artifact text is delimited untrusted data; the response must match a strict schema and end with an `end_of_response: true` sentinel.
-- Validation: size cap → JSON parse → schema → truncation check → references exist → excerpts match bytes → invented material rejected and recorded. Bounded retries; timeouts; oversized inputs skipped with disclosure, never truncated.
-- The model never receives expected labels (§11) and cannot affect the status.
+- `ModelClient` Protocol with request/response provenance (provider, model, provider request id, hashed prompt/request, timing, finish reason, usage, retry count, failure category).
+- `FakeModelClient` deterministic scenarios covering valid output, candidate mapping, ambiguity, fabricated references/evidence/version, malformed, truncated, empty, conflicting, blocker claim, injection, timeout, rate limit, excessive output and retry exhaustion; output always labelled synthetic and never reports token counts.
+- Optional Gemini adapter over stdlib HTTP, env-var key, disabled by default, fail-closed without credentials, no secrets logged.
+- Reviewer prompt `model/prompts/reviewer_v1.txt`; artifact text is delimited untrusted data after escaping; the response must match the strict `ModelResponse` schema.
+- Validation: size cap → JSON parse → truncation check → schema → references exist → anchors/versions exist → excerpts match exactly → category/duplicate checks. Bounded retries; timeouts; oversized inputs skipped with disclosure, never truncated.
+- There is no `model.required` setting: no model mode can change status on success or failure (D-042). The model never receives expected labels (§11) and cannot affect the status.
 
 ---
 
@@ -754,3 +755,100 @@ Reports: `reports/baseline/` (first end-to-end checkpoint + naive regex/ID basel
 20. Ablation switches; `run_eval.py` for baseline and final over frozen inputs; `compare_reports.py`.
 21. Dev iterate → regression tests → final dev run → single holdout run (baseline + final).
 22. Reports and docs; tag `final`.
+
+---
+
+## 15. Stage 3 plan — model integration, trust and failure handling
+
+Deterministic Stage 3 baseline: `f0dbb0c` (Stage 2 status correction); the original
+reviewer baseline tag `stage2-baseline` → `4702939` is not moved. Stage 3 adds a
+supplementary model layer only; it never becomes the authority for resolution,
+approval, thresholds, units, conditions, workflow execution, AST interpretation,
+equivalence, counterexamples or status.
+
+### 15.1 Extension points (inspected before coding)
+
+| Concern | Existing extension point | Stage 3 use |
+| --- | --- | --- |
+| Deterministic result | `verify/review.py::review_bundle` / `review_loaded` → `ReviewReport` | Consumed read-only; status copied verbatim. |
+| Supplementary analysis | `ReviewReport` + `LoadedBundle` | Model layer sits beside the report; no verifier is rewritten. |
+| Configuration | `config.py::Config`, `configs/default.toml` | Additive `ModelSettings` (defaults in code); `configs/default.toml` unchanged to preserve sealed provenance. |
+| CLI | `cli.py::review` | Additive `--model`, `--model-scenario` options; default `off` output unchanged. |
+| Secrets/logging | `logging_setup.py::RedactionFilter` | Model code never logs prompts, keys or raw responses. |
+| Schemas | `schemas.py::SCHEMA_MODELS` | Export `model_request`, `model_response`, `model_analysis`. |
+
+### 15.2 Components
+
+1. `model/models.py` — frozen Pydantic contracts: `ModelRequest`, `ModelResponse`,
+   `Observation`, `ObservationCategory`, `EvidenceQuote`, `Ambiguity`, `SuggestedTest`,
+   `ModelCallMetadata`, `ModelUsage`, `ModelRequestProvenance`,
+   `ModelResponseProvenance`, `ModelFailure`/`ModelFailureCategory`, `ModelAnalysis`,
+   `ClassifiedObservation`, `RejectedObservation`, `ModelCacheContext`.
+2. `model/prompt.py` + `model/prompts/reviewer_v1.txt` — versioned system instruction
+   with explicit delimited untrusted payload; prompt version is part of every request.
+3. `model/request.py` — bounded request construction from a loaded bundle and the
+   deterministic report: rule references, artifact ids/versions, findings, coverage,
+   unreviewed scope, and an evidence catalogue of exact (anchor, excerpt) pairs.
+   Oversize input skips model analysis (`REQUEST_TOO_LARGE`), never truncates evidence.
+4. `model/client.py` — provider-neutral `ModelClient` abstraction with `complete()`,
+   provider/model identity, timeout/retry configuration and classified
+   `ModelClientError`s.
+5. `model/fake.py` — deterministic synthetic scenarios: valid, paraphrase mapping,
+   ambiguity, fabricated rule/evidence/version, malformed, truncated, empty,
+   conflicting, injection, timeout, rate limit, excessive output, retry exhaustion.
+   All fake output is labelled synthetic; no token counts are fabricated.
+6. `model/validate.py` — JSON size/parse (malformed vs truncated), strict schema
+   validation, rule/artifact/version/anchor/excerpt/category/duplicate checks.
+7. `model/service.py` — orchestration: request size check, bounded retries for
+   transport failures only, provenance/usage accounting, three collections
+   (deterministic findings, assisted observations, unverified observations),
+   consistency checks against deterministic coverage, optional in-memory cache keyed
+   by bundle digest, artifact versions, approval hashes, effective-policy summary,
+   report hash, prompt version and provider/model/generation settings.
+   Final status is always the deterministic status.
+8. `model/gemini.py` — optional adapter using only the standard library
+   (`urllib.request`), disabled unless `--model gemini`; key/model from environment;
+   explicit timeout; no network in ordinary tests; credentials never stored.
+9. `cli.py` — `review --model off|fake|gemini [--model-scenario NAME]`. `off` emits the
+   unchanged `ReviewReport`; enabled modes emit `{"review": report,
+   "model_analysis": analysis}`. Exit code always follows the deterministic status.
+
+### 15.3 Trust invariants
+
+1. Status, findings, approvals and effective policy are byte-for-byte the
+   deterministic result; the model can only add advisory collections.
+2. Invalid observations (invented ids/versions/anchors/excerpts, malformed output,
+   unsupported categories, duplicates, oversize) never enter findings or status.
+3. A valid quotation proves provenance, not interpretation: only coverage-consistent
+   observations are "assisted"; the rest are "unverified".
+4. No model observation is promoted to a blocker in Stage 3. There is no bridge from
+   model text to deterministic confirmation, so the authority rule cannot be violated.
+5. Requests treat every artifact field as untrusted data; injection cannot change
+   configuration, approvals or status.
+6. Model failure (timeout, auth, rate limit, schema failure, retry exhaustion) leaves
+   the deterministic report untouched; the failure is recorded separately.
+
+### 15.4 Tests
+
+Unit: request bounding, prompt versioning, response parsing, evidence validation,
+fake scenarios, retry bounds, cache keys, provenance, Gemini missing credentials.
+
+Integration: mandatory cases A–V (fake success; real provider without credentials;
+malformed/truncated JSON; invented rule/artifact/version/evidence; timeout; rate
+limit; retry exhaustion; injection in requirements/code comments/workflow labels;
+excessive output; PASS/CHANGES_REQUIRED/INCOMPLETE status authority; validated
+observation needing deterministic confirmation; provenance; cache invalidation after
+approval change; offline execution without credentials).
+
+### 15.5 Gates
+
+`uv run pytest -q`, `uv run ruff check .`, `uv run ruff format --check .`,
+`uv run mypy`; sealed holdouts remain unexecuted and their manifests unchanged.
+
+### 15.6 Implementation result (2026-11-18)
+
+- All components in §15.2 are implemented; Stage 3 adds 66 tests (372 total).
+- Fake scenarios cover every mandatory case; tests A–V are in `tests/integration/test_model_review.py` and pass.
+- No live model request was made. The Gemini adapter is covered only by a fail-closed no-credential test.
+- `configs/default.toml` is unchanged at sha256 `6e3170f2…`; model defaults are in `config.ModelSettings` (D-042).
+- Both sealed holdouts remain unexecuted and their manifests unchanged.

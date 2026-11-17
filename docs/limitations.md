@@ -1,4 +1,4 @@
-# Limitations (Stage 1 and Stage 2)
+# Limitations (Stages 1–3)
 
 These are known, intentional boundaries. Anything listed here is either reported as an explicit finding or simply out of scope; none of it is silently assumed correct.
 
@@ -6,7 +6,7 @@ These are known, intentional boundaries. Anything listed here is either reported
 
 - **Behavioural verification is exhaustive only over representative states.** Stage 2 decides PASS / CHANGES_REQUIRED / INCOMPLETE by comparing routing functions over the representative ticket space (see below), not by proving equivalence over every possible input or by symbolically verifying the artifacts.
 - **Restricted router subset.** Linked Python is reviewed only when it fits the subset in `docs/supported_language.md`. Anything else is `UNSUPPORTED_CODE` (`COVERAGE_GAP`) and the affected region is unreviewed; it is never executed.
-- **No model integration.** Nothing calls a model. No model output can influence parsing, mapping, approvals, verification or any finding.
+- **Model assistance is advisory.** Stage 3 adds an optional model layer (`off` by default). It never parses, resolves approvals, executes a router, decides equivalence or sets the status; it can only add observations beside the deterministic report. See [Model assistance](#model-assistance-stage-3).
 
 ## Requirement grammar
 
@@ -67,6 +67,18 @@ These are known, intentional boundaries. Anything listed here is either reported
 - Evidence anchors are `TextSpan`s into requirement text and are checked against the loaded file. Spec/workflow findings carry artifact id + version and element id; JSON-pointer locations are defined in the contract but not yet emitted by every finding.
 - Python artifacts must declare `CodeLink` provenance (`entrypoint`, parameter name, field and destination maps). Stage 1 only records this contract and emits `DEFERRED_DESCRIPTOR`; it does not inspect the linked code.
 - External conditions cannot express the internal `NotTrue` guard. A spec, workflow or dictionary that submits `{"kind": "not_true", ...}` is rejected during artifact validation.
+
+## Model assistance (Stage 3)
+
+- **The model is never authoritative.** It does not decide status, findings, approvals, thresholds, units, conditions, workflow execution, AST interpretation, equivalence or counterexamples. A model claim of PASS, CHANGES_REQUIRED or BLOCKER is recorded as advisory text only; the deterministic status is copied verbatim and `status_unchanged` is always true.
+- **No observation can become a blocker in Stage 3.** Observations are classified as assisted (validated against deterministic coverage and exact evidence), unverified (well-formed but unconfirmed) or rejected. There is no bridge that promotes model text into `ReviewReport.findings`.
+- **A correct quotation is not a correct interpretation.** Evidence validation proves the model copied a supplied excerpt, not that its explanation is right. Assisted observations carry a consistency statement limited to what the deterministic engine established; everything else remains unverified and needs a human.
+- **Fabrications are rejected, not repaired.** Invented rule references, artifact ids/versions, anchors, altered quotations, unknown categories, duplicate ids, extra fields and oversize output are rejected with a category. Truncated or malformed JSON yields a failed analysis, never a partial result.
+- **Artifact text is untrusted.** The prompt delimits and escapes the entire payload, and instructions inside requirements, code comments, workflow labels, spec text or metadata are treated as data. Approval claims and status demands found in artifacts are reported as observations; they cannot grant authority or change configuration.
+- **Failures are local to the model layer.** Timeout, rate limit, authentication failure, malformed output and retry exhaustion leave the deterministic report intact. A failed analysis is explicit; it is never reported as success and never blocks the deterministic result.
+- **Fake results are not model evidence.** The fake client is deterministic synthetic replay used for engineering tests. Its outputs, latency and absence of token counts say nothing about real-model accuracy, reliability or cost. No live Gemini request is made in the ordinary test suite, and no accuracy claim is made without a live evaluation.
+- **Cache entries are scoped.** The in-memory cache is invalidated by any change to the bundle, artifact versions, approvals, effective policy, report, prompt version, provider/model or generation settings, and a cached entry is reused only when its deterministic status matches. It is not persistent across processes.
+- **Provenance is bounded on purpose.** Request/response records carry hashes, sizes, provider status, finish reason, usage, latency and retry counts, but not prompt or artifact text, so reviewers can audit a call without a log becoming a copy of the bundle.
 
 ## Evaluation
 

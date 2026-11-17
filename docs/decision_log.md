@@ -8,7 +8,7 @@ Format: ID · date · decision · rationale · alternatives considered · status
 - **Decision:** All verdict-bearing checks are deterministic and offline. Model output can never create, remove or downgrade a blocker or coverage gap, and never affects status (unless `model.required=true`, in which case only the model's *failure* matters → INCOMPLETE).
 - **Rationale:** The assignment forbids LLM approval authority and requires behavioral equivalence, which an LLM can't establish.
 - **Alternatives:** LLM votes or tie-breaks — rejected because they are unverifiable.
-- **Status:** Accepted.
+- **Status:** Accepted; the `model.required` clause is superseded by D-042 (no model setting can change the status).
 
 ### D-002 · 2026-11-17 · Verdict is behavioral; trace links are explanatory
 - **Decision:** A defect exists iff a concrete in-domain ticket yields different outcomes. `implements` links only localize evidence and classify the defect.
@@ -222,4 +222,28 @@ Format: ID · date · decision · rationale · alternatives considered · status
 - **Decision:** Review status is decided in this order: (1) any reproducible, independently validated `BLOCKER` → `CHANGES_REQUIRED`, even when the space is sampled and other combinations are unreviewed; (2) otherwise any incomplete mandatory check (`COVERAGE_GAP`, sampled space, unreviewed scope, unconfirmed effective policy) → `INCOMPLETE`; (3) otherwise `PASS`, which additionally requires every effective requirement to be covered and every mandatory comparison to be exhaustive. A sampled blocker report keeps `exhaustive = false`, every validated blocker, and all sampling/unreviewed disclosures.
 - **Why:** A counterexample that was evaluated and re-routed through both interpreters is established evidence of a defect. Sampling limits completeness, not the existence of that defect. D-039 correctly refused to infer defects from absence, but its status clause overstated the consequence: capped sampled status conflated "not fully reviewed" with "no defect established".
 - **How to apply:** Verifiers must not emit `BLOCKER` without a validated witness (or an exhaustive demonstration), and the orchestrator must never let sampled or unreviewed scope downgrade an established blocker. Tests A–E in `tests/integration/test_review.py` pin the truth table; `B14_router_unsupported` demonstrates that a sampled blocker and an `UNSUPPORTED_CODE` region in `ROUTER@1.0` coexist, with CHANGES_REQUIRED and the code region disclosed as unreviewed.
+- **Status:** Accepted.
+
+### D-042 · 2026-11-18 · Model settings live in code; the frozen config file is not edited
+- **Decision:** `config.ModelSettings` holds the Stage 3 defaults (`mode="off"`, model, prompt version, timeout, retries, generation and size caps, fake scenario, cache toggle). The committed `configs/default.toml` remains byte-identical to the Stage 2 baseline at sha256 `6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61` and contains no `[model]` section. A user config may still supply one, and the CLI overrides mode per invocation. D-001's `model.required` clause is superseded: no model setting can make a model failure change the status.
+- **Why:** That config hash is recorded in `holdout_stage2/GENERATION.json` and asserted by the sealed-isolation test. Adding a section changed the hash and would have rewritten frozen evaluation provenance for a purely additive feature.
+- **How to apply:** Treat the committed config hash as sealed. New optional defaults belong in code until a new baseline is deliberately defined; `tests/unit/test_model_prompt.py` asserts the defaults are `off` and that the model config still parses.
+- **Status:** Accepted.
+
+### D-043 · 2026-11-18 · No model-to-blocker bridge in Stage 3
+- **Decision:** Model output is split into deterministic findings (copied), assisted observations, unverified observations and rejected entries. Assisted observations are limited to observations whose rule reference is deterministically covered and whose quotation matches supplied evidence; they carry a consistency statement, not a severity. No observation is appended to `ReviewReport.findings` or changes the status. `ModelAnalysis.deterministic_status` is always the report's status and `status_unchanged` is always true; model claims of PASS/CHANGES_REQUIRED/BLOCKER are ignored.
+- **Why:** The Stage 3 rule allows a model-assisted finding to become a blocker only after independent deterministic verification, and no such verification path exists yet. Without a bridge, the authority invariant cannot be violated by construction rather than by convention.
+- **How to apply:** A future stage may add promotion only by re-running a candidate through the deterministic engine and recording a validated witness; until then, any code that writes to the report from the model layer is a defect. Tests P–S in `tests/integration/test_model_review.py` pin every status combination and the blocker-claim case.
+- **Status:** Accepted; promotion intentionally unimplemented.
+
+### D-044 · 2026-11-18 · Evidence validation requires exact supplied quotations
+- **Decision:** The request builds an evidence catalogue of exact `(artifact_id, artifact_version, anchor, excerpt)` tuples, and a response observation is valid only if its reference and quotation match an entry (or an anchor known for that artifact). The prompt renders the whole JSON request inside one escaped `<untrusted_artifact_payload>` block; `<` and `>` in the payload are escaped, and rendering fails if the escaped payload can still produce the delimiter. Rule, artifact, version, anchor, category and duplicate-id checks are independent of quotation correctness.
+- **Why:** A matching quotation proves the model copied supplied evidence, not that its interpretation is right. Exactness also makes fabricated references and altered quotations detectable without trust, and escaping prevents artifact text from closing the untrusted block and becoming instructions.
+- **How to apply:** Any new model-assistable field must first enter the request catalogue. Reject observations rather than repairing them. Tests in `tests/unit/test_model_validation.py` and the injection cases L–N3 in `tests/integration/test_model_review.py` pin the behaviour.
+- **Status:** Accepted.
+
+### D-045 · 2026-11-18 · The model cache is scoped, in-memory and status-checked
+- **Decision:** Completed analyses may be cached in memory under bundle digest, sorted approval hashes, artifact versions, effective-policy digest, report digest, prompt version, provider/model and generation settings. Failed or skipped analyses are not cached. A cached entry is reused only when its `deterministic_status` equals the current report's status; any relevant change produces a new key.
+- **Why:** Caching is an optional convenience, but reusing output across a changed approval set or a changed report could surface a stale PASS. A status check makes that failure impossible even if a future key component is forgotten.
+- **How to apply:** Add every new authority-bearing input to the key, keep the status check unconditional, and never persist the cache across processes. `test_model_review.py::test_cache_invalidates_when_approvals_change` pins hit → miss after a hash-bound approval change.
 - **Status:** Accepted.

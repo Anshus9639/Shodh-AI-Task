@@ -34,7 +34,7 @@ def test_exported_schemas_are_current() -> None:
 
 def test_every_contract_has_a_schema() -> None:
     assert set(build_schemas()) == set(SCHEMA_MODELS)
-    assert len(build_schemas()) == 19
+    assert len(build_schemas()) == 22
 
 
 @pytest.mark.parametrize("bundle", _FIXTURES, ids=lambda path: path.name)

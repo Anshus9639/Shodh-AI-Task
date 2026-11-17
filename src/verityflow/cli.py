@@ -19,6 +19,9 @@ from verityflow.mapping.extract import (
     extract_workflow,
 )
 from verityflow.mapping.matcher import map_to_elements
+from verityflow.model.fake import SCENARIOS
+from verityflow.model.models import ModelMode
+from verityflow.model.service import run_model_analysis
 from verityflow.models.common import ArtifactRef
 from verityflow.models.dictionary import DataDictionary
 from verityflow.models.manifest import ArtifactEntry, ArtifactKind
@@ -26,7 +29,7 @@ from verityflow.models.report import Finding, FindingCategory, Severity, make_fi
 from verityflow.requirements.compile import compile_document
 from verityflow.requirements.parser import parse_requirements
 from verityflow.verify.models import ReviewStatus
-from verityflow.verify.review import review_bundle
+from verityflow.verify.review import review_loaded
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
 
@@ -282,14 +285,50 @@ def review(
         Path | None,
         typer.Option("--config", help="TOML configuration file."),
     ] = None,
+    model: Annotated[
+        str | None,
+        typer.Option(
+            "--model",
+            help="Supplementary model analysis: off, fake, or gemini. Defaults to the "
+            "configured mode (off).",
+        ),
+    ] = None,
+    model_scenario: Annotated[
+        str | None,
+        typer.Option(
+            "--model-scenario",
+            help="Synthetic fake-client scenario (requires --model fake).",
+        ),
+    ] = None,
 ) -> None:
     """Deterministically review every linked artifact against the requirements."""
     config = _load_config(config_path)
+    settings = config.model
+    if model is not None:
+        try:
+            mode = ModelMode(model)
+        except ValueError:
+            _fail("--model must be off, fake, or gemini", code=_EXIT_INPUT)
+        settings = settings.model_copy(update={"mode": mode})
+    if model_scenario is not None:
+        if settings.mode is not ModelMode.FAKE:
+            _fail("--model-scenario requires --model fake", code=_EXIT_INPUT)
+        if model_scenario not in SCENARIOS:
+            _fail(f"unknown fake model scenario {model_scenario!r}", code=_EXIT_INPUT)
+        settings = settings.model_copy(update={"fake_scenario": model_scenario})
+    if settings.mode is ModelMode.FAKE and settings.fake_scenario not in SCENARIOS:
+        _fail(f"unknown fake model scenario {settings.fake_scenario!r}", code=_EXIT_INPUT)
+    config = config.model_copy(update={"model": settings})
     try:
-        report = review_bundle(bundle, config=config, requirements_ref=requirements_ref)
+        loaded = load_bundle(bundle, limits=config.limits)
+        report = review_loaded(loaded, config=config, requirements_ref=requirements_ref)
     except BundleLoadError as exc:
         _fail(str(exc), code=_EXIT_INPUT)
-    _emit(_dump(report))
+    if settings.mode is ModelMode.OFF:
+        _emit(_dump(report))
+        raise typer.Exit(_EXIT_OK if report.status is ReviewStatus.PASS else _EXIT_FINDING)
+    analysis = run_model_analysis(loaded, report, config=config)
+    _emit({"review": _dump(report), "model_analysis": _dump(analysis)})
     raise typer.Exit(_EXIT_OK if report.status is ReviewStatus.PASS else _EXIT_FINDING)
 
 
