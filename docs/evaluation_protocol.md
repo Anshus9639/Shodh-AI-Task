@@ -43,8 +43,8 @@ Integration tests (`tests/integration/test_bundle_pipeline.py`) run load → par
 
 ## Current Stage 1 results
 
-- Default suite: **173 passed, 7 deselected**.
-- Holdout suite: **7 passed, 173 deselected**.
+- Default suite: **174 passed, 7 deselected**.
+- Holdout suite: **7 passed, 174 deselected**.
 - `ruff check src tests scripts`: clean.
 - `ruff format --check src tests scripts`: clean.
 - `mypy src` (strict): clean, 38 source files.
