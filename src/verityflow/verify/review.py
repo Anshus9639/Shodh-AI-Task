@@ -208,7 +208,11 @@ def review_loaded(
             UnreviewedScope(
                 kind="interaction",
                 description=(
-                    "requirement rules that never fire have no observable behaviour: "
+                    (
+                        "requirement rules that never fire have no observable behaviour: "
+                        if verification.space.exhaustive
+                        else "requirement rules not exercised by the sampled ticket space: "
+                    )
                     + ", ".join(interaction.unreachable_rules)
                 ),
                 rule_refs=interaction.unreachable_rules,

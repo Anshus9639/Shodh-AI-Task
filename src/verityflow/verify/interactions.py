@@ -56,13 +56,18 @@ def analyze_interactions(policy: Policy, space: TicketSpace) -> InteractionAnaly
             if rule.exception_of is not None
             else "the rule"
         )
+        cause = (
+            "is shadowed by earlier requirements or cannot be satisfied"
+            if space.exhaustive
+            else "was not exercised by any sampled ticket combination, so whether it "
+            "can fire is unreviewed"
+        )
         findings.append(
             make_finding(
                 FindingCategory.INTERACTION,
                 Severity.COVERAGE_GAP,
                 f"requirement {rule.rule_ref!r} never fires in any {qualifier} ticket "
-                f"combination; {role} is shadowed by earlier requirements or cannot be "
-                "satisfied",
+                f"combination; {role} {cause}",
                 rule_ref=rule.rule_ref,
                 artifact_id=_REQUIREMENTS,
                 explanation=(

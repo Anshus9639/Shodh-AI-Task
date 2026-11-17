@@ -103,6 +103,12 @@ def test_sampled_space_is_incomplete_and_disclosed() -> None:
         for check in report.checks
     )
     assert "combinations were not evaluated" in report.detail
+    interaction = [
+        finding for finding in report.findings if finding.category is FindingCategory.INTERACTION
+    ]
+    assert interaction
+    assert all("is shadowed" not in finding.message for finding in interaction)
+    assert all("unreviewed" in finding.message for finding in interaction)
 
 
 def test_cli_exit_codes_follow_the_review_status(tmp_path: Path) -> None:
