@@ -118,8 +118,10 @@ Stage 2 is complete through the deterministic reviewer (`verify/review.py`, `ver
 
 ## Status truth table
 
-1. Any `BLOCKER` finding → `CHANGES_REQUIRED`.
-2. Otherwise any `COVERAGE_GAP` finding, sampled space, unreviewed scope or unconfirmed effective policy → `INCOMPLETE`.
-3. Otherwise → `PASS`.
+1. Any reproducible, independently validated `BLOCKER` finding → `CHANGES_REQUIRED`, even when the ticket space was sampled and other combinations remain unreviewed. Every validated blocker stays in the report, and all skipped or incomplete scope is still disclosed.
+2. Otherwise, any incomplete mandatory check — a `COVERAGE_GAP` finding, a sampled space, an unreviewed scope or an unconfirmed effective policy → `INCOMPLETE`.
+3. Otherwise, when every effective requirement is covered, every mandatory comparison completed, the supported domain was exhaustively evaluated and no blocker was established → `PASS`.
+
+A sampled review can therefore establish `CHANGES_REQUIRED`: absence from a sample never creates a blocker, but a counterexample that was evaluated inside the sample and independently re-routed is real evidence of a defect, and unreviewed combinations elsewhere cannot downgrade it. Sampling only caps the status at `INCOMPLETE` when no validated blocker exists. `exhaustive = false` and the sampling/unreviewed disclosures remain in the report either way.
 
 `exhaustive` requires the space to be exhaustive, the effective policy to be confirmed, and every comparison record to report exhaustive mode.

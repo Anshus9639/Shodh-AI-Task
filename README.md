@@ -61,7 +61,7 @@ Fixtures are generated deterministically:
 ```
 uv run python scripts/build_fixtures.py             # fixtures/dev + sealed Stage 1 holdout
 uv run python scripts/build_stage2_holdout.py       # sealed Stage 2 semantic holdout
-uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B13 only
+uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B14 only
 ```
 
 Both `holdout/` and `holdout_stage2/` are frozen after their freezing commits; do not regenerate them.
@@ -77,4 +77,4 @@ uv run ruff format --check .
 uv run mypy
 ```
 
-Current results: 300 default tests passed; ruff, ruff format and strict mypy (`src`) clean. Neither sealed set (`holdout/`, `holdout_stage2/`) has been executed; they are reserved for final Stage 1 and Stage 2 evaluation.
+Current results: 306 default tests passed; ruff, ruff format and strict mypy (`src`) clean. Neither sealed set (`holdout/`, `holdout_stage2/`) has been executed; they are reserved for final Stage 1 and Stage 2 evaluation.

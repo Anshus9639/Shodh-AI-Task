@@ -271,6 +271,9 @@ def review_loaded(
         and confirmed is not None
         and all(record.mode is ComparisonMode.EXHAUSTIVE for record in verification.comparisons)
     )
+    # Precedence is deliberate: a validated blocker was observed on an evaluated
+    # ticket and independently re-routed, so unreviewed regions elsewhere cannot
+    # downgrade it. Sampling only caps the status when no blocker was established.
     if blocker:
         status = ReviewStatus.CHANGES_REQUIRED
     elif gap or not exhaustive or unreviewed:
@@ -587,6 +590,22 @@ def _verify_artifacts(
             workflow_ref=workflow_reference,
         )
         code_findings.extend(code_result.findings)
+        unsupported = [
+            finding.message
+            for finding in code_result.findings
+            if finding.category is FindingCategory.UNSUPPORTED_CODE
+        ]
+        if unsupported:
+            unreviewed.append(
+                UnreviewedScope(
+                    kind="code",
+                    description=(
+                        "part of the linked router could not be interpreted: "
+                        + "; ".join(unsupported)
+                    ),
+                    artifact=code_program.artifact_ref,
+                )
+            )
         comparisons.append(code_result.record)
         if code_result.workflow_agreement is not None:
             comparisons.append(code_result.workflow_agreement)

@@ -111,6 +111,92 @@ def test_sampled_space_is_incomplete_and_disclosed() -> None:
     assert all("unreviewed" in finding.message for finding in interaction)
 
 
+def test_sampled_boundary_blocker_requires_changes_and_discloses_unreviewed_scope() -> None:
+    # A. A validated blocker inside an evaluated sample is decisive even though
+    # other combinations were never reviewed.
+    report = _review("B12_router_threshold", config=Config(limits=Limits(max_cells=12)))
+
+    code = next(item for item in report.comparisons if item.name == "code")
+    assert code.mode is ComparisonMode.SAMPLED
+    assert not code.equal
+    boundary = [
+        item
+        for item in code.counterexamples
+        if item.validated and item.inputs.get("wait_time") == 30
+    ]
+    assert boundary
+    assert boundary[0].requirement_outcome == "destination 'escalation_queue'"
+    assert boundary[0].artifact_outcome == "destination 'normal_queue'"
+
+    assert report.status is ReviewStatus.CHANGES_REQUIRED
+    assert not report.exhaustive
+    assert FindingCategory.THRESHOLD_CHANGED in _categories(report)
+    # The blocker does not hide the fact that most of the space is unreviewed.
+    assert any(scope.kind == "sampling" for scope in report.unreviewed)
+    assert "combinations were not evaluated" in report.detail
+
+
+def test_sampled_review_without_an_established_blocker_is_incomplete() -> None:
+    # B. Sampling alone caps the status at INCOMPLETE when no blocker exists.
+    report = _review("B10_router_clean", config=Config(limits=Limits(max_cells=8)))
+
+    assert report.status is ReviewStatus.INCOMPLETE
+    assert not report.exhaustive
+    assert not any(finding.severity is Severity.BLOCKER for finding in report.findings)
+    assert any(scope.kind == "sampling" for scope in report.unreviewed)
+
+
+def test_exhaustive_valid_implementation_passes() -> None:
+    # C. PASS requires exhaustive, complete, covered, blocker-free evaluation.
+    report = _review("B10_router_clean")
+
+    assert report.exhaustive
+    assert report.status is ReviewStatus.PASS
+    assert all(
+        finding.severity not in {Severity.BLOCKER, Severity.COVERAGE_GAP}
+        for finding in report.findings
+    )
+    assert all(item.covered for item in report.coverage)
+
+
+def test_exhaustive_implementation_with_a_blocker_requires_changes() -> None:
+    # D. An exhaustively demonstrated blocker still yields CHANGES_REQUIRED.
+    report = _review("B12_router_threshold")
+
+    assert report.exhaustive
+    assert report.status is ReviewStatus.CHANGES_REQUIRED
+    assert FindingCategory.THRESHOLD_CHANGED in _categories(report)
+    code = next(item for item in report.comparisons if item.name == "code")
+    assert any(
+        item.validated and item.inputs.get("wait_time") == 30 for item in code.counterexamples
+    )
+
+
+def test_sampled_blocker_with_unsupported_code_keeps_both_disclosures() -> None:
+    # E. A sampled blocker and an unsupported code region coexist: the blocker
+    # decides the status, the unsupported region stays disclosed as unreviewed.
+    report = _review("B14_router_unsupported", config=Config(limits=Limits(max_cells=12)))
+
+    assert report.status is ReviewStatus.CHANGES_REQUIRED
+    assert not report.exhaustive
+    code = next(item for item in report.comparisons if item.name == "code")
+    assert code.mode is ComparisonMode.SAMPLED
+    assert any(
+        item.validated and item.inputs.get("wait_time") == 30 for item in code.counterexamples
+    )
+    unsupported = [
+        finding
+        for finding in report.findings
+        if finding.category is FindingCategory.UNSUPPORTED_CODE
+    ]
+    assert unsupported
+    assert all(finding.severity is Severity.COVERAGE_GAP for finding in unsupported)
+    assert any(
+        scope.kind == "code" and scope.artifact == "ROUTER@1.0" for scope in report.unreviewed
+    )
+    assert any(scope.kind == "sampling" for scope in report.unreviewed)
+
+
 def test_cli_exit_codes_follow_the_review_status(tmp_path: Path) -> None:
     runner = CliRunner()
     passing = runner.invoke(app, ["review", str(DEV / "B01_starter")])

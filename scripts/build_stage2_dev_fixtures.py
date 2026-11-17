@@ -1,13 +1,16 @@
-"""Write the Stage 2 development bundles (B10-B13).
+"""Write the Stage 2 development bundles (B10-B14).
 
 These bundles reuse the Stage 1 support-ticket domain and the frozen Stage 1
 requirements/spec/workflow, then add one linked Python router each so behavioural
 verification has development fixtures to tune against:
 
-* B10_router_clean      - the router implements the requirements faithfully;
-* B11_router_precedence - two guards are plausible but in the wrong order;
-* B12_router_threshold  - a strict boundary where the requirement is inclusive;
-* B13_router_runtime    - an optional field is read without a presence guard.
+* B10_router_clean       - the router implements the requirements faithfully;
+* B11_router_precedence  - two guards are plausible but in the wrong order;
+* B12_router_threshold   - a strict boundary where the requirement is inclusive;
+* B13_router_runtime     - an optional field is read without a presence guard;
+* B14_router_unsupported - a strict boundary plus a branch returning an
+                           undeclared destination, so part of the router is
+                           unreviewed while an evaluated blocker is still found.
 
 Only ``fixtures/dev`` is written. The sealed Stage 1 (``holdout``) and Stage 2
 (``holdout_stage2``) sets are never opened or regenerated here.
@@ -89,6 +92,22 @@ def route(ticket):
     return "normal"
 '''
 
+UNSUPPORTED = '''\
+"""Router for the support-ticket workflow."""
+
+
+def route(ticket):
+    if "category" not in ticket:
+        return "manual"
+    if "priority" in ticket and ticket["priority"] == "urgent":
+        return "priority"
+    if "wait_time" in ticket and ticket["wait_time"] > 30:
+        return "escalation"
+    if "category" in ticket and ticket["category"] == "technical":
+        return "legacy"
+    return "normal"
+'''
+
 
 def _json(value: object) -> str:
     return json.dumps(value, indent=2, sort_keys=False, ensure_ascii=False) + "\n"
@@ -153,6 +172,7 @@ def main() -> int:
         "B11_router_precedence": PRECEDENCE,
         "B12_router_threshold": THRESHOLD,
         "B13_router_runtime": RUNTIME,
+        "B14_router_unsupported": UNSUPPORTED,
     }
     for name, source in bundles.items():
         for path in write_bundle(DEV / name, name, source):

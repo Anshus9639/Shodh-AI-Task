@@ -1,0 +1,40 @@
+{
+  "spec_id": "SPEC",
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "S1",
+      "priority": 1,
+      "when": {
+        "kind": "missing",
+        "field": "category"
+      },
+      "destination": "manual_review"
+    },
+    {
+      "id": "S2",
+      "priority": 2,
+      "when": {
+        "kind": "eq",
+        "field": "priority",
+        "value": "urgent"
+      },
+      "destination": "priority_queue"
+    },
+    {
+      "id": "S3",
+      "priority": 3,
+      "when": {
+        "kind": "cmp",
+        "field": "wait_time",
+        "op": ">=",
+        "value": 30,
+        "unit": "minutes"
+      },
+      "destination": "escalation_queue"
+    }
+  ],
+  "default": {
+    "destination": "normal_queue"
+  }
+}

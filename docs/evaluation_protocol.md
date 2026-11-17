@@ -51,7 +51,7 @@ uv run pytest -q
 # holdout/ or holdout_stage2/, because the manifests are content-addressed).
 uv run python scripts/build_fixtures.py          # fixtures/dev + sealed Stage 1 holdout
 uv run python scripts/build_stage2_holdout.py    # sealed Stage 2 semantic holdout
-uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B13 only
+uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B14 only
 
 # One bundle through the public interface.
 uv run verityflow resolve fixtures/dev/B07_approved_threshold_25
@@ -61,7 +61,7 @@ uv run verityflow review fixtures/dev/B10_router_clean
 
 `verityflow review` prints the full `ReviewReport` as JSON. Exit codes: `0` for PASS, `1` for any other status, `2` for an input/configuration error.
 
-Integration tests (`tests/integration/test_bundle_pipeline.py`) run load → parse → compile → resolve → map on dev bundles and verify evidence anchors with `LineIndex`. `tests/integration/test_review.py` runs the end-to-end reviewer on B01 and B10–B13, asserting status, finding category, validated witness content, sampled-mode disclosure and CLI exit codes. `tests/integration/test_dev_evidence_stage1.py` compares the frozen H01–H05 development evidence against its recorded labels field by field.
+Integration tests (`tests/integration/test_bundle_pipeline.py`) run load → parse → compile → resolve → map on dev bundles and verify evidence anchors with `LineIndex`. `tests/integration/test_review.py` runs the end-to-end reviewer on B01 and B10–B14, asserting status, finding category, validated witness content, sampled-mode disclosure, status precedence and CLI exit codes. `tests/integration/test_dev_evidence_stage1.py` compares the frozen H01–H05 development evidence against its recorded labels field by field.
 
 A sealed-holdout evaluation test is deliberately not present: `F01–F05` are reserved for final Stage 1 evaluation and `G01–G05` for Stage 2, where each set will be run once against the final implementation and its recorded labels.
 
@@ -85,14 +85,17 @@ Stage 2 was implemented and tuned only against `fixtures/dev/`. The labels of ne
 The ticket space is the cross-product of per-field behavioural states induced by every compared boundary (requirement, spec, workflow and code literals). Each field contributes its domain values, absent/null, and one representative on each side of every boundary.
 
 - If the cross-product is at most `max_cells` (50,000), every cell is evaluated and the comparison mode is `EXHAUSTIVE`. Only then can `ReviewReport.exhaustive` be true and the status be PASS.
-- Otherwise a deterministic pairwise sample is evaluated (baseline, every single-field variation, every field pair), the exact skipped count is reported, the comparison mode is `SAMPLED`, and the status is at most INCOMPLETE. Skipped combinations are never described as verified.
+- Otherwise a deterministic pairwise sample is evaluated (baseline, every single-field variation, every field pair), the exact skipped count is reported, and the comparison mode is `SAMPLED`. Skipped combinations are never described as verified.
+- A sampled review can still return `CHANGES_REQUIRED`: a counterexample that was evaluated inside the sample and independently re-routed through both interpreters is an established defect, and unreviewed combinations elsewhere cannot downgrade it. Sampling caps the status at `INCOMPLETE` only when no validated blocker exists. The report keeps `exhaustive = false` and every sampling/unreviewed disclosure in either case.
 - In sampled mode, a requirement not exercised by the sample is disclosed as an unreviewed region (`STRUCTURAL`, `COVERAGE_GAP`), not as a defect. A defect still requires a witness that was re-routed and validated.
+
+Tests A–E in `tests/integration/test_review.py` pin the truth table: sampled boundary blocker → `CHANGES_REQUIRED` (`B12`, `max_cells = 12`); sampled without a blocker → `INCOMPLETE` (`B10`, `max_cells = 8`); exhaustive clean → `PASS` (`B10`); exhaustive blocker → `CHANGES_REQUIRED` (`B12`); sampled blocker plus unsupported code → `CHANGES_REQUIRED` with the unsupported region still disclosed (`B14`, `max_cells = 12`).
 
 `tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed` pins this behaviour with `max_cells = 8`.
 
 ## Stage 2 development evidence
 
-The B10–B13 fixtures are development evidence, not an evaluation set. Their observed reviewer behaviour (developer fixtures only; no sealed labels were consulted):
+The B10–B14 fixtures are development evidence, not an evaluation set. Their observed reviewer behaviour (developer fixtures only; no sealed labels were consulted):
 
 | Bundle | Observed | Evidence |
 | --- | --- | --- |
@@ -100,10 +103,11 @@ The B10–B13 fixtures are development evidence, not an evaluation set. Their ob
 | `B11_router_precedence` | CHANGES_REQUIRED, `PRECEDENCE` | validated witness `{category: absent, priority: urgent}`: manual review vs priority queue |
 | `B12_router_threshold` | CHANGES_REQUIRED, `THRESHOLD_CHANGED` | validated witness `{wait_time: 30}`: escalation queue vs normal queue |
 | `B13_router_runtime` | CHANGES_REQUIRED, `RUNTIME_ERROR` | validated witness `{category: absent, vip: absent}`: `KeyError` in the router |
+| `B14_router_unsupported` | CHANGES_REQUIRED, `SCRIPT_DISAGREEMENT` | validated `{wait_time: 30}` witness; the uncatalogued `legacy` destination makes part of the router `UNSUPPORTED_CODE`, disclosed as an unreviewed code region |
 
 ## Current results
 
-- Default suite: **300 passed** (Stage 1 baseline 221 retained; Stage 2 adds 79).
+- Default suite: **306 passed** (Stage 1 baseline 221 retained; Stage 2 adds 85).
 - Sealed Stage 1 holdout: **not executed** (reserved for final evaluation).
 - Sealed Stage 2 semantic holdout: **not executed** (reserved for final evaluation against `stage2-baseline`).
 - `ruff check src tests scripts`: clean.
