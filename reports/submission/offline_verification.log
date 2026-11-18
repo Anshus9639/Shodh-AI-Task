@@ -1,0 +1,34 @@
+GEMINI_API_KEY removed for this run: True
+== offline test suite
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+........................................................................ [ 52%]
+........................................................................ [ 70%]
+........................................................................ [ 87%]
+...................................................                      [100%]
+411 passed in 20.51s
+== fixture and label validation
+== dataset manifest integrity
+wrote .offline-verification-final\final\metrics.json
+wrote .offline-verification-final\final\findings.json
+wrote .offline-verification-final\final\coverage.json
+wrote .offline-verification-final\final\counterexamples.json
+wrote .offline-verification-final\final\REPORT.md
+wrote .offline-verification-final\baseline\metrics.json
+wrote .offline-verification-final\baseline\comparison.json
+wrote .offline-verification-final\baseline\REPORT.md
+wrote .offline-verification-final\ablation\metrics.json
+wrote .offline-verification-final\ablation\REPORT.md
+== fake-model scenarios (separate from deterministic evaluation)
+wrote .offline-verification-final\evaluation\model_scenarios.json
+wrote .offline-verification-final\evaluation\REPORT.md
+wrote .offline-verification-final\evaluation\dataset_manifest.json
+== debugging examples from git history
+D-01: parent exit 1, fix exit 0, HEAD exit 0
+D-02: parent exit 1, fix exit 0, HEAD exit 0
+wrote .offline-verification-final\debugging\debugging_examples.json
+== report schema validation
+
+All offline evaluation checks passed.
+OFFLINE_EXIT_CODE=0
+OUTPUT_DIR=D:\Shodh AI\.offline-verification-final

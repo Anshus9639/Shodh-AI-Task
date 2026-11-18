@@ -1,0 +1,660 @@
+{
+  "audit_id": "final-requirement-traceability",
+  "generated_at": "2026-11-18",
+  "git_revision": "56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7",
+  "method": "Each row was checked against the current source, the collected test node list and retained report values; documentation alone is not counted as completion evidence.",
+  "test_evidence_basis": {
+    "collection": "411 tests collected by pytest --collect-only -q",
+    "execution": "411 passed in the final offline verification with model credentials removed",
+    "log": "reports/submission/offline_verification.log"
+  },
+  "summary": {
+    "rows": 27,
+    "implemented_and_tested": 25,
+    "implemented_partially_verified": 1,
+    "unsupported": 1,
+    "not_implemented": 0
+  },
+  "requirements": [
+    {
+      "id": "S1-SOURCE-ANCHORS",
+      "stage": "1",
+      "requirement": "Every parsed requirement rule keeps a verifiable source anchor (file, span, hash) and the anchor cannot be fabricated.",
+      "implementation": [
+        "src/verityflow/ir/policy.py",
+        "src/verityflow/requirements/compile.py",
+        "src/verityflow/ingest/lineindex.py",
+        "src/verityflow/evidence.py"
+      ],
+      "tests": [
+        "tests/unit/test_contracts.py::test_every_requirement_anchor_resolves_against_its_source",
+        "tests/unit/test_contracts.py::test_anchor_checks_detect_a_tampered_span",
+        "tests/unit/test_ingest.py::test_line_index_verifies_spans",
+        "tests/integration/test_bundle_pipeline.py::test_every_rule_anchor_resolves_to_the_artifact_text"
+      ],
+      "evaluation_evidence": [
+        "22/22 remediation bundles load with valid anchors",
+        "reports/remediation/label_audit.json records bundle-manifest hash verification"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-APPROVALS",
+      "stage": "1",
+      "requirement": "Approval records require a hash-bound change payload, authorized role, revision scope and supersession handling; only approved changes affect the effective policy.",
+      "implementation": [
+        "src/verityflow/approvals/resolver.py",
+        "src/verityflow/models/changes.py",
+        "src/verityflow/models/manifest.py"
+      ],
+      "tests": [
+        "tests/unit/test_approvals.py::test_valid_approval_applies_the_threshold",
+        "tests/unit/test_approvals.py::test_unapproved_change_is_reported_but_not_applied",
+        "tests/unit/test_approvals.py::test_tampered_hash_is_an_invalid_approval",
+        "tests/unit/test_approvals.py::test_unauthorized_role_has_no_authority",
+        "tests/unit/test_approvals.py::test_supersession_resolves_the_conflict",
+        "tests/unit/test_approvals.py::test_stale_base_version_is_reported",
+        "tests/integration/test_bundle_pipeline.py::test_conflicting_approvals_produce_diagnostic_variants_only",
+        "tests/integration/test_remediation_approvals.py::test_single_approved_threshold_applies_exactly_once"
+      ],
+      "evaluation_evidence": [
+        "Remediation A-M: 14/14 approval scenarios correct",
+        "Applied changes 8/8 in reports/remediation/development_evaluation.json",
+        "M_invalid_approval_hash -> INCOMPLETE; L_valid_supersession -> PASS"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-MISSING-VALUES",
+      "stage": "1",
+      "requirement": "Absent or null fields are modeled explicitly with three-valued (Kleene) semantics; absence is never silently coerced to false or zero.",
+      "implementation": [
+        "src/verityflow/ir/evaluate.py",
+        "src/verityflow/ir/normalize.py",
+        "src/verityflow/verify/domain.py",
+        "src/verityflow/mapping/matcher.py"
+      ],
+      "tests": [
+        "tests/unit/test_evaluate.py::test_missing_comparison_is_unknown",
+        "tests/unit/test_evaluate.py::test_missing_is_total",
+        "tests/unit/test_evaluate.py::test_kleene_and_table",
+        "tests/unit/test_evaluate.py::test_kleene_or_table",
+        "tests/unit/test_evaluate.py::test_kleene_not",
+        "tests/unit/test_evaluate.py::test_not_true_blocks_only_true",
+        "tests/unit/test_verify_domain.py::test_absent_round_trips_through_rendered_inputs",
+        "tests/unit/test_mapping.py::test_missing_values_are_treated_consistently"
+      ],
+      "evaluation_evidence": [
+        "S4_missing_value_precedence -> PRECEDENCE",
+        "B01_starter and all 27 development decisions correct",
+        "Remediation 22/22 decisions correct"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-NUMERIC-BOUNDARIES",
+      "stage": "1",
+      "requirement": "Integer, scaled-decimal and continuous numeric domains are partitioned exactly, with inclusive/exclusive boundaries and exact unit conversion.",
+      "implementation": [
+        "src/verityflow/ir/domains.py",
+        "src/verityflow/ir/units.py",
+        "src/verityflow/verify/domain.py"
+      ],
+      "tests": [
+        "tests/unit/test_units.py::test_duration_conversions_are_exact",
+        "tests/unit/test_units.py::test_currency_conversions_are_exact",
+        "tests/unit/test_verify_domain.py::test_integer_grid_makes_strict_29_equal_to_inclusive_30",
+        "tests/unit/test_domains.py::test_decimal_partition_uses_adjacent_representable_values",
+        "tests/unit/test_domains.py::test_continuous_partition_has_witness_in_every_open_interval",
+        "tests/unit/test_verify_domain.py::test_scaled_decimal_grid_brackets_by_one_scale_step",
+        "tests/unit/test_verify_domain.py::test_continuous_domain_never_reuses_integer_equivalence"
+      ],
+      "evaluation_evidence": [
+        "S1 integer boundary -> THRESHOLD_CHANGED",
+        "S2 decimal boundary (0.1 grid) -> THRESHOLD_CHANGED",
+        "S3 continuous boundary -> THRESHOLD_CHANGED",
+        "G_unit_conversion: 1500 s = 25 min -> PASS",
+        "78/78 development and 108/108 remediation counterexamples validated"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-NESTED-CONDITIONS",
+      "stage": "1",
+      "requirement": "Composite (and/or/not) conditions are represented, normalized and compared semantically, not by identifier or text matching.",
+      "implementation": [
+        "src/verityflow/models/conditions.py",
+        "src/verityflow/ir/model.py",
+        "src/verityflow/mapping/matcher.py",
+        "src/verityflow/verify/equivalence.py"
+      ],
+      "tests": [
+        "tests/unit/test_conditions.py::test_external_conditions_accept_the_public_grammar",
+        "tests/unit/test_conditions.py::test_to_ir_rekeys_composites_and_preserves_leaves",
+        "tests/unit/test_ir.py::test_ir_round_trips_through_json",
+        "tests/unit/test_mapping.py::test_spec_correspondence_is_semantic_and_complete",
+        "tests/unit/test_mapping.py::test_workflow_else_branch_matches_the_catch_all"
+      ],
+      "evaluation_evidence": [
+        "S5_exception_overlap uses an and(urgent, vip) condition in spec and workflow",
+        "S8 overlapping numeric rules -> MISSING_EXCEPTION",
+        "Mapping is inferred without identifiers in integration/test_bundle_pipeline.py"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-ORDERED-EXCEPTIONS",
+      "stage": "1",
+      "requirement": "Exceptions are inserted before the rule they qualify; first-match order and shadowing are preserved and verified.",
+      "implementation": [
+        "src/verityflow/requirements/compile.py",
+        "src/verityflow/verify/interactions.py",
+        "src/verityflow/verify/spec.py",
+        "src/verityflow/verify/workflow.py",
+        "src/verityflow/verify/code.py"
+      ],
+      "tests": [
+        "tests/unit/test_compile.py::test_exception_is_inserted_before_its_target",
+        "tests/unit/test_compile.py::test_exception_on_catch_all_keeps_only_its_own_condition",
+        "tests/unit/test_verify_interactions.py::test_unreachable_exception_is_reported_as_an_interaction",
+        "tests/unit/test_verify_workflow.py::test_workflow_branch_order_is_precedence",
+        "tests/unit/test_verify_spec.py::test_reordering_plausible_rules_is_precedence",
+        "tests/unit/test_verify_code.py::test_reordered_guards_are_reported_as_precedence"
+      ],
+      "evaluation_evidence": [
+        "S4 missing-value precedence -> PRECEDENCE",
+        "S5 exception overlap -> PRECEDENCE",
+        "S8 missing exception -> MISSING_EXCEPTION",
+        "Sealed G03 is a retained PRECEDENCE example (audited, not rerun)"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-REVISION-SCOPE",
+      "stage": "1",
+      "requirement": "Changes bind to a base artifact and version; stale or wrong-revision changes grant no authority and are disclosed.",
+      "implementation": [
+        "src/verityflow/ingest/loader.py",
+        "src/verityflow/approvals/resolver.py",
+        "src/verityflow/models/manifest.py",
+        "src/verityflow/evidence.py"
+      ],
+      "tests": [
+        "tests/unit/test_approvals.py::test_stale_base_version_is_reported",
+        "tests/unit/test_evidence.py::test_invalid_pointer_and_version_do_not_resolve",
+        "tests/unit/test_contracts.py::test_review_target_must_reference_declared_artifacts",
+        "tests/unit/test_contracts.py::test_manifest_rejects_duplicate_artifact_versions"
+      ],
+      "evaluation_evidence": [
+        "E_wrong_revision_binding: C1 binds REQ@2.0 while target is REQ@1.0 -> INCOMPLETE/STALE_CHANGE",
+        "All remediation evidence references carry artifact_id and artifact_version"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-SEMANTIC-MAPPING",
+      "stage": "1",
+      "requirement": "Requirements map to specification and workflow entries semantically, without relying on rule identifiers or array positions.",
+      "implementation": [
+        "src/verityflow/mapping/matcher.py",
+        "src/verityflow/mapping/semantics.py",
+        "src/verityflow/mapping/extract.py"
+      ],
+      "tests": [
+        "tests/unit/test_mapping.py::test_spec_correspondence_is_semantic_and_complete",
+        "tests/unit/test_mapping.py::test_renaming_identifiers_does_not_change_correspondence",
+        "tests/unit/test_mapping.py::test_array_position_does_not_override_explicit_priority",
+        "tests/unit/test_mapping.py::test_units_are_normalized_before_correspondence",
+        "tests/unit/test_mapping.py::test_ambiguity_is_never_resolved_arbitrarily",
+        "tests/integration/test_bundle_pipeline.py::test_mapping_is_inferred_without_identifiers"
+      ],
+      "evaluation_evidence": [
+        "27/27 development decisions correct across renamed and reordered artifacts",
+        "H02_renamed and H03_spec_reordered pass in Stage 1 evidence tests"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S1-MISSING-REQUIREMENTS",
+      "stage": "1",
+      "requirement": "Normative text that the parser cannot represent is disclosed as a coverage gap, never silently dropped or guessed.",
+      "implementation": [
+        "src/verityflow/requirements/parser.py",
+        "src/verityflow/requirements/compile.py",
+        "src/verityflow/mapping/matcher.py",
+        "src/verityflow/verify/review.py"
+      ],
+      "tests": [
+        "tests/unit/test_parser.py::test_normative_prose_is_not_silently_dropped",
+        "tests/unit/test_parser.py::test_unsupported_or_ambiguous_lines_are_reported",
+        "tests/unit/test_compile.py::test_document_without_rules_is_a_coverage_gap",
+        "tests/unit/test_cli.py::test_parse_reports_a_coverage_gap_for_unsupported_text",
+        "tests/unit/test_mapping.py::test_unmatched_elements_are_reported"
+      ],
+      "evaluation_evidence": [
+        "E05_unsupported_language -> INCOMPLETE (retained development case)",
+        "3 unsupported findings retained in reports/final/metrics.json",
+        "0 unsupported findings in the 22 remediation bundles"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S2-SPEC-VERIFICATION",
+      "stage": "2",
+      "requirement": "Specification rules are compared against the effective policy by behaviour, including boundaries, precedence, destinations and missing rules.",
+      "implementation": [
+        "src/verityflow/verify/spec.py",
+        "src/verityflow/verify/equivalence.py",
+        "src/verityflow/verify/routing.py"
+      ],
+      "tests": [
+        "tests/unit/test_verify_spec.py::test_matching_spec_agrees_everywhere",
+        "tests/unit/test_verify_spec.py::test_renamed_ids_and_priorities_are_not_evidence",
+        "tests/unit/test_verify_spec.py::test_strictness_change_is_a_threshold_change",
+        "tests/unit/test_verify_spec.py::test_direction_change_is_a_wrong_operator",
+        "tests/unit/test_verify_spec.py::test_missing_rule_is_detected_without_ids",
+        "tests/unit/test_verify_spec.py::test_equivalent_integer_formulation_is_accepted"
+      ],
+      "evaluation_evidence": [
+        "S1/S2/S3 code-side threshold defects classified",
+        "F_wrong_operator classified from spec/router comparison",
+        "27/27 development decisions; 22/22 remediation decisions"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S2-WORKFLOW-REACHABILITY",
+      "stage": "2",
+      "requirement": "Workflow graphs are executed as ordered first-match decision lists; unreachable terminals, cycles, fall-through and branch-order defects are detected.",
+      "implementation": [
+        "src/verityflow/verify/workflow.py",
+        "src/verityflow/verify/interactions.py",
+        "src/verityflow/verify/coverage.py"
+      ],
+      "tests": [
+        "tests/unit/test_verify_workflow.py::test_matching_workflow_agrees_everywhere",
+        "tests/unit/test_verify_workflow.py::test_unreachable_terminal_is_disclosed",
+        "tests/unit/test_verify_workflow.py::test_cycle_is_a_distinct_outcome",
+        "tests/unit/test_verify_workflow.py::test_missing_else_branch_falls_through",
+        "tests/unit/test_verify_workflow.py::test_unknown_target_is_structural",
+        "tests/unit/test_verify_interactions.py::test_shadowed_rule_is_disclosed_as_a_coverage_gap"
+      ],
+      "evaluation_evidence": [
+        "E02_missing_branch and workflow findings in the retained Stage 4 report",
+        "S4/S5 workflow branch order matches the requirement",
+        "React Flow/JSON workflow interpretation is exercised by all 27 development bundles"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S2-PYTHON-AST",
+      "stage": "2",
+      "requirement": "Linked Python is interpreted from a restricted AST subset without executing bundle code; unsupported constructs, budgets and runtime errors fail closed.",
+      "implementation": [
+        "src/verityflow/verify/python_ast.py",
+        "src/verityflow/verify/code.py"
+      ],
+      "tests": [
+        "tests/unit/test_verify_python_ast.py::test_bundle_code_is_never_executed",
+        "tests/unit/test_verify_python_ast.py::test_unsupported_constructs_are_rejected",
+        "tests/unit/test_verify_python_ast.py::test_step_budget_stops_evaluation",
+        "tests/unit/test_verify_python_ast.py::test_depth_and_node_budgets_are_enforced",
+        "tests/unit/test_verify_python_ast.py::test_absent_field_subscript_is_a_runtime_error",
+        "tests/unit/test_verify_code.py::test_runtime_key_error_is_reported_separately",
+        "tests/unit/test_verify_code.py::test_threshold_change_is_classified_without_rule_ids"
+      ],
+      "evaluation_evidence": [
+        "B10-B14 router fixtures (clean, precedence, threshold, runtime, unsupported) in Stage 4",
+        "S6 WRONG_DESTINATION, S7 RUNTIME_ERROR",
+        "N_conflict_plus_runtime_error -> independent RUNTIME_ERROR blocker"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S2-COUNTEREXAMPLES",
+      "stage": "2",
+      "requirement": "Behavioural differences are demonstrated by concrete, validated counterexample tickets that are re-executed against both interpretations.",
+      "implementation": [
+        "src/verityflow/verify/routing.py",
+        "src/verityflow/verify/spec.py",
+        "src/verityflow/verify/workflow.py",
+        "src/verityflow/verify/code.py"
+      ],
+      "tests": [
+        "tests/integration/test_review.py::test_reordered_router_requires_changes_with_a_validated_witness",
+        "tests/integration/test_review.py::test_strict_boundary_requires_changes_and_names_the_threshold",
+        "tests/integration/test_review.py::test_runtime_error_is_a_blocker_not_agreement",
+        "tests/integration/test_remediation_semantic.py::test_integer_boundary_uses_the_declared_grid",
+        "tests/integration/test_remediation_semantic.py::test_runtime_error_is_reported_without_a_behavioural_witness"
+      ],
+      "evaluation_evidence": [
+        "Retained Stage 4: 78/78 valid counterexamples",
+        "Post-remediation Stage 4 rerun: 78/78",
+        "Remediation development: 108/108",
+        "Traces and evidence references attached to counterexamples"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S2-INTERACTIONS",
+      "stage": "2",
+      "requirement": "Rule interactions (shadowing, misplaced exceptions, unreachable rules) are detected and disclosed as coverage gaps or findings.",
+      "implementation": [
+        "src/verityflow/verify/interactions.py",
+        "src/verityflow/verify/coverage.py"
+      ],
+      "tests": [
+        "tests/unit/test_verify_interactions.py::test_shadowed_rule_is_disclosed_as_a_coverage_gap",
+        "tests/unit/test_verify_interactions.py::test_exception_attached_to_its_target_is_not_misplaced",
+        "tests/unit/test_verify_interactions.py::test_exception_firing_outside_its_target_is_reported",
+        "tests/unit/test_verify_interactions.py::test_unreachable_exception_is_reported_as_an_interaction",
+        "tests/unit/test_verify_coverage.py::test_unreachable_requirement_is_reported_as_a_coverage_gap"
+      ],
+      "evaluation_evidence": [
+        "S5 exception overlap -> PRECEDENCE",
+        "Coverage report records effective-requirement coverage and unreviewed scopes",
+        "Remediation coverage: 90 effective requirements, 74 fully reviewed, 16 partially, 16 unreviewed"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S3-MODEL-VALIDATION",
+      "stage": "3",
+      "requirement": "The optional model layer is advisory: outputs are schema-validated, evidence-checked, injection-resistant and cannot create or upgrade a finding, policy or status.",
+      "implementation": [
+        "src/verityflow/model/validate.py",
+        "src/verityflow/model/service.py",
+        "src/verityflow/model/prompt.py",
+        "src/verityflow/model/fake.py",
+        "src/verityflow/model/gemini.py"
+      ],
+      "tests": [
+        "tests/unit/test_model_validation.py::test_evidence_must_match_a_supplied_excerpt_exactly",
+        "tests/unit/test_model_validation.py::test_unknown_anchor_is_an_evidence_failure",
+        "tests/integration/test_model_review.py::test_a_fake_success_is_advisory_and_preserves_pass",
+        "tests/integration/test_model_review.py::test_s_model_observation_never_becomes_a_verified_finding",
+        "tests/integration/test_model_review.py::test_q_claiming_pass_cannot_change_changes_required",
+        "tests/integration/test_model_review.py::test_r_claiming_pass_cannot_upgrade_incomplete",
+        "tests/integration/test_model_review.py::test_l_prompt_injection_in_requirements_is_untrusted"
+      ],
+      "evaluation_evidence": [
+        "reports/evaluation/model_scenarios.json: 17 scenarios, 51 requests, status_invariance true, real_model_calls 0",
+        "No live Gemini call was made for evaluation"
+      ],
+      "status": "Implemented and tested",
+      "unsupported_scope": "Real Gemini/model semantic quality is not measured; only synthetic fake-client scenarios are evaluated."
+    },
+    {
+      "id": "S3-LIVE-MODEL-QUALITY",
+      "stage": "3",
+      "requirement": "Evaluate the live Gemini adapter's semantic quality and reliability on real model requests.",
+      "implementation": [
+        "src/verityflow/model/gemini.py"
+      ],
+      "tests": [],
+      "evaluation_evidence": [
+        "reports/evaluation/model_scenarios.json records model_mode=fake and real_model_calls=0",
+        "The final offline verification removes GEMINI_API_KEY and still passes"
+      ],
+      "status": "Unsupported",
+      "notes": "The adapter exists, but no live-model evaluation was performed; fake-client scenarios validate contracts and status invariance only."
+    },
+    {
+      "id": "S3-FAILURE-HANDLING",
+      "stage": "3",
+      "requirement": "Malformed inputs, unsupported constructs, timeouts, rate limits and runtime errors are reported explicitly and fail closed (INCOMPLETE or blocker), never as PASS.",
+      "implementation": [
+        "src/verityflow/ingest/artifacts.py",
+        "src/verityflow/model/service.py",
+        "src/verityflow/verify/code.py",
+        "src/verityflow/verify/review.py"
+      ],
+      "tests": [
+        "tests/unit/test_ingest.py::test_hash_mismatch_fails_the_artifact",
+        "tests/unit/test_ingest.py::test_malformed_json_and_utf8_are_reported",
+        "tests/integration/test_model_review.py::test_i_timeout_preserves_status",
+        "tests/integration/test_model_review.py::test_j_rate_limit_is_recorded",
+        "tests/integration/test_model_review.py::test_k_retry_exhaustion_is_bounded",
+        "tests/integration/test_model_review.py::test_v_offline_execution_needs_no_credentials_or_network",
+        "tests/integration/test_review.py::test_sampled_blocker_with_unsupported_code_keeps_both_disclosures"
+      ],
+      "evaluation_evidence": [
+        "S7_runtime_error -> RUNTIME_ERROR blocker",
+        "N_conflict_plus_runtime_error -> CHANGES_REQUIRED",
+        "3 unsupported findings retained in Stage 4; 0 false PASS in every run"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S2-STATUS-DETERMINATION",
+      "stage": "2",
+      "requirement": "Status follows an explicit truth table: validated blocker -> CHANGES_REQUIRED; else unreviewed mandatory scope -> INCOMPLETE; else PASS. PASS requires exhaustive, confirmed review.",
+      "implementation": [
+        "src/verityflow/verify/review.py",
+        "src/verityflow/models/report.py"
+      ],
+      "tests": [
+        "tests/integration/test_review.py::test_stage1_bundle_passes_without_code",
+        "tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed",
+        "tests/integration/test_review.py::test_sampled_review_without_an_established_blocker_is_incomplete",
+        "tests/integration/test_review.py::test_exhaustive_valid_implementation_passes",
+        "tests/integration/test_review.py::test_exhaustive_implementation_with_a_blocker_requires_changes",
+        "tests/unit/test_threshold_change_25.py::test_conflicting_25_minute_approvals_are_incomplete_and_leave_30_effective"
+      ],
+      "evaluation_evidence": [
+        "Retained Stage 4: 27/27, 0 false PASS, 0 false block",
+        "Stage 4 rerun: 27/27",
+        "Remediation development: 22/22, 0 false PASS, 0/6 false block",
+        "Conflict cases I/K -> INCOMPLETE, J/N -> CHANGES_REQUIRED"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "R-EVIDENCE-COMPLETENESS",
+      "stage": "2 / remediation",
+      "requirement": "Every confirmed finding carries a resolvable artifact/version/location, requirement-side and implementation-side evidence, and a correction; unverifiable findings are downgraded and disclosed.",
+      "implementation": [
+        "src/verityflow/evidence.py",
+        "src/verityflow/models/evidence.py",
+        "src/verityflow/models/report.py",
+        "src/verityflow/verify/review.py"
+      ],
+      "tests": [
+        "tests/unit/test_evidence.py::test_catalog_builds_and_validates_each_anchor_kind",
+        "tests/unit/test_evidence.py::test_fabricated_excerpt_is_rejected",
+        "tests/unit/test_evidence.py::test_invalid_pointer_and_version_do_not_resolve",
+        "tests/unit/test_evidence.py::test_confirmed_finding_requires_a_correction",
+        "tests/unit/test_evidence.py::test_behavioural_blocker_needs_implementation_evidence",
+        "tests/unit/test_evidence.py::test_omission_is_valid_with_requirement_evidence_only",
+        "tests/unit/test_evidence.py::test_every_remediation_blocker_has_resolvable_evidence"
+      ],
+      "evaluation_evidence": [
+        "Remediation: 16/16 structured locations, source evidence, implementation evidence, corrections and witnesses",
+        "Stage 4 rerun: 18/18 identifying findings located, 37/37 evidence references valid",
+        "Retained Stage 4 baseline: 0/21 structured evidence, preserved for comparison"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "R-CONFLICTS",
+      "stage": "remediation",
+      "requirement": "Conflicting approvals do not become confirmed blockers; conflict-dependent differences are downgraded to an undetermined scope, while defects reproduced under every interpretation remain blockers.",
+      "implementation": [
+        "src/verityflow/verify/conflict.py",
+        "src/verityflow/verify/review.py",
+        "src/verityflow/approvals/resolver.py"
+      ],
+      "tests": [
+        "tests/integration/test_remediation_conflicts.py::test_conflict_alone_is_incomplete_and_never_a_blocker",
+        "tests/integration/test_remediation_conflicts.py::test_conflict_dependent_difference_is_downgraded_but_disclosed",
+        "tests/integration/test_remediation_conflicts.py::test_independent_blocker_survives_a_conflict_and_keeps_changes_required",
+        "tests/integration/test_remediation_conflicts.py::test_multiple_conflicts_produce_one_analysis_each",
+        "tests/integration/test_remediation_conflicts.py::test_runtime_error_independent_of_conflict_remains_a_blocker",
+        "tests/integration/test_remediation_conflicts.py::test_conflict_cases_never_confirm_a_diagnostic_variant"
+      ],
+      "evaluation_evidence": [
+        "I -> INCOMPLETE UNDETERMINED_CONFLICT",
+        "J/N -> CHANGES_REQUIRED with independent defect",
+        "K -> INCOMPLETE with two conflicts",
+        "Conflict handling 4/4 in reports/remediation/development_evaluation.json"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "R-DEDUPE",
+      "stage": "remediation",
+      "requirement": "Duplicate findings are merged by semantic identity and artifact/evidence anchor, unioning evidence rather than discarding it; distinct defects remain distinct.",
+      "implementation": [
+        "src/verityflow/models/report.py",
+        "src/verityflow/evidence.py",
+        "src/verityflow/verify/review.py"
+      ],
+      "tests": [
+        "tests/unit/test_evidence.py::test_dedupe_merges_same_defect_and_unions_evidence",
+        "tests/unit/test_evidence.py::test_dedupe_keeps_distinct_defects_on_one_rule"
+      ],
+      "evaluation_evidence": [
+        "0 duplicate findings in the retained Stage 4 report, the Stage 4 rerun and the 22-case remediation run",
+        "E02's two wrong-destination findings on different branches remain distinct"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S4-HOLDOUT-ISOLATION",
+      "stage": "4",
+      "requirement": "Sealed bundles and labels are isolated from reviewer input, not executed during development, and their manifests remain unchanged.",
+      "implementation": [
+        "holdout/MANIFEST.sha256",
+        "holdout_stage2/MANIFEST.sha256",
+        "evaluation/DATASET.json",
+        "tests/unit/test_holdout_isolation.py",
+        "tests/unit/test_stage2_holdout_isolation.py"
+      ],
+      "tests": [
+        "tests/unit/test_holdout_isolation.py::test_labels_live_outside_the_bundles_they_grade",
+        "tests/unit/test_holdout_isolation.py::test_no_bundle_directory_contains_expected_answers",
+        "tests/unit/test_holdout_isolation.py::test_no_development_test_executes_the_reserved_holdout",
+        "tests/unit/test_stage2_holdout_isolation.py::test_manifest_matches_every_reserved_file",
+        "tests/unit/test_stage2_holdout_isolation.py::test_no_development_test_references_the_stage2_holdout",
+        "tests/unit/test_stage2_holdout_isolation.py::test_stage1_sealed_manifest_is_unchanged"
+      ],
+      "evaluation_evidence": [
+        "Sealed manifest hashes e10de058... and a76fa4bc... match DATASET.json",
+        "10 sealed bundles present (F01-F05, G01-G05); none executed during remediation or this audit",
+        "git diff 25f9e2a -- holdout holdout_stage2 is empty"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S4-BASELINE",
+      "stage": "4",
+      "requirement": "A frozen Stage 2 baseline is materialized from git, run on identical inputs and compared with the final implementation.",
+      "implementation": [
+        "evaluation/baseline.py",
+        "scripts/run_offline.py",
+        "reports/baseline/REPORT.md"
+      ],
+      "tests": [],
+      "evaluation_evidence": [
+        "reports/baseline/comparison.json: identical_inputs true; baseline 27/27 and final 27/27; status agreement 27/27",
+        "Baseline commit 4702939, tag stage2-baseline"
+      ],
+      "status": "Implemented, partially verified",
+      "notes": "The baseline comparison is produced and schema-validated by the offline runner, but there is no focused pytest assertion on its agreement values."
+    },
+    {
+      "id": "S4-ABLATION",
+      "stage": "4",
+      "requirement": "One controlled ablation disables domain partitioning and demonstrates the effect on coverage and status without changing other behaviour.",
+      "implementation": [
+        "scripts/run_offline.py",
+        "configs/no_domain_partitioning.toml",
+        "src/verityflow/verify/domain.py"
+      ],
+      "tests": [
+        "tests/integration/test_review.py::test_disabled_domain_partitioning_cannot_pass",
+        "tests/integration/test_review.py::test_disabled_domain_partitioning_hides_a_boundary_defect",
+        "tests/unit/test_verify_domain.py::test_disabled_partitioning_is_explicitly_unreviewed"
+      ],
+      "evaluation_evidence": [
+        "Enabled: 27/27 correct (10 PASS, 11 CHANGES_REQUIRED, 6 INCOMPLETE)",
+        "Disabled: 10/27 correct (0 PASS, 4 CHANGES_REQUIRED, 23 INCOMPLETE)",
+        "0 false PASS and 0 false block in both arms"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "S4-DEBUGGING",
+      "stage": "4",
+      "requirement": "Two debugging examples are reproduced from real git history, showing a failing parent, a passing fix and persistence at HEAD.",
+      "implementation": [
+        "scripts/reproduce_debugging_examples.py",
+        "docs/debugging_log.md",
+        "tests/integration/test_review.py"
+      ],
+      "tests": [],
+      "evaluation_evidence": [
+        "D-01: parent exit 1, fix exit 0, HEAD exit 0",
+        "D-02: parent exit 1, fix exit 0, HEAD exit 0",
+        "Recorded in reports/submission/offline_verification.log; the offline runner asserts all six outcomes"
+      ],
+      "status": "Implemented and tested",
+      "notes": "The reproduction is an automated offline check rather than a pytest node; the offline runner fails if any parent/fix/HEAD outcome disagrees."
+    },
+    {
+      "id": "S4-REPRODUCIBILITY",
+      "stage": "4",
+      "requirement": "The evaluation is reproducible offline from a lockfile with recorded config, dataset and code revisions, and produces schema-valid JSON reports.",
+      "implementation": [
+        "uv.lock",
+        "pyproject.toml",
+        "scripts/run_offline.py",
+        "evaluation/DATASET.json",
+        "src/verityflow/schemas.py"
+      ],
+      "tests": [
+        "tests/unit/test_config.py::test_default_toml_matches_the_code_defaults",
+        "tests/unit/test_schemas.py::test_exported_schemas_are_current",
+        "tests/unit/test_schemas.py::test_every_contract_has_a_schema",
+        "tests/integration/test_model_review.py::test_v_offline_execution_needs_no_credentials_or_network"
+      ],
+      "evaluation_evidence": [
+        "Final offline run exit 0 with GEMINI_API_KEY removed: 411 tests passed; all reports schema-valid",
+        "reports/submission/offline_verification.json records the command, revision and output values",
+        "uv.lock is present and tracked"
+      ],
+      "status": "Implemented and tested"
+    },
+    {
+      "id": "PKG-SCHEMA-MANIFEST",
+      "stage": "4",
+      "requirement": "Artifact, report and dataset schemas are versioned; fixture and manifest hashes are verified before evaluation.",
+      "implementation": [
+        "src/verityflow/schemas.py",
+        "evaluation/MANIFEST.sha256",
+        "evaluation/DATASET.json",
+        "scripts/run_offline.py"
+      ],
+      "tests": [
+        "tests/unit/test_schemas.py::test_fixture_artifacts_match_their_schemas",
+        "tests/unit/test_schemas.py::test_invalid_artifacts_are_rejected_by_the_schema",
+        "tests/unit/test_schemas.py::test_policy_and_effective_requirements_outputs_validate",
+        "tests/unit/test_contracts.py::test_standalone_contract_schemas_are_exported",
+        "tests/unit/test_ingest.py::test_hash_mismatch_fails_the_artifact"
+      ],
+      "evaluation_evidence": [
+        "37/37 dataset bundle file hashes verified with 0 mismatches",
+        "Historical reports and sealed report schema-valid (0 errors)",
+        "All redirected offline reports schema-validated during the run"
+      ],
+      "status": "Implemented and tested"
+    }
+  ],
+  "unsupported_scope": [
+    "Real live Gemini/model semantic quality: no live call was made; only synthetic fake-client scenarios are evaluated.",
+    "Arbitrary Python: only a restricted AST subset is interpreted, by design.",
+    "Natural-language requirements outside the documented grammar: disclosed as coverage gaps and produce INCOMPLETE.",
+    "Sealed-case performance after remediation: sealed cases were not rerun; only retained Stage 4 sealed results are reported.",
+    "The label audit is an AI re-derivation plus oracle cross-check, not independent human review."
+  ]
+}

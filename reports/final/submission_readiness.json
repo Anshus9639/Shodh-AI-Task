@@ -1,0 +1,638 @@
+{
+  "audit_id": "verityflow-submission-readiness-2026-11-18",
+  "generated_at": "2026-11-18",
+  "project": "VerityFlow — SHODH 2026 AI/ML Engineer Intern submission",
+  "repository": "D:/Shodh AI",
+  "source_revision": "56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7",
+  "packaging_note": "All measurements below were produced from source revision 56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7. The final packaging commit that adds this report, docs/submission_readiness.md, the label audit, the traceability matrix, the offline verification logs and the README/AI-note updates contains documentation and reports only; it does not change src/, tests/, fixtures/, evaluation data, schemas or sealed artifacts.",
+  "determination": "READY WITH DISCLOSED LIMITATIONS",
+  "determination_reasoning": [
+    "Every mandatory Stage 1–4 capability listed in the assignment maps to implementation, tests and evaluation evidence; 25 of 27 traceability rows are implemented and tested, 1 is implemented and partially verified, 1 is explicitly unsupported, and none is silently unimplemented.",
+    "The final CPU-only offline verification exits 0 with 411 tests passing, schema-valid reports, unchanged sealed manifests and no credentials or network.",
+    "The original Stage 4 result (27/27 development, 8/10 sealed) is preserved unchanged and is not replaced or merged with the 22/22 remediation development result.",
+    "The determination is not READY because: the sealed result is 8/10 and was not re-measured; live Gemini quality is unmeasured; the remediation label audit is AI re-derivation by the implementation author, not independent human review; and the datasets are small synthetic sets, not an external benchmark."
+  ],
+  "requirement_traceability": {
+    "matrix": "reports/final/requirement_traceability.json",
+    "rows": 27,
+    "implemented_and_tested": 25,
+    "implemented_partially_verified": 1,
+    "unsupported": 1,
+    "not_implemented": 0,
+    "test_evidence_basis": {
+      "collection": "411 tests collected by pytest --collect-only -q",
+      "execution": "411 passed in the final offline verification with model credentials removed",
+      "log": "reports/submission/offline_verification.log"
+    },
+    "unsupported_scope": [
+      "Real live Gemini/model semantic quality: no live call was made; only synthetic fake-client scenarios are evaluated.",
+      "Arbitrary Python: only a restricted AST subset is interpreted, by design.",
+      "Natural-language requirements outside the documented grammar: disclosed as coverage gaps and produce INCOMPLETE.",
+      "Sealed-case performance after remediation: sealed cases were not rerun; only retained Stage 4 sealed results are reported.",
+      "The label audit is an AI re-derivation plus oracle cross-check, not independent human review."
+    ]
+  },
+  "final_test_results": {
+    "revision": "56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7",
+    "pytest": {
+      "summary": "411 passed",
+      "duration_seconds": 20.51
+    },
+    "ruff_check": "All checks passed!",
+    "ruff_format_check": "172 files already formatted",
+    "mypy": "Success: no issues found in 66 source files",
+    "schemas": {
+      "exported": 32,
+      "validation": {
+        "redirected_reports": "validated inside the offline run",
+        "historical_sealed_report": "reports/evaluation/holdout_results.json validated separately against evaluation_sealed_results"
+      },
+      "model_match": "tests/unit/test_schemas.py asserts 32 built schemas equal the committed set"
+    },
+    "logs": [
+      "reports/submission/offline_verification.log",
+      "reports/submission/ruff_check.log",
+      "reports/submission/ruff_format_check.log",
+      "reports/submission/mypy.log"
+    ]
+  },
+  "label_audit": {
+    "report": "reports/remediation/label_audit.json",
+    "bundles_audited": 22,
+    "labels_confirmed": 22,
+    "status_or_defect_label_errors_found": 0,
+    "oracle_status_agreement": 17,
+    "oracle_disagreements_resolved_by_manual_reasoning": 4,
+    "oracle_unevaluable_resolved_manually": 1,
+    "ambiguous_oracle_cases": [
+      "G_unit_conversion: oracle applies the approved value without seconds-to-minutes conversion",
+      "I_conflicting_disputed_impl: oracle detects the conflict but is not candidate-aware",
+      "S2_decimal_boundary: oracle rejects the float literal 29.5 as unsupported code",
+      "S7_runtime_error: oracle does not execute the entrypoint and classifies the witness as unsupported",
+      "S5_exception_overlap: oracle cannot evaluate the presence condition and raises OracleUnsupported"
+    ],
+    "documentation_discrepancies": {
+      "ticket_map_issues": [
+        {
+          "bundle_id": "B_approved_25_impl_25",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "C_approved_25_impl_30",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "G_unit_conversion",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "H_sequential_changes",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=24 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "J_conflict_plus_independent_defect",
+          "issue_type": "mixed_convention",
+          "detail": [
+            "category absent + urgent expected priority_queue reflects the defective router, not the requirement (manual_review); the map does not state which convention applies"
+          ]
+        },
+        {
+          "bundle_id": "S2_decimal_boundary",
+          "issue_type": "mixed_convention",
+          "detail": [
+            "wait_time=29.5 expected escalation_queue is the router's behaviour; the requirement (>=30) requires normal_queue"
+          ]
+        }
+      ],
+      "scoring_impact": "none; evaluation/harness.py stores expected_tickets but no remediation metric consumes it"
+    },
+    "corrected_dataset_created": false,
+    "corrected_dataset_justification": "No status, defect-class, threshold or applied-change label is wrong; the only discrepancies are unscored documentation entries. Creating a corrected dataset would change label hashes without improving evaluation evidence, so the original labels are preserved and the discrepancies are recorded here.",
+    "auditor": {
+      "identity": "Qoder AI assistant, also the implementation author",
+      "type": "AI re-derivation and oracle cross-check; not an independent human reviewer",
+      "independence_statement": "The labels were authored in this repository. This audit re-derived every label from bundle bytes and cross-checked it with evaluation/oracle.py, which imports no reviewer code, but both the labels and this audit were produced with the same AI assistant. No independent human review is claimed."
+    },
+    "independence": "The labels and this audit were produced by the same AI assistant. Cross-checking with the separately written oracle is not equivalent to independent human review, and no such review is claimed."
+  },
+  "original_stage4_evaluation": {
+    "status": "retained, unchanged, not re-run during remediation",
+    "dataset": {
+      "bundles": 37,
+      "development": 27,
+      "sealed": 10
+    },
+    "development": {
+      "overall_correct": "27/27",
+      "expected_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "actual_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "false_pass": "0/17",
+      "false_pass_on_defective": "0/11",
+      "false_block": "0/10",
+      "finding_quality": {
+        "findings_total": 38,
+        "defect_identification": "11/11",
+        "rule_reference": "21/21",
+        "artifact": "21/21",
+        "evidence_location": "0/21",
+        "structured_evidence": "0/21",
+        "valid_evidence": "0/0",
+        "message_witness": "16/21",
+        "valid_counterexamples": "78/78",
+        "blocker_severity_on_defects": "20/21",
+        "unsupported_findings": 3,
+        "duplicate_findings": 0
+      },
+      "coverage": {
+        "total_effective_requirements": 109,
+        "fully_reviewed": 96,
+        "partially_reviewed": 13,
+        "unreviewed": 13,
+        "unsupported_expressions": 3,
+        "missing_evidence": 0,
+        "source_coverage": {
+          "numerator": 109,
+          "denominator": 109
+        },
+        "specification_coverage": {
+          "numerator": 102,
+          "denominator": 109
+        },
+        "workflow_coverage": {
+          "numerator": 106,
+          "denominator": 109
+        },
+        "code_coverage": {
+          "numerator": 20,
+          "denominator": 24
+        },
+        "evidence_completeness": {
+          "numerator": 109,
+          "denominator": 109
+        },
+        "comparison_modes": {
+          "exhaustive": 63
+        }
+      },
+      "retained_report_hashes": {
+        "REPORT.md": "3988621ce1acb72f2268962a877317ee7e489b3f2b24080a0d100d1ed4f402f8",
+        "counterexamples.json": "de78cf6a9140340faa274c095351069b3fa62f02b3eb9192ce613aa276547860",
+        "coverage.json": "4f5ca124c6f1732d733dc1dc3a0e7b4f5f1e21dd86dce58bc4e915ce82b0f071",
+        "findings.json": "c77501d8e00822ff30a3971f1b499ba92327466305d356373317cbae1e3cc4f6",
+        "metrics.json": "5501596b6736a5e00914b1cb040c188b47072eb0e3a07e2f0ad139174299d8f7"
+      },
+      "retained_unchanged": true
+    },
+    "sealed": {
+      "overall": "8/10 correct decisions, as originally reported",
+      "expected_counts": {
+        "PASS": 6,
+        "CHANGES_REQUIRED": 2,
+        "INCOMPLETE": 2
+      },
+      "actual_counts": {
+        "PASS": 5,
+        "CHANGES_REQUIRED": 4,
+        "INCOMPLETE": 1
+      },
+      "decision_differences": [
+        {
+          "case": "F03",
+          "expected": "PASS",
+          "actual": "CHANGES_REQUIRED"
+        },
+        {
+          "case": "G05",
+          "expected": "INCOMPLETE",
+          "actual": "CHANGES_REQUIRED"
+        }
+      ],
+      "finding_quality_gaps": [
+        "G03: status and PRECEDENCE category correct; expected witness tickets did not match because run_final_evaluation.py compares display strings",
+        "G04: reported SCRIPT_DISAGREEMENT instead of THRESHOLD_CHANGED; boundary witness failed the same comparison"
+      ],
+      "root_cause_audits": {
+        "F03": "Approval hashes exactly the C1@1 5000->3000 usd change while spec Q3 and workflow r3 still encode 5000, so the two THRESHOLD_CHANGED blockers are behaviorally correct. The PASS expectation comes from the Stage 1-only STAGE1_STATUS table in scripts/run_final_evaluation.py, which does not model Stage 2 artifact comparison.",
+        "G05": "Expected INCOMPLETE for an unresolved approval conflict, but the pre-remediation reviewer verified only the confirmed base; a spec/workflow at 25 against the disputed change became STRUCTURAL/WRONG_DESTINATION blockers. The remediation conflict-analysis pass targets this path and is exercised by development cases I-L, but no sealed case was rerun.",
+        "G03": "Status and precedence category were correct; the witness check in scripts/run_final_evaluation.py compared requirement_outcome (\"destination 'manual_review'\") with the label value (\"manual_review\") and could never match. The retained witness is valid."
+      },
+      "sealed_cases_executed_during_this_audit": false,
+      "sealed_manifests_unchanged": true
+    },
+    "separation_statement": "The 27/27 development and 8/10 sealed results are the original Stage 4 measurements. They are reported separately from, and are not replaced by, the 22/22 post-remediation development result."
+  },
+  "post_remediation_development_evaluation": {
+    "status": "development evidence on new synthetic bundles; not unseen or sealed performance",
+    "dataset": {
+      "bundles": 22,
+      "approval_revision_conflict": 14,
+      "semantic": 8
+    },
+    "decision": {
+      "overall_correct": "22/22",
+      "expected_counts": {
+        "PASS": 6,
+        "CHANGES_REQUIRED": 12,
+        "INCOMPLETE": 4
+      },
+      "actual_counts": {
+        "PASS": 6,
+        "CHANGES_REQUIRED": 12,
+        "INCOMPLETE": 4
+      },
+      "false_pass": "0/16",
+      "false_pass_on_defective": "0/12",
+      "false_block": "0/6"
+    },
+    "finding_quality": {
+      "confirmed_findings": 16,
+      "disclosed_gap_findings": 16,
+      "info_findings": 4,
+      "structured_location": "16/16",
+      "validated_source_evidence": "16/16",
+      "validated_implementation_evidence": "16/16",
+      "corrections": "16/16",
+      "message_witness": "16/16",
+      "valid_counterexamples": "108/108",
+      "duplicate_findings": 0,
+      "unsupported_findings": 0,
+      "false_blockers_on_expected_pass_cases": "0/6",
+      "harness_identifying_findings": {
+        "findings_total": 36,
+        "correct_defect_identification": "12/12",
+        "evidence_location": "24/24",
+        "structured_evidence": "24/24",
+        "valid_evidence": "53/53",
+        "message_witness": "22/24",
+        "blocker_severity_on_defects": "16/24"
+      }
+    },
+    "approval_handling": {
+      "cases": 14,
+      "status_correct": {
+        "numerator": 14,
+        "denominator": 14
+      },
+      "applied_changes_correct": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "conflict_handling_correct": {
+        "numerator": 4,
+        "denominator": 4
+      }
+    },
+    "semantic_counterexamples": {
+      "cases": 8,
+      "primary_correct": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "specific_diagnosis": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "validated_counterexamples": {
+        "numerator": 51,
+        "denominator": 51
+      },
+      "traces_present": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "evidence_on_both_sides": {
+        "numerator": 8,
+        "denominator": 8
+      }
+    },
+    "coverage": {
+      "total_effective_requirements": 90,
+      "fully_reviewed": 74,
+      "partially_reviewed": 16,
+      "unreviewed": 16,
+      "unsupported_expressions": 0,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 90,
+        "denominator": 90
+      },
+      "specification_coverage": {
+        "numerator": 89,
+        "denominator": 90
+      },
+      "workflow_coverage": {
+        "numerator": 89,
+        "denominator": 90
+      },
+      "code_coverage": {
+        "numerator": 84,
+        "denominator": 90
+      },
+      "evidence_completeness": {
+        "numerator": 90,
+        "denominator": 90
+      },
+      "comparison_modes": {
+        "exhaustive": 88
+      }
+    },
+    "reports": [
+      "reports/remediation/metrics.json",
+      "reports/remediation/development_evaluation.json",
+      "reports/remediation/approval_tests.json",
+      "reports/remediation/counterexample_tests.json",
+      "reports/remediation/summary.md"
+    ]
+  },
+  "false_passes": {
+    "original_stage4_development": "0/17",
+    "remediation_development": "0/16",
+    "original_stage4_sealed": "0 of 10 sealed decisions were PASS where a defect was expected; F03 and G05 are the two sealed decision differences",
+    "ablation_enabled": "0/17",
+    "ablation_disabled": "0/17"
+  },
+  "false_blocks": {
+    "original_stage4_development": "0/10",
+    "remediation_development": "0/6",
+    "original_stage4_sealed_F03": "F03 is a genuine over-report relative to its Stage 1 label scope (two THRESHOLD_CHANGED blockers under the effective policy)",
+    "ablation_disabled": "0/10"
+  },
+  "coverage_and_unsupported_scope": {
+    "original_stage4_development": {
+      "total_effective_requirements": 109,
+      "fully_reviewed": 96,
+      "partially_reviewed": 13,
+      "unreviewed": 13,
+      "unsupported_expressions": 3,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "specification_coverage": {
+        "numerator": 102,
+        "denominator": 109
+      },
+      "workflow_coverage": {
+        "numerator": 106,
+        "denominator": 109
+      },
+      "code_coverage": {
+        "numerator": 20,
+        "denominator": 24
+      },
+      "evidence_completeness": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "comparison_modes": {
+        "exhaustive": 63
+      }
+    },
+    "remediation_development": {
+      "total_effective_requirements": 90,
+      "fully_reviewed": 74,
+      "partially_reviewed": 16,
+      "unreviewed": 16,
+      "unsupported_expressions": 0,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 90,
+        "denominator": 90
+      },
+      "specification_coverage": {
+        "numerator": 89,
+        "denominator": 90
+      },
+      "workflow_coverage": {
+        "numerator": 89,
+        "denominator": 90
+      },
+      "code_coverage": {
+        "numerator": 84,
+        "denominator": 90
+      },
+      "evidence_completeness": {
+        "numerator": 90,
+        "denominator": 90
+      },
+      "comparison_modes": {
+        "exhaustive": 88
+      }
+    },
+    "unsupported_in_product": [
+      "arbitrary Python beyond the documented AST subset",
+      "natural language outside the anchored requirement grammar",
+      "real live-model semantic performance (advisory layer only)",
+      "continuous/unbounded domains that cannot be exhaustively enumerated"
+    ],
+    "unsupported_in_evaluation": [
+      "sealed cases not rerun after remediation",
+      "no external benchmark",
+      "label audit not human review",
+      "live model quality unmeasured"
+    ]
+  },
+  "baseline": {
+    "tag": "stage2-baseline",
+    "commit": "4702939fdabfb97a60aa89fd37a70d0678a56996",
+    "dependency_lock_sha256": "9deec83379b4cdf064863795d988923ccdda846a72fc66a4232b06098dedb409",
+    "features_missing": [
+      "no --model flag (the baseline has no model layer; deterministic review is its only mode)",
+      "no domain-partitioning switch (partitioning is always on)"
+    ],
+    "identical_inputs": true,
+    "baseline_correct": "27/27",
+    "final_correct": "27/27",
+    "status_agreement": "27/27",
+    "report": "reports/baseline/comparison.json"
+  },
+  "ablation": {
+    "config": "configs/no_domain_partitioning.toml",
+    "enabled_correct": "27/27",
+    "disabled_correct": "10/27",
+    "enabled_counts": {
+      "PASS": 10,
+      "CHANGES_REQUIRED": 11,
+      "INCOMPLETE": 6
+    },
+    "disabled_counts": {
+      "PASS": 0,
+      "CHANGES_REQUIRED": 4,
+      "INCOMPLETE": 23
+    },
+    "enabled_valid_counterexamples": "78/78",
+    "disabled_valid_counterexamples": "15/15",
+    "disabled_unreviewed_comparisons": 63,
+    "false_pass_both": 0,
+    "interpretation": "The ablated reviewer abstains instead of asserting agreement, so it loses coverage without producing false PASS.",
+    "report": "reports/ablation/metrics.json"
+  },
+  "debugging_evidence": {
+    "examples": [
+      {
+        "example": "D-01",
+        "title": "A sampled review asserted a cause for a requirement the sample never exercised",
+        "parent_commit": "ace94797209f58dca50911851e32247081127bfa",
+        "fix_commit": "528aaf7615f729979ab157f063571ba5d0005592",
+        "parent_exit_code": 1,
+        "fix_exit_code": 0,
+        "head_exit_code": 0
+      },
+      {
+        "example": "D-02",
+        "title": "An unsupported router region was found but omitted from the unreviewed scope",
+        "parent_commit": "528aaf7615f729979ab157f063571ba5d0005592",
+        "fix_commit": "f0dbb0c0d3108235630c79f33ae66a48421c6ece",
+        "parent_exit_code": 1,
+        "fix_exit_code": 0,
+        "head_exit_code": 0
+      }
+    ],
+    "report": "reports/debugging/debugging_examples.json",
+    "reproduction": "Each regression test runs against an isolated git-archive snapshot of the parent commit; it fails there and passes at the fix commit and at HEAD."
+  },
+  "model_integration": {
+    "mode": "fake",
+    "scenarios": 17,
+    "bundles": 3,
+    "requests": 51,
+    "completed": 30,
+    "failed": 21,
+    "retries": 18,
+    "status_invariance": true,
+    "real_model_calls": 0,
+    "live_model_quality": "unmeasured",
+    "limitations": [
+      "Fake-client scenarios test the contract, not a real model's semantic quality.",
+      "The Gemini adapter exists but fails closed without credentials and was not called.",
+      "No model observation can become a finding, blocker, approval or status."
+    ],
+    "report": "reports/evaluation/model_scenarios.json"
+  },
+  "documentation": {
+    "engineering_note": {
+      "path": "docs/engineering_note.md",
+      "page_limit": 4,
+      "rendered_pages": 3,
+      "sha256": "715f30fc5d96a3536e89fc177994b8be00d2a2dafe0219e1fe61abd145f51bd0"
+    },
+    "ai_assistance_note": {
+      "path": "docs/ai_assistance_note.md",
+      "page_limit": 1,
+      "rendered_pages": 1,
+      "sha256": "23c94a505136284c9a10893070ced544b15fa7323a046310b5f41d1e70f08738"
+    },
+    "readme": {
+      "path": "README.md",
+      "sha256": "2dbfc48a4a294bda1b725bbeebc8994c0e57f1f82231f937f47a800d8c187f12"
+    },
+    "rendering_method": "Markdown converted to HTML with a local scratch converter, then printed to A4 PDF (15-16 mm margins, 9.6 pt body) by headless Google Chrome 157.0.8103.79; page count read from the PDF page tree. Other renderers may paginate differently, but this is a real rendered count, not an estimate."
+  },
+  "offline_reproducibility": {
+    "report": "reports/submission/offline_verification.json",
+    "revision": "56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7",
+    "command": "uv run python <redirected driver invoking scripts/run_offline.py::main>",
+    "credential_condition": "GEMINI_API_KEY removed from the process environment before the run",
+    "exit_code": 0,
+    "output_destination": ".offline-verification-final (temporary in-repo directory; removed after this summary was written)",
+    "historical_reports_overwritten": false,
+    "sealed_cases_executed": false,
+    "checks": [
+      "offline operation and no network provider calls",
+      "all tests",
+      "schema validation",
+      "manifest integrity",
+      "development evaluation",
+      "baseline comparison from git archive",
+      "ablation",
+      "fake model scenarios",
+      "debugging regressions",
+      "JSON report validation"
+    ],
+    "log": "reports/submission/offline_verification.log",
+    "note": "The runner writes to a redirectable report root; this verification used a temporary destination, so the committed historical Stage 4, baseline, ablation and debugging reports were not overwritten. GEMINI_API_KEY was removed from the inherited environment for the run; the run still succeeded."
+  },
+  "git": {
+    "source_revision": "56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7",
+    "baseline_tag": "stage2-baseline",
+    "baseline_commit": "4702939fdabfb97a60aa89fd37a70d0678a56996",
+    "checkpoints": [
+      "293e92d",
+      "37766b7",
+      "56f5bb4"
+    ],
+    "packaging_commit_scope": "README.md, docs/engineering_note.md, docs/ai_assistance_note.md, docs/submission_readiness.md, reports/final/submission_readiness.json, reports/final/requirement_traceability.json, reports/remediation/label_audit.json, reports/submission/*",
+    "previous_commits_and_tags_preserved": true,
+    "working_tree": "verified clean after the packaging commit; source files unchanged from 56f5bb4"
+  },
+  "manifest_hashes": {
+    "holdout/MANIFEST.sha256": "e10de058ceb51586f16c657c75e4fd3b4fd9cbded6f76beda9a4e0c648ba6f41",
+    "holdout_stage2/MANIFEST.sha256": "a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4",
+    "evaluation/MANIFEST.sha256": "7ac65c0e19665fbbe71c135fd347922aa173eb4e0c7825b5adb54e39eeda2ea8",
+    "evaluation/DATASET.json": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7"
+  },
+  "security_scan": {
+    "tracked_secret_pattern_matches": 0,
+    "tracked_env_or_key_files": 0,
+    "credential_values_in_reports": 0,
+    "lockfile_tracked": "uv.lock",
+    "caches_excluded_from_git": [
+      ".venv/",
+      "__pycache__/",
+      ".pytest_cache/",
+      ".mypy_cache/",
+      ".ruff_cache/",
+      ".hypothesis/",
+      "build/",
+      "dist/",
+      "*.egg-info/"
+    ],
+    "archive_exclusions": [
+      ".git",
+      ".venv",
+      "build",
+      "dist",
+      "__pycache__",
+      ".pytest_cache",
+      ".mypy_cache",
+      ".ruff_cache",
+      ".hypothesis"
+    ],
+    "largest_tracked_file_kb": 168,
+    "synthetic_fixtures_preserved": true,
+    "schemas_reports_manifests_preserved": true
+  },
+  "remaining_risks": [
+    "The sealed result remains 8/10; F03, G05, G03 and G04 are disclosed, and no sealed case was rerun or tuned against.",
+    "The remediation 22/22 result is development evidence on newly authored bundles, not unseen-case accuracy.",
+    "The label audit is AI re-derivation and oracle cross-check by the implementation author, not independent human review.",
+    "Live Gemini quality, latency and cost are unmeasured; only 17 fake-client contract scenarios were exercised.",
+    "Datasets are small and repository-authored, not an external benchmark; coverage of production language is unknown.",
+    "Six remediation label tickets maps contain unscored documentation discrepancies; status, defect, threshold and applied-change labels are unaffected.",
+    "Two of 18 identifying findings in the Stage 4 rerun have non-exact message witnesses (16/18), so witness wording is not fully uniform.",
+    "JSON evidence excerpts are canonical projections, not byte-exact formatting.",
+    "Page counts were measured with one local Chrome renderer; other renderers may paginate differently."
+  ],
+  "final_statement": "VerityFlow is ready for submission with the limitations above disclosed. The deterministic reviewer, its evidence, its evaluation separation and its reproducibility are supported by executed evidence at revision 56f5bb4; the sealed 8/10 result and the absence of live-model measurement are not presented as success."
+}

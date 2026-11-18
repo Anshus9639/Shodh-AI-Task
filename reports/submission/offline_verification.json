@@ -1,0 +1,146 @@
+{
+  "verification_id": "final-offline-verification",
+  "generated_at": "2026-11-18",
+  "git_revision": "56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7",
+  "command": "uv run python <redirected driver invoking scripts/run_offline.py::main>",
+  "credential_condition": "GEMINI_API_KEY removed from the process environment before the run",
+  "exit_code": 0,
+  "output_destination": ".offline-verification-final (temporary in-repo directory; removed after this summary was written)",
+  "historical_reports_overwritten": false,
+  "pytest": {
+    "summary": "411 passed",
+    "duration_seconds": 20.51
+  },
+  "development_evaluation": {
+    "overall_correct": {
+      "numerator": 27,
+      "denominator": 27
+    },
+    "actual_counts": {
+      "PASS": 10,
+      "CHANGES_REQUIRED": 11,
+      "INCOMPLETE": 6
+    },
+    "false_pass": {
+      "numerator": 0,
+      "denominator": 17
+    },
+    "false_pass_on_defective": {
+      "numerator": 0,
+      "denominator": 11
+    },
+    "false_block": {
+      "numerator": 0,
+      "denominator": 10
+    },
+    "findings_total": 33,
+    "evidence_location": {
+      "numerator": 18,
+      "denominator": 18
+    },
+    "structured_evidence": {
+      "numerator": 18,
+      "denominator": 18
+    },
+    "valid_evidence": {
+      "numerator": 37,
+      "denominator": 37
+    },
+    "message_witness": {
+      "numerator": 16,
+      "denominator": 18
+    },
+    "valid_counterexamples": {
+      "numerator": 78,
+      "denominator": 78
+    },
+    "duplicate_findings": 0,
+    "unsupported_findings": 3
+  },
+  "baseline_comparison": {
+    "overall_correct": {
+      "numerator": 27,
+      "denominator": 27
+    },
+    "identical_inputs": true,
+    "baseline_final_status_agreement_cases": 27,
+    "cases": 27
+  },
+  "ablation": {
+    "enabled_overall_correct": {
+      "numerator": 27,
+      "denominator": 27
+    },
+    "disabled_overall_correct": {
+      "numerator": 10,
+      "denominator": 27
+    },
+    "enabled_actual_counts": {
+      "PASS": 10,
+      "CHANGES_REQUIRED": 11,
+      "INCOMPLETE": 6
+    },
+    "disabled_actual_counts": {
+      "PASS": 0,
+      "CHANGES_REQUIRED": 4,
+      "INCOMPLETE": 23
+    },
+    "enabled_false_pass": {
+      "numerator": 0,
+      "denominator": 17
+    },
+    "enabled_false_block": {
+      "numerator": 0,
+      "denominator": 10
+    },
+    "disabled_false_pass": {
+      "numerator": 0,
+      "denominator": 17
+    },
+    "disabled_false_block": {
+      "numerator": 0,
+      "denominator": 10
+    }
+  },
+  "fake_models": {
+    "model_mode": "fake",
+    "scenarios": 17,
+    "requests": 51,
+    "completed": 30,
+    "failed": 21,
+    "retries": 18,
+    "status_invariance": true,
+    "real_model_calls": 0
+  },
+  "debugging": [
+    {
+      "example_id": "D-01",
+      "parent_exit": 1,
+      "fix_exit": 0,
+      "head_exit": 0
+    },
+    {
+      "example_id": "D-02",
+      "parent_exit": 1,
+      "fix_exit": 0,
+      "head_exit": 0
+    }
+  ],
+  "manifest_integrity": {
+    "dataset_bundles": 37,
+    "development_bundles": 27,
+    "sealed_bundles": 10,
+    "sealed_manifests_unchanged": true,
+    "dataset_file_hash_mismatches": 0
+  },
+  "report_schema_validation": {
+    "redirected_reports": "validated inside the offline run",
+    "historical_sealed_report": "reports/evaluation/holdout_results.json validated separately against evaluation_sealed_results"
+  },
+  "quality_gates": {
+    "ruff_check": "All checks passed!",
+    "ruff_format_check": "172 files already formatted",
+    "mypy": "Success: no issues found in 66 source files"
+  },
+  "sealed_cases_executed": false
+}

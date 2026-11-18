@@ -1,0 +1,929 @@
+{
+  "audit_id": "remediation-label-audit",
+  "generated_at": "2026-11-18",
+  "git_revision": "56f5bb49eeb29eff3c2b65e91e3368e5c29f61e7",
+  "scope": {
+    "suite": "remediation-development",
+    "case_count": 22,
+    "bundles": [
+      "fixtures/remediation/approvals (A-N)",
+      "fixtures/remediation/semantic (S1-S8)"
+    ],
+    "excluded": [
+      "evaluation/cases (Stage 4 development, retained)",
+      "holdout and holdout_stage2 (sealed, not executed)"
+    ]
+  },
+  "auditor": {
+    "identity": "Qoder AI assistant, also the implementation author",
+    "type": "AI re-derivation and oracle cross-check; not an independent human reviewer",
+    "independence_statement": "The labels were authored in this repository. This audit re-derived every label from bundle bytes and cross-checked it with evaluation/oracle.py, which imports no reviewer code, but both the labels and this audit were produced with the same AI assistant. No independent human review is claimed."
+  },
+  "verification_summary": {
+    "labels_preserved": 22,
+    "labels_confirmed": 22,
+    "status_or_defect_label_errors_found": 0,
+    "oracle_status_agreement": 17,
+    "oracle_status_disagreement_resolved_by_manual_reasoning": 4,
+    "oracle_unevaluable_resolved_manually": 1,
+    "documentation_discrepancies": {
+      "ticket_map_issues": [
+        {
+          "bundle_id": "B_approved_25_impl_25",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "C_approved_25_impl_30",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "G_unit_conversion",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "H_sequential_changes",
+          "issue_type": "stale_entry",
+          "detail": [
+            "wait_time=29 expected normal_queue but the effective >=24 threshold requires escalation_queue"
+          ]
+        },
+        {
+          "bundle_id": "J_conflict_plus_independent_defect",
+          "issue_type": "mixed_convention",
+          "detail": [
+            "category absent + urgent expected priority_queue reflects the defective router, not the requirement (manual_review); the map does not state which convention applies"
+          ]
+        },
+        {
+          "bundle_id": "S2_decimal_boundary",
+          "issue_type": "mixed_convention",
+          "detail": [
+            "wait_time=29.5 expected escalation_queue is the router's behaviour; the requirement (>=30) requires normal_queue"
+          ]
+        }
+      ],
+      "scoring_impact": "none; evaluation/harness.py stores expected_tickets but no remediation metric consumes it"
+    },
+    "corrected_dataset_created": false,
+    "corrected_dataset_justification": "No status, defect-class, threshold or applied-change label is wrong; the only discrepancies are unscored documentation entries. Creating a corrected dataset would change label hashes without improving evaluation evidence, so the original labels are preserved and the discrepancies are recorded here."
+  },
+  "cases": [
+    {
+      "bundle_id": "A_original_30",
+      "bundle_path": "fixtures/remediation/approvals/A_original_30",
+      "bundle_manifest_sha256": "21105cc9c57571a03b07816225082f05bf87e3c7c575df347f199eb3e23ba728",
+      "label_path": "evaluation/remediation/cases/A_original_30.json",
+      "label_sha256": "ae6bec3aad3939631686bcf61ddeca7b111f3caf19de0bb5c6fd227c128f11e5",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "PASS",
+      "expected_defect_classes_preserved": [],
+      "expected_primary_defect_preserved": "",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "No change artifact and no approvals. R1-R4, spec S1/S3/S4, workflow b1/b3/b4/b5 and the linked router all encode the same first-match policy with a >=30-minute escalation threshold. Exhaustive ticket-space comparison finds no behavioural difference, so PASS.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "PASS",
+      "oracle_defect_classes": [],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "PASS",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "B_approved_25_impl_25",
+      "bundle_path": "fixtures/remediation/approvals/B_approved_25_impl_25",
+      "bundle_manifest_sha256": "008bc38c05fe248c6ed4a7356ef9217fd57ef7cf9c12e896488515400b8630d0",
+      "label_path": "evaluation/remediation/cases/B_approved_25_impl_25.json",
+      "label_sha256": "d70c272c65d0de2f99a938d42cfaa6597466daa015c2a05fe9f66b20f65ab6dc",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "PASS",
+      "expected_defect_classes_preserved": [],
+      "expected_primary_defect_preserved": "",
+      "expected_effective_threshold_preserved": 25,
+      "expected_applied_changes_preserved": [
+        "C1@1"
+      ],
+      "independent_reasoning": "A1 is a policy_owner approval whose change_sha256 equals the independently recomputed canonical hash of C1. C1 replaces R3 30->25 minutes on REQ@1.0. The effective threshold is 25; spec S4, workflow b4 and the router all compare >=25, so no behavioural difference exists and the status is PASS.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "PASS",
+      "oracle_defect_classes": [],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, stale entry",
+      "ticket_expectation_issues": [
+        "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+      ],
+      "ambiguities": [
+        "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue",
+        "The 'tickets' field is not consumed by the remediation metrics, so the stale entry does not affect any reported status, defect or agreement count."
+      ],
+      "expected_status": "PASS",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "C_approved_25_impl_30",
+      "bundle_path": "fixtures/remediation/approvals/C_approved_25_impl_30",
+      "bundle_manifest_sha256": "3d91a67451cc45e85b22eaf5026225d7c04c216c3ad479ce398af4b6af7751f0",
+      "label_path": "evaluation/remediation/cases/C_approved_25_impl_30.json",
+      "label_sha256": "7ed54d84697ae9c01bc8da4f25fb81072297869ae61d29434d3088b234feaff0",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "THRESHOLD_CHANGED"
+      ],
+      "expected_primary_defect_preserved": "THRESHOLD_CHANGED",
+      "expected_effective_threshold_preserved": 25,
+      "expected_applied_changes_preserved": [
+        "C1@1"
+      ],
+      "independent_reasoning": "The same hash-bound approval applies C1 (30->25), giving effective threshold 25. Spec S4, workflow b4 and the router still compare >=30, so tickets in [25,30) are routed to normal instead of escalation. A validated threshold difference exists under the confirmed policy: CHANGES_REQUIRED with THRESHOLD_CHANGED.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "THRESHOLD_CHANGED"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, stale entry",
+      "ticket_expectation_issues": [
+        "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+      ],
+      "ambiguities": [
+        "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue",
+        "The 'tickets' field is not consumed by the remediation metrics, so the stale entry does not affect any reported status, defect or agreement count."
+      ],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "D_unapproved_25_impl_30",
+      "bundle_path": "fixtures/remediation/approvals/D_unapproved_25_impl_30",
+      "bundle_manifest_sha256": "3dd70496cc9b476ca23fab3c93f9f906353a6e6c12468843309091440e1862a2",
+      "label_path": "evaluation/remediation/cases/D_unapproved_25_impl_30.json",
+      "label_sha256": "c79e293ae6a16fbdd3a7c109271c63d2a1356f1589fdf51795ba13534a600323",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "PASS",
+      "expected_defect_classes_preserved": [],
+      "expected_primary_defect_preserved": "",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "C1 exists but has no approval record, so it grants no authority and is not applied. The effective threshold remains 30 and every artifact implements 30, so there is no behavioural difference. The unapproved proposal is disclosed, not applied: PASS.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "PASS",
+      "oracle_defect_classes": [],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "PASS",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "E_wrong_revision_binding",
+      "bundle_path": "fixtures/remediation/approvals/E_wrong_revision_binding",
+      "bundle_manifest_sha256": "03b81b51d72715bec12565c5d1d6a1e917bc099d957f0d0acb33f4096e920a6c",
+      "label_path": "evaluation/remediation/cases/E_wrong_revision_binding.json",
+      "label_sha256": "4019fe2629c1fd9ffec85a674275a05612fcb4743018607c70a2d8ad1e62ed74",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "INCOMPLETE",
+      "expected_defect_classes_preserved": [
+        "STALE_CHANGE"
+      ],
+      "expected_primary_defect_preserved": "STALE_CHANGE",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "A1 is hash-bound to C1, but C1 declares base_artifact REQ with base_version 2.0 while the reviewed requirement is REQ@1.0. The change cannot bind to the reviewed revision and is stale; it is not applied. All artifacts implement the base 30. INCOMPLETE with STALE_CHANGE.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "INCOMPLETE",
+      "oracle_defect_classes": [
+        "STALE_CHANGE"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "INCOMPLETE",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "F_wrong_operator",
+      "bundle_path": "fixtures/remediation/approvals/F_wrong_operator",
+      "bundle_manifest_sha256": "839f9212e0bbaa76c90ac46d1b27a181713e3f6e857707d0172cfa1505f4505d",
+      "label_path": "evaluation/remediation/cases/F_wrong_operator.json",
+      "label_sha256": "32d2c049137791632dcebd19e69c0ca97b0a3ab6df79f90448938fc17f32815f",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "WRONG_OPERATOR"
+      ],
+      "expected_primary_defect_preserved": "WRONG_OPERATOR",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "No approvals. R3 is 'at least 30 minutes' (>=30); spec and workflow encode >=30; the linked router uses '< 30', which routes the complementary region (30 returns normal, 10 returns escalation). CHANGES_REQUIRED with WRONG_OPERATOR.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "THRESHOLD_CHANGED"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees; the oracle's coarser class is THRESHOLD_CHANGED while manual operator comparison confirms the more specific WRONG_OPERATOR label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "G_unit_conversion",
+      "bundle_path": "fixtures/remediation/approvals/G_unit_conversion",
+      "bundle_manifest_sha256": "197d883bf2742bf760e7cf7243a3a6a7ce85f0a9ab15a5daa359afa922c52b0f",
+      "label_path": "evaluation/remediation/cases/G_unit_conversion.json",
+      "label_sha256": "3c0b992779cbb86ddd86aff73847fada5a0618d60c39eb9b7651432fed7d485d",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "PASS",
+      "expected_defect_classes_preserved": [],
+      "expected_primary_defect_preserved": "",
+      "expected_effective_threshold_preserved": 25,
+      "expected_applied_changes_preserved": [
+        "C1@1"
+      ],
+      "independent_reasoning": "A1 is hash-bound to C1, which replaces 30 minutes with 1500 seconds. 1500 s / 60 = 25 minutes, the declared wait_time unit; the effective threshold is 25 minutes. Spec S4, workflow b4 and the router all compare >=25 minutes. PASS.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "THRESHOLD_CHANGED"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": false,
+      "verification_notes": [
+        "Oracle reports CHANGES_REQUIRED vs label PASS.",
+        "Oracle limitation: the Stage 4 oracle applies the approved 'to' value without converting seconds to the declared field unit, so it compares 1500 seconds with 25 minutes and reports THRESHOLD_CHANGED. Manual unit arithmetic confirms 1500 s = 25 min and the label PASS."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, stale entry",
+      "ticket_expectation_issues": [
+        "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue"
+      ],
+      "ambiguities": [
+        "wait_time=29 expected normal_queue but the effective >=25 threshold requires escalation_queue",
+        "The 'tickets' field is not consumed by the remediation metrics, so the stale entry does not affect any reported status, defect or agreement count."
+      ],
+      "expected_status": "PASS",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "H_sequential_changes",
+      "bundle_path": "fixtures/remediation/approvals/H_sequential_changes",
+      "bundle_manifest_sha256": "9ee4c512741b4cea161b6070742dc937b3e0993320c625e9cff90ee85240999f",
+      "label_path": "evaluation/remediation/cases/H_sequential_changes.json",
+      "label_sha256": "eb5ad419237aeab9320625ad95c2135efdabf4a39f599936b9c94c83888d9364",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "PASS",
+      "expected_defect_classes_preserved": [],
+      "expected_primary_defect_preserved": "",
+      "expected_effective_threshold_preserved": 24,
+      "expected_applied_changes_preserved": [
+        "C1@1",
+        "C2@1"
+      ],
+      "independent_reasoning": "A1 binds C1 (30->28, sequence 1) and A2 binds C2 (28->24, sequence 2); both hashes recompute correctly and both are approved. Applied once in sequence the effective threshold is 24. Spec/workflow/router all compare >=24, so PASS.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "PASS",
+      "oracle_defect_classes": [],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, stale entry",
+      "ticket_expectation_issues": [
+        "wait_time=29 expected normal_queue but the effective >=24 threshold requires escalation_queue"
+      ],
+      "ambiguities": [
+        "wait_time=29 expected normal_queue but the effective >=24 threshold requires escalation_queue",
+        "The 'tickets' field is not consumed by the remediation metrics, so the stale entry does not affect any reported status, defect or agreement count."
+      ],
+      "expected_status": "PASS",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "I_conflicting_disputed_impl",
+      "bundle_path": "fixtures/remediation/approvals/I_conflicting_disputed_impl",
+      "bundle_manifest_sha256": "981533cf52ae50bdb5d079b4cd90ff8b548504fa392a3881a11e3e480fc07940",
+      "label_path": "evaluation/remediation/cases/I_conflicting_disputed_impl.json",
+      "label_sha256": "75a6fa038525a7459c5fc2386c60026cd0bfded08c7b28dd3b54d815b6fc9a99",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "INCOMPLETE",
+      "expected_defect_classes_preserved": [
+        "UNDETERMINED_CONFLICT"
+      ],
+      "expected_primary_defect_preserved": "UNDETERMINED_CONFLICT",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "A1 approves and A2 rejects the same hash-bound C1; neither supersedes the other, so the change is disputed. The confirmed policy is the base 30 with no non-conflicted changes. The artifacts implement the disputed 25; that difference is explained by one permitted approval interpretation, so it is not a confirmed blocker. No independent defect exists: INCOMPLETE with UNDETERMINED_CONFLICT and a disclosed coverage gap.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "THRESHOLD_CHANGED",
+        "UNDETERMINED_CONFLICT"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": false,
+      "verification_notes": [
+        "Oracle reports CHANGES_REQUIRED vs label INCOMPLETE.",
+        "Oracle limitation: the oracle detects the conflict but does not re-evaluate the witness under each permitted approval interpretation; it retains THRESHOLD_CHANGED. Candidate-aware reasoning confirms the label INCOMPLETE."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side (confirmed base), consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "INCOMPLETE",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "J_conflict_plus_independent_defect",
+      "bundle_path": "fixtures/remediation/approvals/J_conflict_plus_independent_defect",
+      "bundle_manifest_sha256": "dcf2cb084b872f9a647c05af81b1da00364bae1287be26c706a28cd6ca2d7d65",
+      "label_path": "evaluation/remediation/cases/J_conflict_plus_independent_defect.json",
+      "label_sha256": "c0eca4c347bfca0e13d89aea3cf27d7328c83ed62a938c5c0d3068489c0b038a",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "UNDETERMINED_CONFLICT",
+        "PRECEDENCE"
+      ],
+      "expected_primary_defect_preserved": "PRECEDENCE",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "C1 is disputed exactly as in I, so the threshold difference is not a confirmed blocker. Independently, the router tests urgency before the missing-category guard, so an urgent ticket with no category returns priority while every permitted policy returns manual review. The precedence defect is reproduced under all interpretations: CHANGES_REQUIRED with PRECEDENCE plus the disclosed conflict.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "THRESHOLD_CHANGED",
+        "UNDETERMINED_CONFLICT"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "mixed: one artifact-side witness and one requirement-side witness",
+      "ticket_expectation_issues": [
+        "category absent + urgent expected priority_queue reflects the defective router, not the requirement (manual_review); the map does not state which convention applies"
+      ],
+      "ambiguities": [
+        "category absent + urgent expected priority_queue reflects the defective router, not the requirement (manual_review); the map does not state which convention applies",
+        "The 'tickets' field has no documented semantics and mixes requirement-side and artifact-side expectations; it is not consumed by any metric."
+      ],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "K_multiple_conflicts",
+      "bundle_path": "fixtures/remediation/approvals/K_multiple_conflicts",
+      "bundle_manifest_sha256": "74d212d880dd1b91da19f56d49cb81bc908371c6bb691dbf0e660e6a5432161d",
+      "label_path": "evaluation/remediation/cases/K_multiple_conflicts.json",
+      "label_sha256": "fada3e166dba94b2e01e89b4210d13576173dbc387dd6e0f3b99172813d1b83a",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "INCOMPLETE",
+      "expected_defect_classes_preserved": [
+        "UNDETERMINED_CONFLICT"
+      ],
+      "expected_primary_defect_preserved": "UNDETERMINED_CONFLICT",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "C1 (threshold 30->25) and C2 (R2 urgent destination priority->manual) each have one approval and one non-superseding rejection. The confirmed policy is the base 30/priority, which the artifacts implement. No confirmed behavioural difference exists, but two scopes are undetermined: INCOMPLETE with disclosed conflicts.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "INCOMPLETE",
+      "oracle_defect_classes": [
+        "UNDETERMINED_CONFLICT"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side (confirmed base), consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "INCOMPLETE",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "L_valid_supersession",
+      "bundle_path": "fixtures/remediation/approvals/L_valid_supersession",
+      "bundle_manifest_sha256": "2e18a3a6c4379b9671897a9ad60381ff47657ed2f38695ef6bb9b9c83a9c8662",
+      "label_path": "evaluation/remediation/cases/L_valid_supersession.json",
+      "label_sha256": "9bd45e80b07862523cafc08c0e446c4f21af06471aef7393ad1df90177877fa8",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "PASS",
+      "expected_defect_classes_preserved": [],
+      "expected_primary_defect_preserved": "",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "A1 approves C1, then A2 rejects C1 and lists supersedes ['A1']. The later rejection is the active decision, C1 is not applied, and the artifacts implement the base 30 policy: PASS.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "PASS",
+      "oracle_defect_classes": [],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "PASS",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "M_invalid_approval_hash",
+      "bundle_path": "fixtures/remediation/approvals/M_invalid_approval_hash",
+      "bundle_manifest_sha256": "0fa24df104035615ff4fb04f358291626d3dd68884326d6281695ac9070804f1",
+      "label_path": "evaluation/remediation/cases/M_invalid_approval_hash.json",
+      "label_sha256": "aebe334a928e9c829451d53ce4422448f489830180c5bde18051cbd18f2ed957",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "INCOMPLETE",
+      "expected_defect_classes_preserved": [
+        "INVALID_APPROVAL"
+      ],
+      "expected_primary_defect_preserved": "INVALID_APPROVAL",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "A1 claims to approve C1 but its change_sha256 is all zeros, not the recomputed hash of C1, so it grants no authority. C1 is unapproved and the effective threshold stays 30. The artifacts implement 30, but authority integrity fails closed: INCOMPLETE with INVALID_APPROVAL.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "INCOMPLETE",
+      "oracle_defect_classes": [
+        "INVALID_APPROVAL"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "INCOMPLETE",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "N_conflict_plus_runtime_error",
+      "bundle_path": "fixtures/remediation/approvals/N_conflict_plus_runtime_error",
+      "bundle_manifest_sha256": "5b1113ae9a42bc83f079cbc0d14bf1ba45f4b41374c1c0dd697309a1ea2e8f0c",
+      "label_path": "evaluation/remediation/cases/N_conflict_plus_runtime_error.json",
+      "label_sha256": "b7643403c16a7dc39bdac49a64b09123611b50abd2057ba3c8223c09d36418eb",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "UNDETERMINED_CONFLICT",
+        "RUNTIME_ERROR"
+      ],
+      "expected_primary_defect_preserved": "RUNTIME_ERROR",
+      "expected_effective_threshold_preserved": 30,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "C1 is disputed as in I, so the threshold difference is not a confirmed blocker. The router assigns category = ticket['category'] unconditionally, so every missing-category witness raises KeyError while every permitted policy routes to manual review. This runtime defect is independent of the conflict: CHANGES_REQUIRED with RUNTIME_ERROR plus the disclosed conflict.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "THRESHOLD_CHANGED",
+        "UNDETERMINED_CONFLICT",
+        "UNSUPPORTED_CODE"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees; the oracle reports UNSUPPORTED_CODE instead of RUNTIME_ERROR. The reviewer executes the witness and validates KeyError, confirming the label class."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S1_integer_boundary",
+      "bundle_path": "fixtures/remediation/semantic/S1_integer_boundary",
+      "bundle_manifest_sha256": "4557ae1e5f14053ed1ce0b348e18b0ddeb9d40f3a2b7b52aae34f808e5488c93",
+      "label_path": "evaluation/remediation/cases/S1_integer_boundary.json",
+      "label_sha256": "78c2fd267f2a89efc096f4e81b91826f805363af1bc081ce2ae889524e3c9a54",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "THRESHOLD_CHANGED"
+      ],
+      "expected_primary_defect_preserved": "THRESHOLD_CHANGED",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "wait_time is an integer domain. Requirement and spec/workflow use >=30; the router uses >30, so the differing set is exactly {30}, where the router returns normal and the requirement escalation. CHANGES_REQUIRED with THRESHOLD_CHANGED.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "THRESHOLD_CHANGED"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S2_decimal_boundary",
+      "bundle_path": "fixtures/remediation/semantic/S2_decimal_boundary",
+      "bundle_manifest_sha256": "9b510abc844caae8133aa81650e82e4049dcf5f1eae3d07f6b1cd5dd6d152ff1",
+      "label_path": "evaluation/remediation/cases/S2_decimal_boundary.json",
+      "label_sha256": "de42b5f7a5ea214af921a7c1d0dd408ef3ab483b8a848d28a521c6059e29d379",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "THRESHOLD_CHANGED"
+      ],
+      "expected_primary_defect_preserved": "THRESHOLD_CHANGED",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "wait_time is decimal with scale 1 (0.1-minute grid). Requirement and spec/workflow use >=30; the router uses >=29.5, and 29.5 is representable on the declared grid and differs. CHANGES_REQUIRED with THRESHOLD_CHANGED.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "INCOMPLETE",
+      "oracle_defect_classes": [
+        "UNSUPPORTED_CODE"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": false,
+      "verification_notes": [
+        "Oracle reports INCOMPLETE vs label CHANGES_REQUIRED.",
+        "Oracle limitation: the oracle reports UNSUPPORTED_CODE for the float literal 29.5 and cannot evaluate the case. Manual evaluation on the declared 0.1 grid confirms the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "mixed: the boundary witness is artifact-side",
+      "ticket_expectation_issues": [
+        "wait_time=29.5 expected escalation_queue is the router's behaviour; the requirement (>=30) requires normal_queue"
+      ],
+      "ambiguities": [
+        "wait_time=29.5 expected escalation_queue is the router's behaviour; the requirement (>=30) requires normal_queue",
+        "The 'tickets' field has no documented semantics and mixes requirement-side and artifact-side expectations; it is not consumed by any metric."
+      ],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S3_continuous_boundary",
+      "bundle_path": "fixtures/remediation/semantic/S3_continuous_boundary",
+      "bundle_manifest_sha256": "4a44f1b670e93d1c41eff369b7e9bff8d7721000c72537a50e3e86d48b2ed3a8",
+      "label_path": "evaluation/remediation/cases/S3_continuous_boundary.json",
+      "label_sha256": "1ad4cbaeab3aff02b46e08e6d027fc258633ac33fe88b512c5078560d45add83",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "THRESHOLD_CHANGED"
+      ],
+      "expected_primary_defect_preserved": "THRESHOLD_CHANGED",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "wait_time is continuous. The requirement says 'more than 30' (>30) and spec/workflow encode >30; the router uses >=30, so the differing set is exactly {30}. CHANGES_REQUIRED with THRESHOLD_CHANGED.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "SCRIPT_DISAGREEMENT",
+        "UNSUPPORTED_LANGUAGE"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees; the oracle cannot parse 'more than 30' and reports UNSUPPORTED_LANGUAGE/SCRIPT_DISAGREEMENT. Manual boundary comparison confirms THRESHOLD_CHANGED."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S4_missing_value_precedence",
+      "bundle_path": "fixtures/remediation/semantic/S4_missing_value_precedence",
+      "bundle_manifest_sha256": "8cdc1c05f1c803ab12504d72969caec4bb8c4e85b3c488befcb9e53f8ed43de6",
+      "label_path": "evaluation/remediation/cases/S4_missing_value_precedence.json",
+      "label_sha256": "0ef16103264ab14db27371c815cf0b2f1e9ac0280e2c7e7f3970ff0a47898fc8",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "PRECEDENCE"
+      ],
+      "expected_primary_defect_preserved": "PRECEDENCE",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "The requirement and spec/workflow test missing category before urgency. The router tests urgency first, so {category absent, priority urgent} routes to priority instead of manual review. CHANGES_REQUIRED with PRECEDENCE.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "PRECEDENCE"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees with the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S5_exception_overlap",
+      "bundle_path": "fixtures/remediation/semantic/S5_exception_overlap",
+      "bundle_manifest_sha256": "e941f5bfb267fc5d90b354a39d036f46917969b3ef02e81668ea09254572f6da",
+      "label_path": "evaluation/remediation/cases/S5_exception_overlap.json",
+      "label_sha256": "7e400420214f37e0f4a2e874c045dd92fbdf6d44a8c700d165b6453fdc9503e0",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "PRECEDENCE"
+      ],
+      "expected_primary_defect_preserved": "PRECEDENCE",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "The requirement adds an urgent+vip -> manual exception that must precede the plain urgent rule; spec S2 and workflow b2 precede urgent. The router tests plain urgent first, making the vip exception unreachable. CHANGES_REQUIRED with PRECEDENCE.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": null,
+      "oracle_defect_classes": [],
+      "oracle_error": "OracleUnsupported: unknown condition 'present'",
+      "oracle_agreement": null,
+      "verification_notes": [
+        "Oracle could not evaluate the bundle (OracleUnsupported: unknown condition 'present').",
+        "Oracle limitation: the oracle raises OracleUnsupported on the presence condition in the router. Manual branch-order comparison confirms the label."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S6_wrong_destination",
+      "bundle_path": "fixtures/remediation/semantic/S6_wrong_destination",
+      "bundle_manifest_sha256": "2df3fd8ce717af27c4e14e837c05aa74974020c334f8a3f65999be1d934b27cd",
+      "label_path": "evaluation/remediation/cases/S6_wrong_destination.json",
+      "label_sha256": "039fea7ef224a58e680931dd6c9ebd6c757d83374bbd9f638924265b3e8000bf",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "WRONG_DESTINATION"
+      ],
+      "expected_primary_defect_preserved": "WRONG_DESTINATION",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "The urgent condition is semantically identical in requirement, spec and workflow, but the router returns manual instead of priority queue. CHANGES_REQUIRED with WRONG_DESTINATION.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "SCRIPT_DISAGREEMENT"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees; the oracle reports SCRIPT_DISAGREEMENT while manual comparison confirms the more specific WRONG_DESTINATION."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S7_runtime_error",
+      "bundle_path": "fixtures/remediation/semantic/S7_runtime_error",
+      "bundle_manifest_sha256": "fd9b2a3d59273c7504303379475c175c3bfa0cf0a9d3b382e6ca60356a19ff5d",
+      "label_path": "evaluation/remediation/cases/S7_runtime_error.json",
+      "label_sha256": "4ef46bbfe11add207caa4015943b2f20dda7916656ef76a545dcbf7a93f5228b",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "RUNTIME_ERROR"
+      ],
+      "expected_primary_defect_preserved": "RUNTIME_ERROR",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "The requirement and spec/workflow route a missing category to manual review. The router dereferences ticket['category'] without a guard and raises KeyError on that witness. CHANGES_REQUIRED with RUNTIME_ERROR.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "INCOMPLETE",
+      "oracle_defect_classes": [
+        "UNSUPPORTED_CODE"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": false,
+      "verification_notes": [
+        "Oracle reports INCOMPLETE vs label CHANGES_REQUIRED.",
+        "Oracle limitation: the oracle classifies the unconditional subscript as unsupported code (INCOMPLETE) because it does not execute the entrypoint. The reviewer executes the witness and validates KeyError, so CHANGES_REQUIRED/RUNTIME_ERROR is confirmed."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    },
+    {
+      "bundle_id": "S8_overlapping_numeric_rules",
+      "bundle_path": "fixtures/remediation/semantic/S8_overlapping_numeric_rules",
+      "bundle_manifest_sha256": "b9ff0127b3e9624941524716a4f7cccec2c998d72eae5b58395f43bedab07a1a",
+      "label_path": "evaluation/remediation/cases/S8_overlapping_numeric_rules.json",
+      "label_sha256": "a88995a773db68727f7f84e08e4344c05adc192376ec01683e54aacace319293",
+      "label_method_recorded": "independent reasoning from bundle bytes",
+      "reviewer_output_used": false,
+      "expected_status_preserved": "CHANGES_REQUIRED",
+      "expected_defect_classes_preserved": [
+        "MISSING_EXCEPTION"
+      ],
+      "expected_primary_defect_preserved": "MISSING_EXCEPTION",
+      "expected_effective_threshold_preserved": null,
+      "expected_applied_changes_preserved": [],
+      "independent_reasoning": "The requirement adds an exception at >=60 minutes -> manual review. None of spec, workflow or router implements it; all escalate at >=30. CHANGES_REQUIRED with MISSING_EXCEPTION.",
+      "verification_method": "byte-level manual re-derivation plus evaluation/oracle.py cross-check",
+      "oracle_status": "CHANGES_REQUIRED",
+      "oracle_defect_classes": [
+        "MISSING_EXCEPTION",
+        "SCRIPT_DISAGREEMENT"
+      ],
+      "oracle_error": null,
+      "oracle_agreement": true,
+      "verification_notes": [
+        "Oracle status agrees; the oracle additionally reports SCRIPT_DISAGREEMENT. MISSING_EXCEPTION is confirmed from the absent exception in spec, workflow and code."
+      ],
+      "verification_result": "confirmed",
+      "artifacts_sha256_verified": true,
+      "ticket_expectation_semantics": "requirement-side, consistent",
+      "ticket_expectation_issues": [],
+      "ambiguities": [],
+      "expected_status": "CHANGES_REQUIRED",
+      "auditor": {
+        "identity": "Qoder AI assistant, also the implementation author",
+        "type": "AI re-derivation and oracle cross-check; not an independent human reviewer"
+      }
+    }
+  ],
+  "notes": [
+    "All 22 bundle manifests were hash-verified: every artifact sha256 matches its file.",
+    "Approval change hashes were recomputed with oracle.change_hash; M_invalid_approval_hash is the only intentional mismatch.",
+    "Sealed cases were not executed, read for tuning, or included in this audit.",
+    "The oracle is the Stage 4 independent oracle, not a remediation-specific oracle; its unit-normalization, float-literal, candidate-aware conflict and code-execution limits are recorded per case."
+  ]
+}
