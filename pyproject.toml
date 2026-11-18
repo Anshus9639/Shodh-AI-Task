@@ -50,6 +50,9 @@ select = ["E", "F", "I", "UP", "B", "S", "RUF"]
 "scripts/**" = ["S101", "S603", "S607"]
 # This fixture intentionally contains unsupported Python loop syntax.
 "evaluation/bundles/E06_unsupported_python/*" = ["B007"]
+# These routers must dereference a missing key unconditionally to raise at runtime.
+"fixtures/remediation/approvals/N_conflict_plus_runtime_error/router.py" = ["F841"]
+"fixtures/remediation/semantic/S7_runtime_error/router.py" = ["F841"]
 
 [tool.mypy]
 python_version = "3.12"

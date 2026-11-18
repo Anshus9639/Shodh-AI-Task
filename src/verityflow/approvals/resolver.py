@@ -6,6 +6,7 @@ from fractions import Fraction
 from typing import Literal, Protocol, cast
 
 from verityflow.config import Config
+from verityflow.evidence import SourceCatalog
 from verityflow.ir.model import (
     And,
     Cmp,
@@ -28,6 +29,7 @@ from verityflow.ir.units import UnitError, normalize
 from verityflow.models.changes import ChangeArtifact, ChangeOperation, ChangePayload, ChangeRequest
 from verityflow.models.common import TextSpan
 from verityflow.models.dictionary import DataDictionary, FieldDecl
+from verityflow.models.evidence import EvidenceReference, EvidenceRole
 from verityflow.models.manifest import (
     ApprovalDecision,
     ApprovalRecord,
@@ -65,6 +67,7 @@ class _ReportApproval(Protocol):
         severity: Severity,
         message: str,
         rule_ref: str | None = None,
+        approval_id: str | None = None,
     ) -> None: ...
 
 
@@ -97,6 +100,7 @@ def resolve_effective_requirements(
     config: Config,
     requirements_ref: str,
     changes_ref: str | None = None,
+    catalog: SourceCatalog | None = None,
 ) -> EffectiveRequirements:
     """Resolve approved changes into a confirmed policy plus diagnostic variants.
 
@@ -116,6 +120,26 @@ def resolve_effective_requirements(
         message: str,
         change: ChangeRequest | None = None,
     ) -> None:
+        refs: list[EvidenceReference] = []
+        if catalog is not None and change is not None:
+            rule = base_policy.rule(change.target_rule) if change.target_rule else None
+            if rule is not None:
+                source = catalog.span_reference(
+                    requirements_ref, rule.anchor, EvidenceRole.SOURCE_REQUIREMENT
+                )
+                if source is not None:
+                    refs.append(source)
+            record = catalog.change_reference(change.change_id, change.change_version)
+            if record is not None:
+                refs.append(record)
+            for approval in manifest.approvals:
+                if (
+                    approval.change_id == change.change_id
+                    and approval.change_version == change.change_version
+                ):
+                    reference = catalog.approval_reference(approval.approval_id)
+                    if reference is not None:
+                        refs.append(reference)
         findings.append(
             make_finding(
                 category,
@@ -124,6 +148,18 @@ def resolve_effective_requirements(
                 rule_ref=change.target_rule if change is not None else None,
                 artifact_id=change_artifact_id,
                 artifact_version=change_artifact_version,
+                evidence_refs=tuple(refs),
+                semantic=(
+                    f"change|{change.change_id}@{change.change_version}|{category.value}"
+                    if change is not None
+                    else None
+                ),
+                recommendation=(
+                    "Resolve the conflicting approval records for this change before "
+                    "relying on any policy that depends on it."
+                    if category is FindingCategory.UNDETERMINED_CONFLICT
+                    else None
+                ),
             )
         )
 
@@ -132,7 +168,13 @@ def resolve_effective_requirements(
         severity: Severity,
         message: str,
         rule_ref: str | None = None,
+        approval_id: str | None = None,
     ) -> None:
+        reference = (
+            catalog.approval_reference(approval_id)
+            if catalog is not None and approval_id is not None
+            else None
+        )
         findings.append(
             make_finding(
                 category,
@@ -141,6 +183,10 @@ def resolve_effective_requirements(
                 rule_ref=rule_ref,
                 artifact_id=_BUNDLE_ARTIFACT,
                 artifact_version=manifest.bundle_version,
+                evidence_refs=(reference,) if reference is not None else (),
+                semantic=(
+                    f"approval|{approval_id}|{category.value}" if approval_id is not None else None
+                ),
             )
         )
 
@@ -148,59 +194,48 @@ def resolve_effective_requirements(
 
     decisions: dict[tuple[str, str], _Decision] = {}
     candidates: list[_Candidate] = []
-    for change in sorted(changes.changes, key=lambda item: (item.change_id, item.change_version)):
+    # A later change in a sequence is validated against the revision produced by
+    # the earlier changes, not against the base document. The preview carries
+    # every potentially applicable change so that a diagnostic conflict variant
+    # can still be materialized, while the confirmed path below skips conflicts.
+    preview_rules = base_policy.rules
+    for change in sorted(changes.changes, key=_sequence_key):
         key = (change.change_id, change.change_version)
         ref = f"{change.change_id}@{change.change_version}"
         approvals = active.get(key, ())
         approval_ids = tuple(sorted(record.approval_id for record in approvals))
 
+        state = ChangeState.APPROVED
+        reason = "approved; pending application"
         if f"{change.base_artifact}@{change.base_version}" != requirements_ref:
-            decisions[key] = _Decision(
-                ChangeState.STALE,
+            state = ChangeState.STALE
+            reason = (
                 f"change targets {change.base_artifact}@{change.base_version}, "
-                f"but the effective requirements are {requirements_ref}",
-                approval_ids,
-                change,
+                f"but the effective requirements are {requirements_ref}"
             )
-            continue
-        if not approvals:
-            decisions[key] = _Decision(
-                ChangeState.UNAPPROVED,
-                "no active, hash-bound approval record for this change version",
-                (),
-                change,
-            )
-            continue
-        votes = {record.decision for record in approvals}
-        if len(votes) > 1:
-            decisions[key] = _Decision(
-                ChangeState.CONFLICT,
-                "active approval records disagree (approve and reject)",
-                approval_ids,
-                change,
-            )
-            continue
-        if ApprovalDecision.REJECT in votes:
-            decisions[key] = _Decision(
-                ChangeState.REJECTED,
-                "active approval record rejects this change; it is not applied",
-                approval_ids,
-                change,
-            )
-            continue
+        elif not approvals:
+            state = ChangeState.UNAPPROVED
+            reason = "no active, hash-bound approval record for this change version"
+            approval_ids = ()
+        else:
+            votes = {record.decision for record in approvals}
+            if len(votes) > 1:
+                state = ChangeState.CONFLICT
+                reason = "active approval records disagree (approve and reject)"
+            elif ApprovalDecision.REJECT in votes:
+                state = ChangeState.REJECTED
+                reason = "active approval record rejects this change; it is not applied"
 
-        planned = _apply_change(change, base_policy.rules, dictionary)
-        if isinstance(planned, _Failure):
-            decisions[key] = _Decision(planned.state, planned.message, approval_ids, change)
-            continue
-        candidate = _Candidate(change=change, ref=ref, applied=planned)
-        decisions[key] = _Decision(
-            ChangeState.APPROVED,
-            "approved; pending application",
-            approval_ids,
-            change,
-        )
-        candidates.append(candidate)
+        if state in {ChangeState.APPROVED, ChangeState.CONFLICT}:
+            planned = _apply_change(change, preview_rules, dictionary)
+            if isinstance(planned, _Failure):
+                if state is ChangeState.APPROVED:
+                    state = planned.state
+                    reason = planned.message
+            else:
+                candidates.append(_Candidate(change=change, ref=ref, applied=planned))
+                preview_rules = planned.rules
+        decisions[key] = _Decision(state, reason, approval_ids, change)
 
     conflicted: dict[str, _Candidate] = {}
     scopes: list[UndeterminedScope] = []
@@ -243,12 +278,7 @@ def resolve_effective_requirements(
 
     ordered = sorted(
         (item for item in candidates if item.ref not in conflicted),
-        key=lambda item: (
-            item.change.sequence is None,
-            item.change.sequence if item.change.sequence is not None else 0,
-            item.change.change_id,
-            item.change.change_version,
-        ),
+        key=lambda item: _sequence_key(item.change),
     )
     applied_rules = base_policy.rules
     applied_refs: list[str] = []
@@ -372,6 +402,15 @@ def _change_entry(manifest: BundleManifest, changes_ref: str | None) -> Artifact
     return None
 
 
+def _sequence_key(change: ChangeRequest) -> tuple[bool, int, str, str]:
+    return (
+        change.sequence is None,
+        change.sequence if change.sequence is not None else 0,
+        change.change_id,
+        change.change_version,
+    )
+
+
 def _bind_approvals(
     manifest: BundleManifest,
     changes: ChangeArtifact,
@@ -388,6 +427,7 @@ def _bind_approvals(
                 Severity.INFO,
                 f"approval {record.approval_id!r} comes from unauthorized role "
                 f"{record.approver_role!r} and grants no authority",
+                approval_id=record.approval_id,
             )
             continue
         key = (record.change_id, record.change_version)
@@ -399,6 +439,7 @@ def _bind_approvals(
                 f"approval {record.approval_id!r} references change "
                 f"{record.change_id}@{record.change_version}, which is not in the "
                 "reviewed change artifact",
+                approval_id=record.approval_id,
             )
             continue
         if change.content_hash() != record.change_sha256:
@@ -409,6 +450,7 @@ def _bind_approvals(
                 f"the change {change.change_id}@{change.change_version} is treated as "
                 "unapproved",
                 change.target_rule,
+                record.approval_id,
             )
             continue
         valid[record.approval_id] = record
@@ -425,6 +467,7 @@ def _bind_approvals(
                     FindingCategory.APPROVAL_IGNORED,
                     Severity.WARNING,
                     f"approval {approval_id!r} supersedes itself; the edge is ignored",
+                    approval_id=approval_id,
                 )
                 continue
             if target not in valid:
@@ -433,6 +476,7 @@ def _bind_approvals(
                     Severity.WARNING,
                     f"approval {approval_id!r} supersedes unknown or invalid approval "
                     f"{target!r}; the edge is ignored",
+                    approval_id=approval_id,
                 )
                 continue
             edges.setdefault(approval_id, set()).add(target)
@@ -444,6 +488,7 @@ def _bind_approvals(
                 FindingCategory.APPROVAL_IGNORED,
                 Severity.WARNING,
                 f"supersession cycle between {approval_id!r} and {target!r} is ignored",
+                approval_id=approval_id,
             )
             continue
         superseded.setdefault(target, set()).add(approval_id)
@@ -456,6 +501,7 @@ def _bind_approvals(
                 Severity.INFO,
                 f"approval {approval_id!r} is superseded by "
                 f"{', '.join(sorted(superseded[approval_id]))} and grants no authority",
+                approval_id=approval_id,
             )
             continue
         active_by_key.setdefault(valid_keys[approval_id], []).append(record)

@@ -10,21 +10,26 @@ reported as distinct routing outcomes rather than silently stopping.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
+from verityflow.evidence import SourceCatalog
 from verityflow.ir.evaluate import CellValue, EvaluationError, Truth, evaluate
-from verityflow.ir.model import Const, Expr
+from verityflow.ir.model import Const, Expr, canonical_key
 from verityflow.ir.normalize import normalize_condition
-from verityflow.ir.policy import Policy
+from verityflow.ir.policy import Policy, Rule
+from verityflow.ir.render import render_clause, render_expr
 from verityflow.models.common import ArtifactRef
 from verityflow.models.conditions import to_ir
 from verityflow.models.dictionary import DataDictionary
+from verityflow.models.evidence import EvidenceReference, EvidenceRole
 from verityflow.models.report import Finding, FindingCategory, Severity, make_finding
 from verityflow.models.workflow import NodeKind, WorkflowArtifact
+from verityflow.verify.conflict import ConflictContext
 from verityflow.verify.domain import TicketSpace, render_inputs
 from verityflow.verify.equivalence import (
     is_reordered,
     numeric_clue,
+    numeric_requirement,
     same_behaviour,
     single_cmp,
 )
@@ -43,6 +48,16 @@ from verityflow.verify.routing import (
 from verityflow.verify.spec import routing_detail
 
 _MAX_COUNTEREXAMPLES_PER_FINDING = 3
+_ROOT_CAUSE_CATEGORIES = frozenset(
+    {
+        FindingCategory.THRESHOLD_CHANGED,
+        FindingCategory.WRONG_OPERATOR,
+        FindingCategory.WRONG_DESTINATION,
+        FindingCategory.PRECEDENCE,
+        FindingCategory.UNIT_MISMATCH,
+        FindingCategory.IMPLEMENTS_UNAPPROVED_CHANGE,
+    }
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -50,6 +65,7 @@ class CompiledBranch:
     branch_id: str
     condition: Expr | None
     target: str
+    pointer: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -58,6 +74,7 @@ class CompiledNode:
     kind: NodeKind
     destination: str | None
     branches: tuple[CompiledBranch, ...]
+    pointer: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -69,6 +86,7 @@ class WorkflowRouter:
     max_steps: int
     artifact_ref: str
     problem: str | None = None
+    locations: Mapping[str, str] = field(default_factory=dict)
     name: str = "workflow"
 
     def route(self, values: Mapping[str, CellValue]) -> RouteOutcome:
@@ -175,7 +193,10 @@ def build_workflow_router(
         )
 
     nodes: dict[str, CompiledNode] = {}
-    for node in workflow.nodes:
+    locations: dict[str, str] = {}
+    for node_position, node in enumerate(workflow.nodes):
+        node_pointer = f"/nodes/{node_position}"
+        locations[node.id] = node_pointer
         if node.version != workflow.version:
             report(
                 f"workflow node {node.id!r} has version {node.version!r}, not the "
@@ -183,7 +204,9 @@ def build_workflow_router(
                 node.id,
             )
         branches: list[CompiledBranch] = []
-        for branch in node.branches:
+        for branch_position, branch in enumerate(node.branches):
+            branch_pointer = f"{node_pointer}/branches/{branch_position}"
+            locations[f"{node.id}/{branch.branch_id}"] = branch_pointer
             if branch.version != workflow.version:
                 report(
                     f"workflow branch {branch.branch_id!r} has version {branch.version!r}, "
@@ -228,6 +251,7 @@ def build_workflow_router(
                     branch_id=branch.branch_id,
                     condition=condition,
                     target=branch.target,
+                    pointer=branch_pointer,
                 )
             )
         if node.kind is NodeKind.DECISION and not any(
@@ -243,6 +267,7 @@ def build_workflow_router(
             kind=node.kind,
             destination=node.destination,
             branches=tuple(branches),
+            pointer=node_pointer,
         )
 
     return WorkflowProgram(
@@ -253,6 +278,7 @@ def build_workflow_router(
             nodes=nodes,
             max_steps=max_steps,
             artifact_ref=str(artifact),
+            locations=locations,
         ),
         findings=tuple(findings),
     )
@@ -268,6 +294,8 @@ def verify_workflow(
     policy_ref: str,
     max_steps: int,
     max_signature_cells: int,
+    catalog: SourceCatalog | None = None,
+    conflict: ConflictContext | None = None,
 ) -> WorkflowVerification:
     program = build_workflow_router(workflow, dictionary, artifact, max_steps=max_steps)
     findings: list[Finding] = list(program.findings)
@@ -305,8 +333,11 @@ def verify_workflow(
         key = (difference.left.matched, difference.right.matched)
         grouped.setdefault(key, []).append(difference)
 
+    implementation = str(artifact)
+    independent_refs: set[str] = set()
+
     for (requirement_ref, node_ref), differences in grouped.items():
-        category, explanation = _diagnose(
+        category, explanation, diagnosed_ref = _diagnose(
             policy,
             router,
             requirement_ref,
@@ -315,8 +346,20 @@ def verify_workflow(
             dictionary,
             max_signature_cells,
         )
+        finding_ref = diagnosed_ref or requirement_ref
+        finding_rule = policy.rule(finding_ref) if finding_ref is not None else None
+        semantic = _semantic(category, finding_ref, node_ref, finding_rule, router, differences[0])
+        refs = _evidence_refs(
+            catalog,
+            policy,
+            policy_ref,
+            implementation,
+            finding_ref,
+            _implementation_pointer(router, differences[0]),
+        )
         severity = Severity.BLOCKER
         validated: list[Counterexample] = []
+        explained_by: list[str | None] = []
         for difference in differences[:_MAX_COUNTEREXAMPLES_PER_FINDING]:
             candidate = make_counterexample(
                 "workflow",
@@ -325,10 +368,17 @@ def verify_workflow(
                 router,
                 difference,
                 explanation=explanation,
+                evidence_refs=refs,
             )
-            if candidate.validated:
-                validated.append(candidate)
-                counterexamples.append(candidate)
+            if not candidate.validated:
+                continue
+            validated.append(candidate)
+            counterexamples.append(candidate)
+            explained_by.append(
+                conflict.explains(difference.cell.mapping(), describe_outcome(difference.right))
+                if conflict is not None and conflict.active
+                else None
+            )
         if not validated:
             category = FindingCategory.STRUCTURAL
             severity = Severity.COVERAGE_GAP
@@ -336,6 +386,32 @@ def verify_workflow(
                 "a behavioural difference was observed but could not be reproduced; "
                 "the witness is not reported as a counterexample"
             )
+        elif (
+            conflict is not None
+            and conflict.active
+            and all(item is not None for item in explained_by)
+        ):
+            category = FindingCategory.UNDETERMINED_CONFLICT
+            severity = Severity.COVERAGE_GAP
+            explanation = (
+                "every reproduced witness is matched by an unresolved diagnostic approval "
+                f"variant ({', '.join(sorted({item for item in explained_by if item}))}); "
+                "the difference depends on an approval conflict and is not a confirmed "
+                "defect until that approval is resolved"
+            )
+        elif (
+            conflict is not None
+            and conflict.active
+            and any(item is not None for item in explained_by)
+        ):
+            explanation = (
+                explanation + " At least one reproduced witness does not depend on the unresolved "
+                "approvals."
+            )
+        if severity is Severity.BLOCKER and requirement_ref is not None:
+            independent_refs.add(requirement_ref)
+        if severity is Severity.BLOCKER and finding_ref is not None:
+            independent_refs.add(finding_ref)
         findings.append(
             make_finding(
                 category,
@@ -346,10 +422,13 @@ def verify_workflow(
                     requirement_ref=requirement_ref,
                     node_ref=node_ref,
                 ),
-                rule_ref=requirement_ref,
+                rule_ref=finding_ref,
                 artifact_id=artifact.artifact_id,
                 artifact_version=artifact.version,
+                evidence_refs=refs,
+                semantic=semantic,
                 explanation=explanation,
+                recommendation=_correction(category, finding_rule, artifact),
             )
         )
 
@@ -359,10 +438,27 @@ def verify_workflow(
         if any(
             counterexample.requirement_ref == rule.rule_ref for counterexample in counterexamples
         ):
+            if rule.rule_ref not in independent_refs:
+                continue
+            if any(
+                finding.rule_ref == rule.rule_ref
+                and finding.severity is Severity.BLOCKER
+                and finding.category in _ROOT_CAUSE_CATEGORIES
+                for finding in findings
+            ):
+                continue
             category = (
                 FindingCategory.MISSING_EXCEPTION
                 if rule.exception_of is not None
                 else FindingCategory.MISSING_REQUIREMENT
+            )
+            refs = _evidence_refs(
+                catalog,
+                policy,
+                policy_ref,
+                implementation,
+                rule.rule_ref,
+                "",
             )
             findings.append(
                 make_finding(
@@ -374,6 +470,15 @@ def verify_workflow(
                     rule_ref=rule.rule_ref,
                     artifact_id=artifact.artifact_id,
                     artifact_version=artifact.version,
+                    evidence_refs=refs,
+                    semantic=(
+                        f"missing|{category.value}|{rule.rule_ref}|{canonical_key(rule.condition)}"
+                    ),
+                    explanation=(
+                        "No evaluated ticket reached this requirement's destination through "
+                        "the workflow; rule identifiers are not matched against the graph."
+                    ),
+                    recommendation=_correction(category, rule, artifact),
                 )
             )
 
@@ -479,30 +584,34 @@ def _diagnose(
     reordered: bool,
     dictionary: DataDictionary,
     max_signature_cells: int,
-) -> tuple[FindingCategory, str]:
+) -> tuple[FindingCategory, str, str | None]:
     requirement = policy.rule(requirement_ref) if requirement_ref is not None else None
     if difference.right.kind is RouteKind.NO_MATCH:
         return (
             FindingCategory.MISSING_BRANCH,
             "the workflow has no matching branch for this ticket and does not reach a destination",
+            requirement_ref,
         )
     if difference.right.kind is not RouteKind.DESTINATION:
         return (
             FindingCategory.STRUCTURAL,
             f"the workflow could not be executed to a destination: "
             f"{describe_outcome(difference.right)}",
+            requirement_ref,
         )
     if requirement is not None and requirement.exception_of is not None:
         return (
             FindingCategory.MISSING_EXCEPTION,
             f"requirement {requirement_ref!r} is an exception of "
             f"{requirement.exception_of!r} but the workflow does not implement it",
+            requirement_ref,
         )
     if reordered:
         return (
             FindingCategory.PRECEDENCE,
             "the workflow tests the same branches in a different order than the "
             "effective requirements; the first-match order changes the outcome",
+            requirement_ref,
         )
     if requirement is not None:
         branch_condition = _condition_for_destination(router, difference.right.destination)
@@ -520,19 +629,29 @@ def _diagnose(
                     FindingCategory.WRONG_DESTINATION,
                     f"equivalent routing conditions lead to different destinations "
                     f"({requirement.destination!r} vs {difference.right.destination!r})",
+                    requirement_ref,
                 )
             clue = numeric_clue(requirement.condition, branch_condition)
             if clue is not None:
-                return clue.category, clue.detail
+                return clue.category, clue.detail, requirement_ref
         counterpart = _branch_condition_for_field(router, requirement.condition)
         if counterpart is not None:
             clue = numeric_clue(requirement.condition, counterpart)
             if clue is not None:
-                return clue.category, clue.detail
+                return clue.category, clue.detail, requirement_ref
+    for condition in (
+        _condition_for_destination(router, difference.right.destination),
+        _branch_condition_for_field(router, requirement.condition) if requirement else None,
+    ):
+        boundary = numeric_requirement(policy, condition, dictionary, max_signature_cells)
+        if boundary is not None:
+            rule, clue = boundary
+            return clue.category, clue.detail, rule.rule_ref
     return (
         FindingCategory.WRONG_DESTINATION,
         f"the workflow routes this ticket to {difference.right.destination!r} while the "
         "effective requirements route it elsewhere",
+        requirement_ref,
     )
 
 
@@ -572,6 +691,107 @@ def _unreachable_nodes(router: WorkflowRouter, space: TicketSpace) -> frozenset[
     for cell in space.cells:
         reached.update(router.route(cell.mapping()).nodes)
     return frozenset(set(router.nodes) - reached)
+
+
+def _implementation_pointer(router: WorkflowRouter, difference: RouteDifference) -> str:
+    outcome = difference.right
+    if outcome.kind is RouteKind.DESTINATION:
+        for key in (*reversed(outcome.trace), outcome.matched):
+            if key is None:
+                continue
+            pointer = router.locations.get(key)
+            if pointer:
+                return pointer
+    for node_id in reversed(outcome.nodes):
+        pointer = router.locations.get(node_id)
+        if pointer:
+            return pointer
+    return ""
+
+
+def _semantic(
+    category: FindingCategory,
+    requirement_ref: str | None,
+    node_ref: str | None,
+    requirement: Rule | None,
+    router: WorkflowRouter,
+    difference: RouteDifference,
+) -> str:
+    left = canonical_key(requirement.condition) if requirement is not None else ""
+    if requirement is not None and category in {
+        FindingCategory.MISSING_REQUIREMENT,
+        FindingCategory.MISSING_BRANCH,
+        FindingCategory.MISSING_EXCEPTION,
+    }:
+        # The behavioural witness and the coverage loop describe the same omission;
+        # the absent branch must not make their identities differ.
+        return f"missing|{category.value}|{requirement_ref or ''}|{left}"
+    branch = _condition_for_destination(router, difference.right.destination)
+    right = canonical_key(branch) if branch is not None else ""
+    return f"{requirement_ref or ''}|{node_ref or ''}|{category.value}|{left}|{right}"
+
+
+def _evidence_refs(
+    catalog: SourceCatalog | None,
+    policy: Policy,
+    policy_ref: str,
+    implementation: str,
+    requirement_ref: str | None,
+    pointer: str,
+) -> tuple[EvidenceReference, ...]:
+    if catalog is None:
+        return ()
+    refs: list[EvidenceReference] = []
+    rule = policy.rule(requirement_ref) if requirement_ref is not None else None
+    if rule is not None:
+        source = catalog.span_reference(policy_ref, rule.anchor, EvidenceRole.SOURCE_REQUIREMENT)
+        if source is not None:
+            refs.append(source)
+    if pointer:
+        target = catalog.pointer_reference(implementation, pointer, EvidenceRole.WORKFLOW_BRANCH)
+        if target is not None:
+            refs.append(target)
+    return tuple(refs)
+
+
+def _correction(category: FindingCategory, requirement: Rule | None, artifact: ArtifactRef) -> str:
+    label = str(artifact)
+    if category is FindingCategory.UNDETERMINED_CONFLICT:
+        return (
+            "Resolve the conflicting approval records for the affected change; until "
+            "the permitted policy is determined this difference is not a confirmed defect."
+        )
+    if requirement is None:
+        return f"Align {label} with the effective requirement policy on the evaluated tickets."
+    clause = render_clause(requirement.condition, requirement.destination)
+    if category is FindingCategory.PRECEDENCE:
+        return (
+            f"Reorder the branches of {label} so they follow the effective requirement "
+            f"order and the first matching branch produces the required destination; "
+            f"the affected requirement is {clause}."
+        )
+    if category in {FindingCategory.THRESHOLD_CHANGED, FindingCategory.WRONG_OPERATOR}:
+        return (
+            f"Change the bound for {render_expr(requirement.condition)} in {label} so the "
+            f"comparison matches the effective requirement {clause}."
+        )
+    if category is FindingCategory.WRONG_DESTINATION:
+        return (
+            f"Route {render_expr(requirement.condition)} to {requirement.destination!r} in {label}."
+        )
+    if category is FindingCategory.MISSING_BRANCH:
+        return (
+            f"Add a branch to {label} for {render_expr(requirement.condition)} -> "
+            f"{requirement.destination!r} instead of falling through."
+        )
+    if category is FindingCategory.MISSING_EXCEPTION:
+        return (
+            f"Add the exception branch for {render_expr(requirement.condition)} -> "
+            f"{requirement.destination!r} in {label}."
+        )
+    if category is FindingCategory.MISSING_REQUIREMENT:
+        return f"Add a workflow branch implementing the effective requirement {clause}."
+    return f"Align {label} with the effective requirement {clause}."
 
 
 def _difference_message(

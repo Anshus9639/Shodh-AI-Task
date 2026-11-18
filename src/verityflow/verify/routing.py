@@ -20,6 +20,7 @@ from verityflow.ir.policy import Policy
 from verityflow.models.common import ArtifactRef
 from verityflow.models.conditions import to_ir
 from verityflow.models.dictionary import DataDictionary
+from verityflow.models.evidence import EvidenceReference
 from verityflow.models.report import Finding, FindingCategory, Severity, make_finding
 from verityflow.models.spec import SpecArtifact
 from verityflow.verify.domain import TicketCell, TicketSpace, cell_from_inputs, render_inputs
@@ -82,14 +83,20 @@ class PolicyRouter:
     name: str = "requirements"
 
     def route(self, values: Mapping[str, CellValue]) -> RouteOutcome:
+        trace: list[str] = []
         for rule in self.policy.rules:
-            if evaluate(rule.condition, values) is Truth.TRUE:
+            truth = evaluate(rule.condition, values)
+            trace.append(f"{rule.rule_ref}:{truth.value}")
+            if truth is Truth.TRUE:
                 return RouteOutcome(
                     RouteKind.DESTINATION,
                     destination=rule.destination,
                     matched=rule.rule_ref,
+                    trace=tuple(trace),
                 )
-        return RouteOutcome(RouteKind.NO_MATCH, detail="no requirement rule matched")
+        return RouteOutcome(
+            RouteKind.NO_MATCH, detail="no requirement rule matched", trace=tuple(trace)
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -111,20 +118,25 @@ class SpecRouter:
     def route(self, values: Mapping[str, CellValue]) -> RouteOutcome:
         if self.problem is not None:
             return RouteOutcome(RouteKind.UNSUPPORTED, detail=self.problem)
+        trace: list[str] = []
         for entry in self.entries:
-            if evaluate(entry.condition, values) is Truth.TRUE:
+            truth = evaluate(entry.condition, values)
+            trace.append(f"{entry.ref}:{truth.value}")
+            if truth is Truth.TRUE:
                 return RouteOutcome(
                     RouteKind.DESTINATION,
                     destination=entry.destination,
                     matched=entry.ref,
+                    trace=tuple(trace),
                 )
         if self.default_destination is not None:
             return RouteOutcome(
                 RouteKind.DESTINATION,
                 destination=self.default_destination,
                 matched=self.default_ref,
+                trace=tuple((*trace, f"{self.default_ref or 'default'}:default")),
             )
-        return RouteOutcome(RouteKind.NO_MATCH, detail="no spec rule matched")
+        return RouteOutcome(RouteKind.NO_MATCH, detail="no spec rule matched", trace=tuple(trace))
 
 
 def build_spec_router(
@@ -258,6 +270,7 @@ def make_counterexample(
     difference: RouteDifference,
     *,
     explanation: str,
+    evidence_refs: tuple[EvidenceReference, ...] = (),
 ) -> Counterexample:
     """Re-route the rendered witness through both interpreters before recording it."""
     inputs = render_inputs(difference.cell)
@@ -274,6 +287,9 @@ def make_counterexample(
         artifact_outcome=describe_outcome(right_outcome),
         validated=validated,
         explanation=explanation,
+        requirement_trace=left_outcome.trace or left_outcome.nodes,
+        artifact_trace=right_outcome.trace or right_outcome.nodes,
+        evidence_refs=evidence_refs,
     )
 
 

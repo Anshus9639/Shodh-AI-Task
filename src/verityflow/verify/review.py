@@ -20,6 +20,12 @@ from pathlib import Path
 
 from verityflow.approvals.resolver import resolve_effective_requirements
 from verityflow.config import Config
+from verityflow.evidence import (
+    SourceCatalog,
+    attach_source_evidence,
+    merge_findings,
+    validate_findings,
+)
 from verityflow.ingest.artifacts import TypedArtifacts, parse_artifacts
 from verityflow.ingest.loader import LoadedBundle, load_bundle
 from verityflow.ir.model import Expr
@@ -38,12 +44,14 @@ from verityflow.models.report import (
 )
 from verityflow.requirements.compile import compile_document
 from verityflow.verify.code import verify_code
+from verityflow.verify.conflict import ConflictContext, analyze_conflicts
 from verityflow.verify.coverage import analyze_coverage
 from verityflow.verify.domain import TicketSpace, build_ticket_space
 from verityflow.verify.interactions import analyze_interactions
 from verityflow.verify.models import (
     ComparisonMode,
     ComparisonRecord,
+    ConflictAnalysis,
     RequirementCoverage,
     ReviewReport,
     ReviewStatus,
@@ -98,6 +106,7 @@ def review_loaded(
     active = config or Config()
     manifest = loaded.manifest
     typed = parse_artifacts(loaded)
+    catalog = SourceCatalog.from_loaded(loaded)
     findings: list[Finding] = [*loaded.findings, *typed.findings]
     unreviewed: list[UnreviewedScope] = [
         UnreviewedScope(kind="provenance", description=description)
@@ -173,6 +182,7 @@ def review_loaded(
         config=active,
         requirements_ref=entry.ref,
         changes_ref=_first_ref(manifest, ArtifactKind.CHANGE_REQUESTS),
+        catalog=catalog,
     )
     findings.extend(effective.findings)
     confirmed = effective.confirmed()
@@ -187,7 +197,27 @@ def review_loaded(
                 ),
             )
         )
+    if effective.undetermined:
+        unreviewed.append(
+            UnreviewedScope(
+                kind="approvals",
+                description=(
+                    "approval-dependent scope is undetermined: "
+                    + "; ".join(
+                        f"{scope.rule_ref} ({scope.attribute}) from {', '.join(scope.change_ids)}"
+                        for scope in effective.undetermined
+                    )
+                ),
+                rule_refs=tuple(
+                    rule
+                    for scope in effective.undetermined
+                    for rule in scope.rule_ref.split(",")
+                    if rule
+                ),
+            )
+        )
 
+    conflict = ConflictContext.from_effective(effective, artifact_ref=str(policy.candidate_id))
     verification = _verify_artifacts(
         loaded,
         manifest,
@@ -197,6 +227,8 @@ def review_loaded(
         base_policy,
         requirements_artifact=requirements_artifact,
         config=active,
+        catalog=catalog,
+        conflict=conflict,
     )
     findings.extend(verification.findings)
     unreviewed.extend(verification.unreviewed)
@@ -229,6 +261,13 @@ def review_loaded(
     unreviewed.extend(coverage.unreviewed)
     if not verification.space.exhaustive:
         unreviewed.append(UnreviewedScope(kind="sampling", description=verification.space.detail))
+
+    findings = attach_source_evidence(findings, policy, catalog, entry.ref)
+    findings = merge_findings(findings)
+    validation = validate_findings(findings, catalog)
+    findings = list(validation.findings)
+    unreviewed.extend(validation.unreviewed)
+    conflict_analysis = analyze_conflicts(effective, findings)
 
     checks = [
         _check(
@@ -293,6 +332,7 @@ def review_loaded(
         exhaustive=exhaustive,
         detail=_summary(status, verification.space, verification.comparisons, coverage.uncovered),
         effective=effective,
+        conflict_analysis=conflict_analysis,
     )
 
 
@@ -306,6 +346,8 @@ def _verify_artifacts(
     *,
     requirements_artifact: ArtifactRef,
     config: Config,
+    catalog: SourceCatalog,
+    conflict: ConflictContext,
 ) -> _ArtifactVerification:
     findings: list[Finding] = []
     comparisons: list[ComparisonRecord] = []
@@ -518,6 +560,8 @@ def _verify_artifacts(
             artifact=ArtifactRef(artifact_id=entry.artifact_id, version=entry.version),
             policy_ref=policy_ref,
             max_signature_cells=config.limits.mapping_max_signature_cells,
+            catalog=catalog,
+            conflict=conflict,
         )
         findings.extend(result.findings)
         comparisons.append(result.record)
@@ -549,6 +593,8 @@ def _verify_artifacts(
             policy_ref=policy_ref,
             max_steps=config.limits.interpreter_max_steps,
             max_signature_cells=config.limits.mapping_max_signature_cells,
+            catalog=catalog,
+            conflict=conflict,
         )
         findings.extend(workflow_result.findings)
         comparisons.append(workflow_result.record)
@@ -589,6 +635,8 @@ def _verify_artifacts(
             max_signature_cells=config.limits.mapping_max_signature_cells,
             workflow=workflow_router if workflow_reference is not None else None,
             workflow_ref=workflow_reference,
+            catalog=catalog,
+            conflict=conflict,
         )
         code_findings.extend(code_result.findings)
         unsupported = [
@@ -749,6 +797,7 @@ def _report(
     exhaustive: bool,
     detail: str,
     effective: EffectiveRequirements | None = None,
+    conflict_analysis: tuple[ConflictAnalysis, ...] = (),
 ) -> ReviewReport:
     return ReviewReport(
         bundle_id=manifest.bundle_id,
@@ -764,6 +813,7 @@ def _report(
         unreviewed=tuple(unreviewed),
         exhaustive=exhaustive,
         detail=detail,
+        conflict_analysis=conflict_analysis,
     )
 
 

@@ -36,6 +36,9 @@ class LoadedBundle:
     findings: tuple[Finding, ...] = ()
     failed: tuple[str, ...] = ()
     unreviewed: tuple[str, ...] = ()
+    manifest_text: str | None = None
+    manifest_json: dict[str, object] | None = None
+    manifest_sha256: str | None = None
 
     def text_of(self, ref: str) -> str | None:
         return self.text.get(ref)
@@ -67,10 +70,13 @@ def load_bundle(
             f"manifest is {size} bytes, exceeding max_artifact_bytes="
             f"{active_limits.max_artifact_bytes}"
         )
+    manifest_bytes = manifest_path.read_bytes()
     try:
-        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest_text = manifest_bytes.decode("utf-8")
+        payload = json.loads(manifest_text)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise BundleLoadError(f"manifest is not valid UTF-8 JSON: {exc}") from exc
+    manifest_sha256 = hashlib.sha256(manifest_bytes).hexdigest()
     try:
         manifest = BundleManifest.model_validate(payload)
     except ValidationError as exc:
@@ -175,6 +181,9 @@ def load_bundle(
         findings=tuple(findings),
         failed=tuple(failed),
         unreviewed=tuple(unreviewed),
+        manifest_text=manifest_text,
+        manifest_json=payload,
+        manifest_sha256=manifest_sha256,
     )
 
 

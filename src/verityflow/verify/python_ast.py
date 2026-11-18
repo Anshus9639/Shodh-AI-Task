@@ -44,6 +44,7 @@ from verityflow.ir.model import (
     Ne,
     NotIn,
     NotNode,
+    NotTrue,
     Or,
 )
 from verityflow.ir.units import UnitError, normalize
@@ -155,6 +156,27 @@ class CodeRule:
     condition: Expr
     destination: str
     line: int
+    end_line: int
+    col_start: int
+    col_end: int
+    excerpt: str
+
+
+@dataclass(frozen=True, slots=True)
+class CmpFact:
+    """A numeric or equality comparison extracted from the AST.
+
+    Unlike :meth:`CodeProgram.routing_signature`, a fact does not require the
+    whole if/return chain to be representable. It is used for evidence and for
+    diagnosis when a presence guard makes the complete signature unavailable.
+    """
+
+    comparison: Expr
+    line_start: int
+    line_end: int
+    col_start: int
+    col_end: int
+    excerpt: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -170,6 +192,7 @@ class CodeProgram:
     param: str
     max_steps: int
     max_depth: int
+    source: str = ""
     name: str = "code"
 
     def domain_hints(self) -> CodeDomain:
@@ -178,30 +201,48 @@ class CodeProgram:
     def routing_signature(self) -> tuple[CodeRule, ...] | None:
         return _routing_signature(self)
 
+    def comparison_facts(self) -> tuple[CmpFact, ...]:
+        return _comparison_facts(self)
+
+    def function_segment(self) -> tuple[int, int, str]:
+        start = self.function.lineno
+        end = self.function.end_lineno or start
+        return start, end, ast.get_source_segment(self.source, self.function) or ""
+
     def route(self, values: Mapping[str, CellValue]) -> RouteOutcome:
+        interpreter = _Interpreter(self, values)
         try:
-            returned = _Interpreter(self, values).run()
+            returned = interpreter.run()
         except _StepLimit:
             return RouteOutcome(
                 RouteKind.STEP_LIMIT,
                 detail=f"router exceeded interpreter_max_steps={self.max_steps}",
+                trace=interpreter.trace,
             )
         except _Unsupported as exc:
-            return RouteOutcome(RouteKind.UNSUPPORTED, detail=str(exc))
+            return RouteOutcome(RouteKind.UNSUPPORTED, detail=str(exc), trace=interpreter.trace)
         except _PyFailure as exc:
-            return RouteOutcome(RouteKind.ERROR, detail=f"{exc.kind}: {exc.message}")
+            return RouteOutcome(
+                RouteKind.ERROR,
+                detail=f"{exc.kind}: {exc.message}",
+                trace=interpreter.trace,
+            )
         if returned is None:
             return RouteOutcome(
                 RouteKind.FALL_THROUGH,
                 detail="router completed without returning a destination",
+                trace=interpreter.trace,
             )
         value = returned.value
         if value is None:
-            return RouteOutcome(RouteKind.NO_MATCH, detail="router returned None")
+            return RouteOutcome(
+                RouteKind.NO_MATCH, detail="router returned None", trace=interpreter.trace
+            )
         if not isinstance(value, str):
             return RouteOutcome(
                 RouteKind.UNSUPPORTED,
                 detail=f"router returned {_type_name(value)}, not a destination string",
+                trace=interpreter.trace,
             )
         mapped = self.destination_map.get(value, value)
         destination = self.dictionary.destination(mapped)
@@ -209,11 +250,13 @@ class CodeProgram:
             return RouteOutcome(
                 RouteKind.UNSUPPORTED,
                 detail=f"router returned undeclared destination {value!r}",
+                trace=interpreter.trace,
             )
         return RouteOutcome(
             RouteKind.DESTINATION,
             destination=destination,
             matched=self.entrypoint,
+            trace=interpreter.trace,
         )
 
 
@@ -252,6 +295,7 @@ def compile_router(
         param=link.param,
         max_steps=limits.interpreter_max_steps,
         max_depth=limits.interpreter_max_depth,
+        source=source,
     )
 
 
@@ -540,15 +584,17 @@ def _literal(expression: ast.expr) -> object:
                 f"literal {expression.value!r} is not supported",
                 lineno=expression.lineno,
             )
-        return expression.value
+        value = expression.value
+        return _decimal_fraction(value) if isinstance(value, float) else value
     if (
         isinstance(expression, ast.UnaryOp)
         and isinstance(expression.op, ast.USub)
         and isinstance(expression.operand, ast.Constant)
-        and isinstance(expression.operand.value, int)
+        and isinstance(expression.operand.value, (int, float))
         and not isinstance(expression.operand.value, bool)
     ):
-        return -expression.operand.value
+        value = expression.operand.value
+        return -_decimal_fraction(value) if isinstance(value, float) else -value
     raise RouterUnsupportedError(
         "module constants and collection elements must be literal values",
         lineno=expression.lineno,
@@ -593,7 +639,16 @@ def _is_ticket(expression: ast.expr, param: str) -> bool:
 
 
 def _is_supported_constant(value: object) -> bool:
-    return value is None or isinstance(value, (bool, int, str))
+    return value is None or isinstance(value, (bool, int, float, str))
+
+
+def _decimal_fraction(value: float) -> Fraction:
+    """Read a source float literal as its decimal value, not its binary encoding.
+
+    The routing contract is built on exact rationals; ``Fraction(repr(29.5))``
+    keeps ``29.5`` exactly at the declared decimal boundary.
+    """
+    return Fraction(repr(value))
 
 
 class _Interpreter:
@@ -602,6 +657,11 @@ class _Interpreter:
         self._values = values
         self._environment: dict[str, object] = dict(program.constants)
         self._steps = 0
+        self._trace: list[str] = []
+
+    @property
+    def trace(self) -> tuple[str, ...]:
+        return tuple(self._trace)
 
     def run(self) -> _Returned | None:
         return self._block(self._program.function.body)
@@ -627,7 +687,13 @@ class _Interpreter:
             self._environment[target.id] = self._eval(statement.value)
             return None
         if isinstance(statement, ast.If):
-            if _truthy(self._eval(statement.test)):
+            outcome = _truthy(self._eval(statement.test))
+            segment = ast.get_source_segment(self._program.source, statement.test) or ""
+            rendered = " ".join(segment.split())
+            self._trace.append(
+                f"line {statement.lineno}: {'true' if outcome else 'false'} ({rendered})"
+            )
+            if outcome:
                 return self._block(statement.body)
             return self._block(statement.orelse)
         if isinstance(statement, ast.Return):
@@ -638,7 +704,8 @@ class _Interpreter:
     def _eval(self, expression: ast.expr) -> object:
         self._tick()
         if isinstance(expression, ast.Constant):
-            return expression.value
+            value = expression.value
+            return _decimal_fraction(value) if isinstance(value, float) else value
         if isinstance(expression, ast.Name):
             if expression.id in self._environment:
                 return self._environment[expression.id]
@@ -885,14 +952,25 @@ def _static_environment(program: CodeProgram) -> dict[str, object]:
 def _numbers(value: object) -> tuple[Fraction, ...]:
     if isinstance(value, bool):
         return ()
+    if isinstance(value, Fraction):
+        return (value,)
     if isinstance(value, int):
         return (Fraction(value),)
+    if isinstance(value, float):
+        return (_decimal_fraction(value),)
     if isinstance(value, tuple):
         numbers: list[Fraction] = []
         for item in value:
-            if isinstance(item, bool) or not isinstance(item, int):
+            if isinstance(item, bool):
                 return ()
-            numbers.append(Fraction(item))
+            if isinstance(item, Fraction):
+                numbers.append(item)
+            elif isinstance(item, int):
+                numbers.append(Fraction(item))
+            elif isinstance(item, float):
+                numbers.append(_decimal_fraction(item))
+            else:
+                return ()
         return tuple(numbers)
     return ()
 
@@ -977,7 +1055,8 @@ def _chain(
             destination = _body_destination(program, statement.body, environment)
             if condition is None or destination is None:
                 return None
-            rules.append(CodeRule(condition, destination, statement.lineno))
+            start, end, col_start, col_end, excerpt = _span(program, statement)
+            rules.append(CodeRule(condition, destination, start, end, col_start, col_end, excerpt))
             if statement.orelse:
                 nested = _chain(program, statement.orelse, environment)
                 if nested is None:
@@ -988,10 +1067,37 @@ def _chain(
             destination = _return_destination(program, statement, environment)
             if destination is None:
                 return None
-            rules.append(CodeRule(Const(value=True), destination, statement.lineno))
+            start, end, col_start, col_end, excerpt = _span(program, statement)
+            rules.append(
+                CodeRule(Const(value=True), destination, start, end, col_start, col_end, excerpt)
+            )
             continue
         return None
     return rules
+
+
+def _span(program: CodeProgram, node: ast.AST) -> tuple[int, int, int, int, str]:
+    start = getattr(node, "lineno", 1)
+    end = getattr(node, "end_lineno", None) or start
+    col_start = getattr(node, "col_offset", 0) + 1
+    end_offset = getattr(node, "end_col_offset", None)
+    col_end = (end_offset + 1) if end_offset is not None else col_start
+    excerpt = ast.get_source_segment(program.source, node) or ""
+    return start, end, col_start, col_end, excerpt
+
+
+def _comparison_facts(program: CodeProgram) -> tuple[CmpFact, ...]:
+    environment = _static_environment(program)
+    facts: list[CmpFact] = []
+    for node in ast.walk(program.function):
+        if not isinstance(node, ast.Compare) or len(node.ops) != 1:
+            continue
+        comparison = _ir_compare(program, node, environment)
+        if not isinstance(comparison, (Cmp, Eq, Ne)):
+            continue
+        start, end, col_start, col_end, excerpt = _span(program, node)
+        facts.append(CmpFact(comparison, start, end, col_start, col_end, excerpt))
+    return tuple(facts)
 
 
 def _body_destination(
@@ -1036,6 +1142,15 @@ def _ir_from_ast(
         return None if inner is None else NotNode(item=inner)
     if isinstance(node, ast.Constant) and isinstance(node.value, bool):
         return Const(value=node.value)
+    if isinstance(node, ast.Subscript):
+        key = _ticket_key(node, program.param)
+        if key is None:
+            return None
+        field, _field_name, unit = _field_for_key(program, key)
+        if field is None or unit is not None or field.type is not FieldType.BOOLEAN:
+            return None
+        # ``ticket["flag"]`` as an if-condition is true only for a present True.
+        return NotNode(item=NotTrue(item=Eq(field=field.name, value=True)))
     if isinstance(node, ast.Name):
         value = environment.get(node.id, _UNKNOWN)
         return Const(value=value) if isinstance(value, bool) else None
@@ -1112,6 +1227,7 @@ def _ir_compare(
 
 
 __all__ = [
+    "CmpFact",
     "CodeDomain",
     "CodeProgram",
     "CodeRule",

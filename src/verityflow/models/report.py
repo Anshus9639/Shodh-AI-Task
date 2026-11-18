@@ -4,6 +4,7 @@ import hashlib
 from enum import StrEnum
 
 from verityflow.models.common import FrozenModel, Location
+from verityflow.models.evidence import EvidenceReference
 
 
 class Severity(StrEnum):
@@ -67,6 +68,7 @@ class Finding(FrozenModel):
     artifact_version: str | None = None
     location: Location | None = None
     evidence: tuple[EvidenceItem, ...] = ()
+    evidence_refs: tuple[EvidenceReference, ...] = ()
     explanation: str | None = None
     recommendation: str | None = None
 
@@ -81,19 +83,38 @@ def make_finding(
     artifact_version: str | None = None,
     location: Location | None = None,
     evidence: tuple[EvidenceItem, ...] = (),
+    evidence_refs: tuple[EvidenceReference, ...] = (),
+    semantic: str | None = None,
     explanation: str | None = None,
     recommendation: str | None = None,
 ) -> Finding:
+    """Build a finding with a stable, witness-independent identity.
+
+    ``semantic`` is the defect descriptor (for example the mismatching condition
+    pair). When it is supplied the concrete witness cell is not part of the ID,
+    so the same defect discovered through several checks merges instead of
+    producing one finding per witness.
+    """
+    identity = semantic if semantic is not None else ""
     seed = "|".join(
         [
             category.value,
             rule_ref or "",
             artifact_id or "",
-            location.model_dump_json() if location is not None else "",
-            message,
+            artifact_version or "",
+            identity,
+            "" if semantic is not None else message,
+            "" if semantic is not None or location is None else location.model_dump_json(),
         ]
     )
     digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()[:8]
+    if location is None and evidence_refs:
+        location = evidence_refs[0].to_location()
+    if not evidence and evidence_refs:
+        evidence = tuple(
+            EvidenceItem(location=item.to_location(), excerpt=item.excerpt)
+            for item in evidence_refs
+        )
     return Finding(
         finding_id=f"F-{category.value}-{digest}",
         severity=severity,
@@ -104,6 +125,7 @@ def make_finding(
         artifact_version=artifact_version,
         location=location,
         evidence=evidence,
+        evidence_refs=evidence_refs,
         explanation=explanation,
         recommendation=recommendation,
     )

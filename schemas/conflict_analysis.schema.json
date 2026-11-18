@@ -1,0 +1,115 @@
+{
+  "$defs": {
+    "UndeterminedScope": {
+      "additionalProperties": false,
+      "properties": {
+        "attribute": {
+          "minLength": 1,
+          "title": "Attribute",
+          "type": "string"
+        },
+        "change_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Change Ids",
+          "type": "array"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "rule_ref": {
+          "minLength": 1,
+          "title": "Rule Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_ref",
+        "attribute",
+        "reason"
+      ],
+      "title": "UndeterminedScope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "What a disputed approval leaves determined and what remains undetermined.",
+  "properties": {
+    "affected_change_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Affected Change Id"
+    },
+    "affected_conditions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Affected Conditions",
+      "type": "array"
+    },
+    "affected_rule": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Affected Rule"
+    },
+    "confirmed_base": {
+      "title": "Confirmed Base",
+      "type": "string"
+    },
+    "conflicting_approval_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Conflicting Approval Ids",
+      "type": "array"
+    },
+    "diagnostic_variants": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Diagnostic Variants",
+      "type": "array"
+    },
+    "independent_findings": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Independent Findings",
+      "type": "array"
+    },
+    "undetermined_scope": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/UndeterminedScope"
+      },
+      "title": "Undetermined Scope",
+      "type": "array"
+    }
+  },
+  "required": [
+    "confirmed_base"
+  ],
+  "title": "ConflictAnalysis",
+  "type": "object"
+}

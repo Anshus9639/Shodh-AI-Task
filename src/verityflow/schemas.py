@@ -20,12 +20,14 @@ from verityflow.mapping.models import MappingResult
 from verityflow.model.models import ModelAnalysis, ModelRequest, ModelResponse
 from verityflow.models.changes import ChangeArtifact
 from verityflow.models.dictionary import DataDictionary
+from verityflow.models.evidence import EvidenceReference
 from verityflow.models.manifest import ApprovalRecord, ArtifactEntry, BundleManifest, CodeLink
 from verityflow.models.report import Finding
 from verityflow.models.requirements import AnchoredRequirement, RequirementsSource
 from verityflow.models.spec import SpecArtifact, SpecDefault, SpecRule
 from verityflow.models.trace import TraceMapArtifact
 from verityflow.models.workflow import Branch, WorkflowArtifact, WorkflowNode
+from verityflow.verify.models import ConflictAnalysis
 
 SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "bundle_manifest": BundleManifest,
@@ -38,6 +40,8 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "effective_requirements": EffectiveRequirements,
     "mapping_result": MappingResult,
     "finding": Finding,
+    "evidence_reference": EvidenceReference,
+    "conflict_analysis": ConflictAnalysis,
     "requirements_source": RequirementsSource,
     "anchored_requirement": AnchoredRequirement,
     "spec_rule": SpecRule,

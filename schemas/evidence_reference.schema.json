@@ -1,0 +1,129 @@
+{
+  "$defs": {
+    "AnchorType": {
+      "enum": [
+        "source_line",
+        "line_range",
+        "json_pointer",
+        "paragraph",
+        "named_block"
+      ],
+      "title": "AnchorType",
+      "type": "string"
+    },
+    "EvidenceRole": {
+      "enum": [
+        "SOURCE_REQUIREMENT",
+        "SPECIFICATION",
+        "WORKFLOW_BRANCH",
+        "PYTHON_CODE",
+        "APPROVAL_RECORD",
+        "EXECUTION_TRACE"
+      ],
+      "title": "EvidenceRole",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "A validated pointer back into one artifact revision.\n\n``anchor_value`` is the raw anchor (a JSON Pointer or a line/block address).\n``excerpt`` is always drawn from the artifact by the source catalog; it is\nnever composed by a verifier.",
+  "properties": {
+    "anchor_type": {
+      "$ref": "#/$defs/AnchorType"
+    },
+    "anchor_value": {
+      "title": "Anchor Value",
+      "type": "string"
+    },
+    "artifact_id": {
+      "minLength": 1,
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "artifact_version": {
+      "minLength": 1,
+      "title": "Artifact Version",
+      "type": "string"
+    },
+    "col_end": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Col End"
+    },
+    "col_start": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Col Start"
+    },
+    "evidence_role": {
+      "$ref": "#/$defs/EvidenceRole"
+    },
+    "excerpt": {
+      "title": "Excerpt",
+      "type": "string"
+    },
+    "line_end": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Line End"
+    },
+    "line_start": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Line Start"
+    },
+    "path": {
+      "minLength": 1,
+      "title": "Path",
+      "type": "string"
+    },
+    "source_hash": {
+      "minLength": 1,
+      "title": "Source Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "artifact_version",
+    "anchor_type",
+    "anchor_value",
+    "path",
+    "source_hash",
+    "excerpt",
+    "evidence_role"
+  ],
+  "title": "EvidenceReference",
+  "type": "object"
+}

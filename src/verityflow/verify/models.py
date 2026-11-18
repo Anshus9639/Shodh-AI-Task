@@ -4,7 +4,9 @@ from enum import StrEnum
 
 from pydantic import Field
 
+from verityflow.ir.policy import UndeterminedScope
 from verityflow.models.common import FrozenModel
+from verityflow.models.evidence import EvidenceReference
 from verityflow.models.report import CheckResult, Finding, UnreviewedScope
 
 
@@ -29,6 +31,22 @@ class Counterexample(FrozenModel):
     artifact_outcome: str
     validated: bool
     explanation: str
+    requirement_trace: tuple[str, ...] = ()
+    artifact_trace: tuple[str, ...] = ()
+    evidence_refs: tuple[EvidenceReference, ...] = ()
+
+
+class ConflictAnalysis(FrozenModel):
+    """What a disputed approval leaves determined and what remains undetermined."""
+
+    confirmed_base: str
+    affected_change_id: str | None = None
+    affected_rule: str | None = None
+    conflicting_approval_ids: tuple[str, ...] = ()
+    diagnostic_variants: tuple[str, ...] = ()
+    affected_conditions: tuple[str, ...] = ()
+    independent_findings: tuple[str, ...] = ()
+    undetermined_scope: tuple[UndeterminedScope, ...] = ()
 
 
 class ComparisonRecord(FrozenModel):
@@ -73,6 +91,7 @@ class ReviewReport(FrozenModel):
     coverage: tuple[RequirementCoverage, ...] = ()
     findings: tuple[Finding, ...] = ()
     unreviewed: tuple[UnreviewedScope, ...] = ()
+    conflict_analysis: tuple[ConflictAnalysis, ...] = ()
     exhaustive: bool = False
     detail: str | None = None
 
@@ -80,6 +99,7 @@ class ReviewReport(FrozenModel):
 __all__ = [
     "ComparisonMode",
     "ComparisonRecord",
+    "ConflictAnalysis",
     "Counterexample",
     "RequirementCoverage",
     "ReviewReport",

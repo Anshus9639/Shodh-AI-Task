@@ -24,6 +24,7 @@ from verityflow.ir.model import (
     Or,
     canonical_key,
 )
+from verityflow.ir.policy import Policy, Rule
 from verityflow.mapping.semantics import equivalent_conditions
 from verityflow.models.dictionary import DataDictionary
 from verityflow.models.report import FindingCategory
@@ -196,6 +197,27 @@ def number(value: Fraction) -> str:
     return str(int(value)) if value.denominator == 1 else str(value)
 
 
+def numeric_requirement(
+    policy: Policy,
+    condition: Expr | None,
+    dictionary: DataDictionary,
+    max_cells: int,
+) -> tuple[Rule, NumericClue] | None:
+    """Return the requirement boundary that differs from an implementation guard.
+
+    A boundary defect can make the witness fall through to a different rule, so the
+    finding must reference the rule whose *condition* differs, not the rule that
+    happened to fire on the ticket.
+    """
+    if condition is None:
+        return None
+    for rule in policy.rules:
+        clue = numeric_clue(rule.condition, condition)
+        if clue is not None:
+            return rule, clue
+    return None
+
+
 __all__ = [
     "NumericClue",
     "cmp_atoms",
@@ -203,6 +225,7 @@ __all__ = [
     "is_reordered",
     "number",
     "numeric_clue",
+    "numeric_requirement",
     "perfect_matching",
     "same_behaviour",
     "single_cmp",
