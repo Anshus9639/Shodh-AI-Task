@@ -1,0 +1,22 @@
+{
+  "bundle_id": "S3_continuous_boundary",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S3_continuous_boundary",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "THRESHOLD_CHANGED"
+    ],
+    "primary_defect": "THRESHOLD_CHANGED",
+    "tickets": {
+      "category=billing,priority=normal,wait_time=30,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30.5,vip=False": "escalation_queue"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "On a continuous domain '> 30' and '>= 30' differ only at 30; the router fires where the requirement does not.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "continuous domain"
+  ]
+}

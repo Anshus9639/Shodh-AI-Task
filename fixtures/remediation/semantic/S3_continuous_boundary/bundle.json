@@ -1,0 +1,63 @@
+{
+  "bundle_id": "S3_continuous_boundary",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0",
+    "code": [
+      "ROUTER@1.0"
+    ]
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "2f9fc946795e27ee2c0fbbffcb36c6b0094bbb185059facb5aec453a74555e82"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "b30e93a230e4c0a36513a17c918f6fbf8a340b6ddb564999931bf3a5ae2f8d7e"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "49b127853cda03e495a437cd47e198b99ee82ca4239b97f6a5c66777a97d41c0"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "f9856f560a237079d08b0ec7101c8b4cdec906301397a9b1ad464241212c1dc9"
+    },
+    {
+      "artifact_id": "ROUTER",
+      "version": "1.0",
+      "kind": "python",
+      "path": "router.py",
+      "sha256": "83c737898231ca1eaad3dd70a51a21b42569fd70dd0f47ef1a3670c26400e6ba",
+      "link": {
+        "entrypoint": "route",
+        "param": "ticket",
+        "field_map": {},
+        "destination_map": {
+          "manual": "manual_review",
+          "priority": "priority_queue",
+          "escalation": "escalation_queue",
+          "normal": "normal_queue"
+        }
+      }
+    }
+  ],
+  "approvals": []
+}

@@ -1,0 +1,21 @@
+{
+  "bundle_id": "S6_wrong_destination",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S6_wrong_destination",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "WRONG_DESTINATION"
+    ],
+    "primary_defect": "WRONG_DESTINATION",
+    "tickets": {
+      "category=billing,priority=urgent,wait_time=<absent>,vip=False": "priority_queue"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The urgent condition is equivalent to the requirement, but the router sends it to manual review instead of the priority queue.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "destination disagreement"
+  ]
+}

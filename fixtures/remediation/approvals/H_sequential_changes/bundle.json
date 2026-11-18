@@ -1,0 +1,93 @@
+{
+  "bundle_id": "H_sequential_changes",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0",
+    "code": [
+      "ROUTER@1.0"
+    ]
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "ef4e16fa7741f409cf9c509db8e31eed59266e129fe5c687e2d778ba3f4b3cd0"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "fa9490d28c576f63041f348c886e5fd6ee94edec13125d4dac8090ab60314ca6"
+    },
+    {
+      "artifact_id": "CHG",
+      "version": "1.0",
+      "kind": "change_requests",
+      "path": "changes.json",
+      "sha256": "7243d8fe0a5d709406c9af55d2dc56be9e0d7500daaa4013c4f16fb28aa058b7"
+    },
+    {
+      "artifact_id": "ROUTER",
+      "version": "1.0",
+      "kind": "python",
+      "path": "router.py",
+      "sha256": "e1fea5423bbc0cbe13c3eaef4f675eea6d64f2906cfa7ed8124242fb5c49596d",
+      "link": {
+        "entrypoint": "route",
+        "param": "ticket",
+        "field_map": {},
+        "destination_map": {
+          "manual": "manual_review",
+          "priority": "priority_queue",
+          "escalation": "escalation_queue",
+          "normal": "normal_queue"
+        }
+      }
+    }
+  ],
+  "approvals": [
+    {
+      "approval_id": "A1",
+      "change_id": "C1",
+      "change_version": "1",
+      "change_sha256": "2e9b637400a1beb4cc66d0faa2e37f312985049fcf1b3511b75d862da98eee06",
+      "decision": "approve",
+      "approver_id": "alice",
+      "approver_role": "policy_owner",
+      "recorded_at": "2026-03-01T10:00:00Z",
+      "supersedes": []
+    },
+    {
+      "approval_id": "A2",
+      "change_id": "C2",
+      "change_version": "1",
+      "change_sha256": "bada149e3ae8264033fbfc6c1db96b2d6122379b4c83a3308e7e0420c8cbe9ef",
+      "decision": "approve",
+      "approver_id": "alice",
+      "approver_role": "policy_owner",
+      "recorded_at": "2026-03-01T10:00:00Z",
+      "supersedes": []
+    }
+  ]
+}

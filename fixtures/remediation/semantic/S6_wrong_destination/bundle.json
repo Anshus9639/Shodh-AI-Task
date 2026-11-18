@@ -1,0 +1,63 @@
+{
+  "bundle_id": "S6_wrong_destination",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0",
+    "code": [
+      "ROUTER@1.0"
+    ]
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "0072a5c0dcd542f49262880e3778c8ee45c5e3216d1a81be94a987856657274b"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "7b74897b41a7320888912e8aed69f2729d4a100cfff98349e5d45b4f4fcbb920"
+    },
+    {
+      "artifact_id": "ROUTER",
+      "version": "1.0",
+      "kind": "python",
+      "path": "router.py",
+      "sha256": "b5663db7e1f5b23212e034570b7045c1a0de00023bd8d44184097b9af795b884",
+      "link": {
+        "entrypoint": "route",
+        "param": "ticket",
+        "field_map": {},
+        "destination_map": {
+          "manual": "manual_review",
+          "priority": "priority_queue",
+          "escalation": "escalation_queue",
+          "normal": "normal_queue"
+        }
+      }
+    }
+  ],
+  "approvals": []
+}

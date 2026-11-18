@@ -1,0 +1,31 @@
+{
+  "bundle_id": "C_approved_25_impl_30",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/C_approved_25_impl_30",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "THRESHOLD_CHANGED"
+    ],
+    "primary_defect": "THRESHOLD_CHANGED",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    },
+    "effective_threshold": 25,
+    "applied_changes": [
+      "C1@1"
+    ]
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The effective threshold is 25 after C1, but the spec, workflow and router still compare against 30; tickets waiting 25-29 minutes are misrouted.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "approved threshold",
+    "implementation lag"
+  ]
+}

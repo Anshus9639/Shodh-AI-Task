@@ -1,0 +1,21 @@
+{
+  "bundle_id": "S7_runtime_error",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S7_runtime_error",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "RUNTIME_ERROR"
+    ],
+    "primary_defect": "RUNTIME_ERROR",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The router dereferences ticket['category'] without a presence guard, so a ticket with no category raises KeyError while the requirements route it to manual review.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "runtime error"
+  ]
+}

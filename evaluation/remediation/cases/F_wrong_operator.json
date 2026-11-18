@@ -1,0 +1,23 @@
+{
+  "bundle_id": "F_wrong_operator",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/F_wrong_operator",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "WRONG_OPERATOR"
+    ],
+    "primary_defect": "WRONG_OPERATOR",
+    "tickets": {
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=10,vip=False": "normal_queue"
+    },
+    "effective_threshold": 30
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The requirement is 'at least 30 minutes'. The spec and workflow implement '>= 30'; the linked router uses '< 30', which routes the complementary region. This is an operator-direction defect in the router.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "wrong operator"
+  ]
+}

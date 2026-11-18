@@ -1,0 +1,22 @@
+{
+  "bundle_id": "S1_integer_boundary",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S1_integer_boundary",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "THRESHOLD_CHANGED"
+    ],
+    "primary_defect": "THRESHOLD_CHANGED",
+    "tickets": {
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=31,vip=False": "escalation_queue"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The requirement fires at exactly 30 minutes; the router uses '> 30'. The declared integer grid makes the differing region exactly {30}.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "integer boundary"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "bundle_id": "S8_overlapping_numeric_rules",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S8_overlapping_numeric_rules",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "MISSING_EXCEPTION"
+    ],
+    "primary_defect": "MISSING_EXCEPTION",
+    "tickets": {
+      "category=billing,priority=normal,wait_time=60,vip=False": "manual_review",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "Two numeric rules apply at 60+ minutes and the exception narrows R3 to manual review; none of the artifacts implements the exception.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "multiple applicable rules"
+  ]
+}

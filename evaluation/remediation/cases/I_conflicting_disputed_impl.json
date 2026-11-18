@@ -1,0 +1,28 @@
+{
+  "bundle_id": "I_conflicting_disputed_impl",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/I_conflicting_disputed_impl",
+  "expected": {
+    "status": "INCOMPLETE",
+    "defect_classes": [
+      "UNDETERMINED_CONFLICT"
+    ],
+    "primary_defect": "UNDETERMINED_CONFLICT",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    },
+    "effective_threshold": 30
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "A1 approves and A2 rejects the same hash-bound C1. The artifacts implement the disputed 25-minute threshold; because the base 30 policy is only one permitted interpretation, the difference depends on the unresolved approval and cannot be a confirmed blocker.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "contradictory approvals",
+    "disputed threshold implemented"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "bundle_id": "K_multiple_conflicts",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/K_multiple_conflicts",
+  "expected": {
+    "status": "INCOMPLETE",
+    "defect_classes": [
+      "UNDETERMINED_CONFLICT"
+    ],
+    "primary_defect": "UNDETERMINED_CONFLICT",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    },
+    "effective_threshold": 30
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "C1 (threshold) and C2 (urgent destination) each have one approval and one rejection. The confirmed base policy is 30/priority. The artifacts implement that base, but the differences under each diagnostic variant are unresolved, so both scopes are disclosed as undetermined.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "two conflicts on different rules"
+  ]
+}

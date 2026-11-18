@@ -1,0 +1,24 @@
+{
+  "bundle_id": "N_conflict_plus_runtime_error",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/N_conflict_plus_runtime_error",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "UNDETERMINED_CONFLICT",
+      "RUNTIME_ERROR"
+    ],
+    "primary_defect": "RUNTIME_ERROR",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review"
+    },
+    "effective_threshold": 30
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The threshold is disputed, but the router dereferences a missing category without a guard. That raises on every permitted threshold interpretation, so the runtime defect is independent of the unresolved approval.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "contradictory approvals",
+    "independent runtime error"
+  ]
+}

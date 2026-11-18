@@ -1,0 +1,26 @@
+{
+  "bundle_id": "L_valid_supersession",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/L_valid_supersession",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": "",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    },
+    "effective_threshold": 30,
+    "applied_changes": []
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "A2 is a valid later rejection that supersedes A1. The active decision is reject, C1 is not applied, and the artifacts implement the base 30 policy.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "valid approval supersession"
+  ]
+}

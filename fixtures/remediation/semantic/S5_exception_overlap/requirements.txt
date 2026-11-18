@@ -1,0 +1,5 @@
+R1. Missing category -> manual review.
+R2. Otherwise, urgent ticket -> priority queue.
+Exception to R2: if vip, route to manual review.
+R3. Otherwise, waiting is at least 30 minutes -> escalation queue.
+R4. All remaining tickets -> normal queue.

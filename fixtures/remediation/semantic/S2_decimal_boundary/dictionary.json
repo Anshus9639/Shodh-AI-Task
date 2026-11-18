@@ -1,0 +1,71 @@
+{
+  "fields": [
+    {
+      "name": "category",
+      "type": "string",
+      "nullable": true,
+      "domain": [
+        "billing",
+        "technical",
+        "general"
+      ]
+    },
+    {
+      "name": "priority",
+      "type": "string",
+      "nullable": true,
+      "domain": [
+        "urgent",
+        "normal"
+      ]
+    },
+    {
+      "name": "wait_time",
+      "type": "decimal",
+      "unit": "minutes",
+      "nullable": true,
+      "scale": 1
+    },
+    {
+      "name": "vip",
+      "type": "boolean",
+      "nullable": true
+    }
+  ],
+  "destinations": [
+    {
+      "id": "manual_review",
+      "aliases": [
+        "manual review"
+      ]
+    },
+    {
+      "id": "priority_queue",
+      "aliases": [
+        "priority queue"
+      ]
+    },
+    {
+      "id": "escalation_queue",
+      "aliases": [
+        "escalation queue"
+      ]
+    },
+    {
+      "id": "normal_queue",
+      "aliases": [
+        "normal queue"
+      ]
+    }
+  ],
+  "aliases": {
+    "waiting": "wait_time"
+  },
+  "named_predicates": {
+    "urgent ticket": {
+      "kind": "eq",
+      "field": "priority",
+      "value": "urgent"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "bundle_id": "S2_decimal_boundary",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S2_decimal_boundary",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "THRESHOLD_CHANGED"
+    ],
+    "primary_defect": "THRESHOLD_CHANGED",
+    "tickets": {
+      "category=billing,priority=normal,wait_time=29.5,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "With a 0.1-minute grid the router fires at 29.5 while the requirement fires at 30; representable tickets in [29.5, 30) differ.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "decimal boundary"
+  ]
+}

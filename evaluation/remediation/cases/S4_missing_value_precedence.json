@@ -1,0 +1,22 @@
+{
+  "bundle_id": "S4_missing_value_precedence",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S4_missing_value_precedence",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "PRECEDENCE"
+    ],
+    "primary_defect": "PRECEDENCE",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=normal,wait_time=30,vip=False": "manual_review"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The router checks urgency before the missing-category guard, so a ticket with no category and urgent priority leaves the manual-review region.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "missing-value precedence"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "bundle_id": "G_unit_conversion",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/G_unit_conversion",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": "",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    },
+    "effective_threshold": 25,
+    "applied_changes": [
+      "C1@1"
+    ]
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "C1 approves 1500 seconds, which normalizes to 25 minutes in the field unit; the artifacts compare in minutes at 25, so the change applies exactly once.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "unit normalization"
+  ]
+}

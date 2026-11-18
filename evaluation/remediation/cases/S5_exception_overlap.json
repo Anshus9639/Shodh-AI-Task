@@ -1,0 +1,22 @@
+{
+  "bundle_id": "S5_exception_overlap",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/semantic/S5_exception_overlap",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "PRECEDENCE"
+    ],
+    "primary_defect": "PRECEDENCE",
+    "tickets": {
+      "category=billing,priority=urgent,wait_time=<absent>,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=<absent>,vip=False": "priority_queue"
+    }
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The urgent+vip exception must be tested before the plain urgent rule; the router tests the plain rule first, so the exception is unreachable.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "overlapping urgency and exception"
+  ]
+}

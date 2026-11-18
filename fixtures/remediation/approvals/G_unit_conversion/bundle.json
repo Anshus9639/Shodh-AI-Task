@@ -1,0 +1,82 @@
+{
+  "bundle_id": "G_unit_conversion",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0",
+    "code": [
+      "ROUTER@1.0"
+    ]
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "7d4398667abb4df971efc4da8b57037c8e8ad7c8a8ee054e1a5456b55ffb4bb4"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "0a151253039f62dbe4fb7aca42bc780d329c911179d5360d35db17f5ff318449"
+    },
+    {
+      "artifact_id": "CHG",
+      "version": "1.0",
+      "kind": "change_requests",
+      "path": "changes.json",
+      "sha256": "dc4e0ee2b9a46b356c269d7f38ac4aaeca3da0b7c7091580068a1401b718c585"
+    },
+    {
+      "artifact_id": "ROUTER",
+      "version": "1.0",
+      "kind": "python",
+      "path": "router.py",
+      "sha256": "5da61afeac0f439641ee16a6c2897f7700a0c9301313bccaa988768d3a36b0ee",
+      "link": {
+        "entrypoint": "route",
+        "param": "ticket",
+        "field_map": {},
+        "destination_map": {
+          "manual": "manual_review",
+          "priority": "priority_queue",
+          "escalation": "escalation_queue",
+          "normal": "normal_queue"
+        }
+      }
+    }
+  ],
+  "approvals": [
+    {
+      "approval_id": "A1",
+      "change_id": "C1",
+      "change_version": "1",
+      "change_sha256": "9faecfdd4b385a54b63d118dd6f2bae5fbe8a62480713493495b77a043ad5ebd",
+      "decision": "approve",
+      "approver_id": "alice",
+      "approver_role": "policy_owner",
+      "recorded_at": "2026-03-01T10:00:00Z",
+      "supersedes": []
+    }
+  ]
+}

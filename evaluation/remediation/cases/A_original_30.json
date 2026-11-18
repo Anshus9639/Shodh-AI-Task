@@ -1,0 +1,25 @@
+{
+  "bundle_id": "A_original_30",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/A_original_30",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": "",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    },
+    "effective_threshold": 30
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "No change artifact and no approvals. Every artifact implements the base 30-minute threshold, so routing agrees everywhere.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "original policy"
+  ]
+}

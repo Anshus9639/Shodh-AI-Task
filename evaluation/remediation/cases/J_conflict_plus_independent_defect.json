@@ -1,0 +1,26 @@
+{
+  "bundle_id": "J_conflict_plus_independent_defect",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/J_conflict_plus_independent_defect",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "UNDETERMINED_CONFLICT",
+      "PRECEDENCE"
+    ],
+    "primary_defect": "PRECEDENCE",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=<absent>,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue"
+    },
+    "effective_threshold": 30
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "The threshold conflict is undetermined, but the router also tests urgency before the missing-category guard. Tickets with no category and urgent priority are routed to the priority queue instead of manual review under every permitted threshold interpretation, so an independent blocker remains.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "contradictory approvals",
+    "independent precedence defect"
+  ]
+}

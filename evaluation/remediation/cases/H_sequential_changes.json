@@ -1,0 +1,30 @@
+{
+  "bundle_id": "H_sequential_changes",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/H_sequential_changes",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": "",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review",
+      "category=billing,priority=normal,wait_time=24,vip=False": "escalation_queue"
+    },
+    "effective_threshold": 24,
+    "applied_changes": [
+      "C1@1",
+      "C2@1"
+    ]
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "C1 lowers 30 to 28 and C2 lowers 28 to 24; applying both once in sequence gives 24, which the artifacts implement.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "sequential approved changes"
+  ]
+}

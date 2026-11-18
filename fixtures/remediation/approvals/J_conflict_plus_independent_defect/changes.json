@@ -1,0 +1,22 @@
+{
+  "changes": [
+    {
+      "change_id": "C1",
+      "change_version": "1",
+      "base_artifact": "REQ",
+      "base_version": "1.0",
+      "target_rule": "R3",
+      "operation": "replace_threshold",
+      "from": {
+        "value": 30,
+        "unit": "minutes"
+      },
+      "to": {
+        "value": 25,
+        "unit": "minutes"
+      },
+      "sequence": 1,
+      "rationale": "Policy-owner change under remediation review."
+    }
+  ]
+}

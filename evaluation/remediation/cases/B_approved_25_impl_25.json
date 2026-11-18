@@ -1,0 +1,28 @@
+{
+  "bundle_id": "B_approved_25_impl_25",
+  "suite": "remediation-development",
+  "bundle_path": "fixtures/remediation/approvals/B_approved_25_impl_25",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": "",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=False": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=29,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    },
+    "effective_threshold": 25,
+    "applied_changes": [
+      "C1@1"
+    ]
+  },
+  "method": "independent reasoning from bundle bytes",
+  "independent_reasoning": "A1 is an authorized, hash-bound approval of C1; applying C1 once makes the effective threshold 25 minutes, which every artifact implements.",
+  "reviewer_output_used": false,
+  "scenarios": [
+    "approved threshold"
+  ]
+}

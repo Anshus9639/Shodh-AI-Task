@@ -1,0 +1,74 @@
+{
+  "workflow_id": "WF",
+  "version": "1.0",
+  "start": "start",
+  "nodes": [
+    {
+      "id": "start",
+      "version": "1.0",
+      "kind": "decision",
+      "branches": [
+        {
+          "branch_id": "b1",
+          "version": "1.0",
+          "condition": {
+            "kind": "missing",
+            "field": "category"
+          },
+          "target": "manual"
+        },
+        {
+          "branch_id": "b3",
+          "version": "1.0",
+          "condition": {
+            "kind": "eq",
+            "field": "priority",
+            "value": "urgent"
+          },
+          "target": "priority"
+        },
+        {
+          "branch_id": "b4",
+          "version": "1.0",
+          "condition": {
+            "kind": "cmp",
+            "field": "wait_time",
+            "op": ">=",
+            "value": 25,
+            "unit": "minutes"
+          },
+          "target": "escalation"
+        },
+        {
+          "branch_id": "b5",
+          "version": "1.0",
+          "target": "normal"
+        }
+      ]
+    },
+    {
+      "id": "manual",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "manual_review"
+    },
+    {
+      "id": "priority",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "priority_queue"
+    },
+    {
+      "id": "escalation",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "escalation_queue"
+    },
+    {
+      "id": "normal",
+      "version": "1.0",
+      "kind": "terminal",
+      "destination": "normal_queue"
+    }
+  ]
+}
