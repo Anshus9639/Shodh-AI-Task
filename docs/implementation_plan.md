@@ -866,11 +866,12 @@ ablation switch for numeric domain partitioning.
 - Reuse `fixtures/dev/B01–B14` (12 bundles) and the frozen development evidence
   `fixtures/dev_evidence/holdout_v1/H01–H05` (5 bundles). Their expected Stage 1 labels are
   retained; Stage 2 status expectations are independently derived.
-- Add `evaluation/bundles/E01–E07` for scenarios not represented in the existing development
+- Add `evaluation/bundles/E01–E10` for scenarios not represented in the existing development
   set: an accepted approved threshold change, a missing branch, a wrong destination, an
-  interacting exception, unsupported requirement language, unsupported Python syntax and a
-  provenance/missing-evidence failure. These are development fixtures, not modifications of any
-  sealed set.
+  interacting exception, unsupported requirement language, unsupported Python syntax, a
+  provenance/missing-evidence failure, the unusual `not waiting < 30` formulation, reordered
+  records and paraphrased wording. These are development fixtures, not modifications of any
+  sealed set. The final development set has 27 bundles; the sealed set has 10.
 - Sealed `holdout/` and `holdout_stage2/` remain untouched until the single final evaluation run.
 
 ### 16.2 Independent oracle
@@ -909,3 +910,21 @@ ablation runs the same bundles, approvals, model mode (`off`) and environment.
 
 `uv run pytest -q`, ruff, format check, mypy, `uv run python scripts/run_offline.py`, report
 schema validation, manifest integrity checks, and a clean working tree after the Stage 4 commit.
+
+### 16.7 Actual outcome
+
+- Implementation commit `7f55c5d`; dataset freeze commit `7f55c5d`; development manifest
+  `962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7`.
+- Development: 27/27 exact (0 false PASS, 0 false blocks); baseline on identical inputs 27/27;
+  ablation disabled 10/27 with no false PASS; all reports schema-valid.
+- Sealed, executed once: 8/10 correct. F03 was a false block and G05 over-reported
+  CHANGES_REQUIRED; G03/G04 witness matching and G04's category were wrong. These outcomes are
+  retained without correcting the implementation or labels, and are documented in
+  `docs/limitations.md`, `docs/decision_log.md` (D-050) and the engineering note.
+- Both debugging examples were reproduced from git history (`528aaf7`/`ace9479` and
+  `f0dbb0c`/`528aaf7`) in `reports/debugging/debugging_examples.json`.
+- Offline command: `uv run python scripts/run_offline.py` (exit 0). Sealed command:
+  `uv run python scripts/run_final_evaluation.py` (exit 1 because the sealed result is not
+  perfect; the report is still written and retained). The exit code is intentional: an
+  imperfect sealed result must not be reported as success.
+

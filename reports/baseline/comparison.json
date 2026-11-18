@@ -1,0 +1,249 @@
+{
+  "baseline": {
+    "tag": "stage2-baseline",
+    "commit": "4702939fdabfb97a60aa89fd37a70d0678a56996",
+    "dependency_lock_path": "uv.lock",
+    "dependency_lock_sha256": "9deec83379b4cdf064863795d988923ccdda846a72fc66a4232b06098dedb409",
+    "features_missing": [
+      "no --model flag (the baseline has no model layer; deterministic review is its only mode)",
+      "no domain-partitioning switch (partitioning is always on)"
+    ]
+  },
+  "final": {
+    "commit": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "config_path": "configs/default.toml",
+    "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61"
+  },
+  "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+  "bundle_manifest_hashes": {
+    "B01_starter": "e322ebe114132023cb7228ee451640e4053ae6d7c504a03eb616630d6728f22c",
+    "B03_approved_change": "4de9928bd84e92bd59e0565cb7017575b92e288885cfb90ee53f7ca744575033",
+    "B05_unapproved_change": "b117550834b0440ff108be5e401695d2f314f096e52b677d29001be0f9078ce6",
+    "B06_conflicting_approvals": "450d5c5eb8c047fa8ac6d9afb3fc9271c2456eee88c81aca7c16dd9f9df97db3",
+    "B07_approved_threshold_25": "425cf7c942b060f7a30b5c7586788db2924a74a9271c872ef7f56456c365ea54",
+    "B08_unapproved_threshold_25": "0f01de0d80e2a6dc03472f94675c882f54b2f2dbbd90a147a759d8856dc93028",
+    "B09_conflicting_threshold_25": "46b9727a1923bac582d25f4505d9cdd194bcab6621bd4ed1f037da08c6f51384",
+    "B10_router_clean": "00d512fa51be71b438ad1dfc3865b6b5f4291eb61d0c91cac8d2d478987d961b",
+    "B11_router_precedence": "c7fc17d130a1dae45949e21c1d71e5c7a7437dfa53cd97ac021e2b7cd6e2e014",
+    "B12_router_threshold": "c8053f2ebed7ecd54a529a77d17f89368cffcfc6d36b0e49b58156a426e03469",
+    "B13_router_runtime": "205563368d39dbce3d8de3f639fbe99ea95e00374102950661bad84bf7c1830f",
+    "B14_router_unsupported": "a4596582befec328b5d0516be20c6c9ba91c1b8711108aaed72b8cb07fcb2b0a",
+    "E01_valid_approved_25": "e42c9214988ae1718668665cda1b318544df8cd793ca3a05752cfc9a0b8eaf6f",
+    "E02_missing_branch": "15d34fb33de5e2d9f5b754e49b5aba9694e190a336b363f99f6602df46953581",
+    "E03_wrong_destination": "2bc23c9a740767f3928dd0e81c0dd9c52e6f7e3f83cb611463a85135ca74bc50",
+    "E04_interacting_exceptions": "d774d5e1b3108181a7b49ab719a96b540da999e6696e1d9e570915c6b280b448",
+    "E05_unsupported_language": "9efbbc7d140be0ee996dc9f28e21a88b7173cf891a76c6c1fef086d123c4627c",
+    "E06_unsupported_python": "b19697c38cbb8240731ec8829ae34a8610b7059faed7202a4cd94c6bc78352a6",
+    "E07_missing_evidence": "ef2afb31859adf5a65296a26d615dbf369426f03c84fc044d65793ee8837ac11",
+    "E08_unusual_formulation": "a388283c7d727b414e4db261520bb08d10ba383a0d051e91711a0b1f914c157b",
+    "E09_reordered_records": "c7065353863c90cfa0061e63f7046a14a10a6bcbd6a7751315d3cdf800d44ff1",
+    "E10_paraphrased_wording": "dfc06f4a03bf0d76373b5f495c0e0958c3f54d5cc17d7b61aa43ff3dafef2229",
+    "H01_clean": "9df5c32189db0f5e8fa051931ba74f87a08e63d8149a9f14d7a12fc88ae9173f",
+    "H02_renamed": "20d6844d75e88ea2a148a05533ca6a3e2ceb7748a4ec21700efc1659ea36725a",
+    "H03_spec_reordered": "b4851200d22335749500e0f4656aa447eeb07251a9154440c7ee8d1aab71c356",
+    "H04_approved_threshold": "42a7e2a5cff557fc0667b9a56acf963e895c9316a14f61f07ef723b4d3d1f5fe",
+    "H05_tampered_approval": "f9381a9ca169d731244ffb512115cdcfd7886cbaa5a9dc7a3b7ad10fbefdd88e",
+    "F01_clean": "781da1188ab70c2c9c5e1e2f84fbe09d9ad95920e1fc7734de5ad97a66774792",
+    "F02_renamed": "8defa0eed0b149fb6ca48b0ff8f3150ca27c6e2f1ec9a83f91581f554b0cb95d",
+    "F03_approved_threshold": "52e8e72930ecf5e0bfd058f562e73fde300050a0a0c57d19e2053c6b57638618",
+    "F04_unapproved_threshold": "9c33148e6aa7b39268fd2687fcd4923edea241944c3807647befa87276e7258e",
+    "F05_tampered_approval": "230feaea2c2b9d1f4a7fea104a8c6ee06456217bb9c3934b1868f4a697927b7f",
+    "G01_valid_original": "3a5c71e6c85e2b6e91ee7b606b679557448197b6596403d1988dc134cd2b4802",
+    "G02_valid_approved_25": "eec18946878dd4e821eae8799d758aeefed48b48160e378f49394ed117d79212",
+    "G03_precedence_defect": "2606f4183d01eb48ab596aad5868bcac4cec9b64ec4dff614e06c7960c502728",
+    "G04_code_boundary_defect": "acd9a621a2c66e75a7df605bfbdabe183771bcb48d6c71a2e456d49d4018d54a",
+    "G05_conflicting_approvals": "9c5cad4b9659c919c67fb90a7dfff3380f8db7222b59a57e4f1a4b2ef62a5223"
+  },
+  "identical_inputs": true,
+  "per_case": [
+    {
+      "bundle_id": "B01_starter",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "B03_approved_change",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "B05_unapproved_change",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "B06_conflicting_approvals",
+      "expected_status": "INCOMPLETE",
+      "baseline_status": "INCOMPLETE",
+      "final_status": "INCOMPLETE",
+      "agree": true
+    },
+    {
+      "bundle_id": "B07_approved_threshold_25",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "B08_unapproved_threshold_25",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "B09_conflicting_threshold_25",
+      "expected_status": "INCOMPLETE",
+      "baseline_status": "INCOMPLETE",
+      "final_status": "INCOMPLETE",
+      "agree": true
+    },
+    {
+      "bundle_id": "B10_router_clean",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "B11_router_precedence",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "B12_router_threshold",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "B13_router_runtime",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "B14_router_unsupported",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "E01_valid_approved_25",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "E02_missing_branch",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "E03_wrong_destination",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "E04_interacting_exceptions",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "E05_unsupported_language",
+      "expected_status": "INCOMPLETE",
+      "baseline_status": "INCOMPLETE",
+      "final_status": "INCOMPLETE",
+      "agree": true
+    },
+    {
+      "bundle_id": "E06_unsupported_python",
+      "expected_status": "INCOMPLETE",
+      "baseline_status": "INCOMPLETE",
+      "final_status": "INCOMPLETE",
+      "agree": true
+    },
+    {
+      "bundle_id": "E07_missing_evidence",
+      "expected_status": "INCOMPLETE",
+      "baseline_status": "INCOMPLETE",
+      "final_status": "INCOMPLETE",
+      "agree": true
+    },
+    {
+      "bundle_id": "E08_unusual_formulation",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "E09_reordered_records",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "E10_paraphrased_wording",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "H01_clean",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "H02_renamed",
+      "expected_status": "PASS",
+      "baseline_status": "PASS",
+      "final_status": "PASS",
+      "agree": true
+    },
+    {
+      "bundle_id": "H03_spec_reordered",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "H04_approved_threshold",
+      "expected_status": "CHANGES_REQUIRED",
+      "baseline_status": "CHANGES_REQUIRED",
+      "final_status": "CHANGES_REQUIRED",
+      "agree": true
+    },
+    {
+      "bundle_id": "H05_tampered_approval",
+      "expected_status": "INCOMPLETE",
+      "baseline_status": "INCOMPLETE",
+      "final_status": "INCOMPLETE",
+      "agree": true
+    }
+  ]
+}

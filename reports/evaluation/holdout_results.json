@@ -1,0 +1,322 @@
+{
+  "header": {
+    "report": "sealed_final",
+    "generated_at": "2026-11-18T00:53:40+00:00",
+    "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "baseline_revision": null,
+    "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+    "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+    "bundle_count": 10,
+    "model_execution_mode": "off (deterministic; no model requests)",
+    "unsupported_scope": [
+      "real-model semantic performance is not measured by this report",
+      "sealed holdout labels are excluded from reviewer input"
+    ]
+  },
+  "expected_outcome_counts": {
+    "PASS": 6,
+    "CHANGES_REQUIRED": 2,
+    "INCOMPLETE": 2
+  },
+  "actual_outcome_counts": {
+    "PASS": 5,
+    "CHANGES_REQUIRED": 4,
+    "INCOMPLETE": 1
+  },
+  "cases": [
+    {
+      "bundle_id": "F01_clean",
+      "suite": "sealed stage 1",
+      "bundle_path": "holdout\\bundles\\F01_clean",
+      "label_path": "holdout\\labels\\F01_clean.json",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "expected_finding_categories": [],
+      "actual_finding_categories": [],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": true,
+        "finding_categories": true,
+        "counterexamples": true
+      },
+      "correct": true,
+      "method": "manual derivation from the frozen label categories and docs/evaluation_protocol.md: UNAPPROVED_CHANGE is INFO (PASS), INVALID_APPROVAL is COVERAGE_GAP (INCOMPLETE)",
+      "runtime_seconds": 0.692,
+      "input_bytes": 4481,
+      "error": null
+    },
+    {
+      "bundle_id": "F02_renamed",
+      "suite": "sealed stage 1",
+      "bundle_path": "holdout\\bundles\\F02_renamed",
+      "label_path": "holdout\\labels\\F02_renamed.json",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "expected_finding_categories": [],
+      "actual_finding_categories": [],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": true,
+        "finding_categories": true,
+        "counterexamples": true
+      },
+      "correct": true,
+      "method": "manual derivation from the frozen label categories and docs/evaluation_protocol.md: UNAPPROVED_CHANGE is INFO (PASS), INVALID_APPROVAL is COVERAGE_GAP (INCOMPLETE)",
+      "runtime_seconds": 0.679,
+      "input_bytes": 4520,
+      "error": null
+    },
+    {
+      "bundle_id": "F03_approved_threshold",
+      "suite": "sealed stage 1",
+      "bundle_path": "holdout\\bundles\\F03_approved_threshold",
+      "label_path": "holdout\\labels\\F03_approved_threshold.json",
+      "expected_status": "PASS",
+      "actual_status": "CHANGES_REQUIRED",
+      "expected_finding_categories": [],
+      "actual_finding_categories": [
+        "THRESHOLD_CHANGED",
+        "THRESHOLD_CHANGED"
+      ],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": false,
+        "finding_categories": false,
+        "counterexamples": true
+      },
+      "correct": false,
+      "method": "manual derivation from the frozen label categories and docs/evaluation_protocol.md: UNAPPROVED_CHANGE is INFO (PASS), INVALID_APPROVAL is COVERAGE_GAP (INCOMPLETE)",
+      "runtime_seconds": 0.764,
+      "input_bytes": 5520,
+      "error": null
+    },
+    {
+      "bundle_id": "F04_unapproved_threshold",
+      "suite": "sealed stage 1",
+      "bundle_path": "holdout\\bundles\\F04_unapproved_threshold",
+      "label_path": "holdout\\labels\\F04_unapproved_threshold.json",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "expected_finding_categories": [
+        "UNAPPROVED_CHANGE"
+      ],
+      "actual_finding_categories": [
+        "UNAPPROVED_CHANGE"
+      ],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": true,
+        "finding_categories": true,
+        "counterexamples": true
+      },
+      "correct": true,
+      "method": "manual derivation from the frozen label categories and docs/evaluation_protocol.md: UNAPPROVED_CHANGE is INFO (PASS), INVALID_APPROVAL is COVERAGE_GAP (INCOMPLETE)",
+      "runtime_seconds": 0.627,
+      "input_bytes": 5169,
+      "error": null
+    },
+    {
+      "bundle_id": "F05_tampered_approval",
+      "suite": "sealed stage 1",
+      "bundle_path": "holdout\\bundles\\F05_tampered_approval",
+      "label_path": "holdout\\labels\\F05_tampered_approval.json",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "expected_finding_categories": [
+        "INVALID_APPROVAL",
+        "UNAPPROVED_CHANGE"
+      ],
+      "actual_finding_categories": [
+        "INVALID_APPROVAL",
+        "UNAPPROVED_CHANGE"
+      ],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": true,
+        "finding_categories": true,
+        "counterexamples": true
+      },
+      "correct": true,
+      "method": "manual derivation from the frozen label categories and docs/evaluation_protocol.md: UNAPPROVED_CHANGE is INFO (PASS), INVALID_APPROVAL is COVERAGE_GAP (INCOMPLETE)",
+      "runtime_seconds": 0.633,
+      "input_bytes": 5518,
+      "error": null
+    },
+    {
+      "bundle_id": "G01_valid_original",
+      "suite": "sealed stage 2",
+      "bundle_path": "holdout_stage2\\bundles\\G01_valid_original",
+      "label_path": "holdout_stage2\\labels\\G01_valid_original.json",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "expected_finding_categories": [],
+      "actual_finding_categories": [],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": true,
+        "finding_categories": true,
+        "counterexamples": true
+      },
+      "correct": true,
+      "method": "frozen Stage 2 label",
+      "runtime_seconds": 0.613,
+      "input_bytes": 4717,
+      "error": null
+    },
+    {
+      "bundle_id": "G02_valid_approved_25",
+      "suite": "sealed stage 2",
+      "bundle_path": "holdout_stage2\\bundles\\G02_valid_approved_25",
+      "label_path": "holdout_stage2\\labels\\G02_valid_approved_25.json",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "expected_finding_categories": [],
+      "actual_finding_categories": [],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": true,
+        "finding_categories": true,
+        "counterexamples": true
+      },
+      "correct": true,
+      "method": "frozen Stage 2 label",
+      "runtime_seconds": 0.648,
+      "input_bytes": 5747,
+      "error": null
+    },
+    {
+      "bundle_id": "G03_precedence_defect",
+      "suite": "sealed stage 2",
+      "bundle_path": "holdout_stage2\\bundles\\G03_precedence_defect",
+      "label_path": "holdout_stage2\\labels\\G03_precedence_defect.json",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "expected_finding_categories": [
+        "PRECEDENCE"
+      ],
+      "actual_finding_categories": [
+        "PRECEDENCE",
+        "PRECEDENCE",
+        "PRECEDENCE",
+        "PRECEDENCE"
+      ],
+      "expected_counterexamples": [
+        {
+          "ticket": {
+            "priority": "normal",
+            "wait_time": 45
+          },
+          "expected_destination": "manual_review",
+          "actual_destination": "escalation_queue",
+          "artifacts": [
+            "spec:SPEC@1.0",
+            "workflow:WF@1.0"
+          ]
+        },
+        {
+          "ticket": {
+            "category": "billing",
+            "priority": "urgent",
+            "wait_time": 45
+          },
+          "expected_destination": "priority_queue",
+          "actual_destination": "escalation_queue",
+          "artifacts": [
+            "spec:SPEC@1.0",
+            "workflow:WF@1.0"
+          ]
+        }
+      ],
+      "counterexample_checks": [
+        false,
+        false
+      ],
+      "checks": {
+        "status": true,
+        "finding_categories": true,
+        "counterexamples": false
+      },
+      "correct": true,
+      "method": "frozen Stage 2 label",
+      "runtime_seconds": 0.657,
+      "input_bytes": 4714,
+      "error": null
+    },
+    {
+      "bundle_id": "G04_code_boundary_defect",
+      "suite": "sealed stage 2",
+      "bundle_path": "holdout_stage2\\bundles\\G04_code_boundary_defect",
+      "label_path": "holdout_stage2\\labels\\G04_code_boundary_defect.json",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "expected_finding_categories": [
+        "THRESHOLD_CHANGED"
+      ],
+      "actual_finding_categories": [
+        "SCRIPT_DISAGREEMENT"
+      ],
+      "expected_counterexamples": [
+        {
+          "ticket": {
+            "category": "billing",
+            "priority": "normal",
+            "wait_time": 30
+          },
+          "expected_destination": "escalation_queue",
+          "actual_destination": "normal_queue",
+          "artifacts": [
+            "code:PY@1.0"
+          ]
+        }
+      ],
+      "counterexample_checks": [
+        false
+      ],
+      "checks": {
+        "status": true,
+        "finding_categories": false,
+        "counterexamples": false
+      },
+      "correct": true,
+      "method": "frozen Stage 2 label",
+      "runtime_seconds": 0.657,
+      "input_bytes": 5622,
+      "error": null
+    },
+    {
+      "bundle_id": "G05_conflicting_approvals",
+      "suite": "sealed stage 2",
+      "bundle_path": "holdout_stage2\\bundles\\G05_conflicting_approvals",
+      "label_path": "holdout_stage2\\labels\\G05_conflicting_approvals.json",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "CHANGES_REQUIRED",
+      "expected_finding_categories": [
+        "UNDETERMINED_CONFLICT"
+      ],
+      "actual_finding_categories": [
+        "UNDETERMINED_CONFLICT",
+        "STRUCTURAL",
+        "WRONG_DESTINATION"
+      ],
+      "expected_counterexamples": [],
+      "counterexample_checks": [],
+      "checks": {
+        "status": false,
+        "finding_categories": false,
+        "counterexamples": true
+      },
+      "correct": false,
+      "method": "frozen Stage 2 label",
+      "runtime_seconds": 0.634,
+      "input_bytes": 6132,
+      "error": null
+    }
+  ]
+}

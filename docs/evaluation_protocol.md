@@ -1,15 +1,16 @@
 # Evaluation protocol
 
-Stage 1 evaluates contracts, parsing, compilation, approval resolution and semantic mapping. Stage 2 evaluates behavioural verification and status precedence. Stage 3 evaluates the supplementary model layer: evidence validation, prompt-injection resistance, failure handling and status invariance. All ordinary tests run offline; no live model request is part of the default suite.
+Stage 1 evaluates contracts, parsing, compilation, approval resolution and semantic mapping. Stage 2 evaluates behavioural verification and status precedence. Stage 3 evaluates the supplementary model layer: evidence validation, prompt-injection resistance, failure handling and status invariance. Stage 4 evaluates the complete reviewer on a frozen dataset, compares it with the Stage 2 baseline, runs one controlled ablation and reproduces two debugging incidents. All ordinary tests and the full offline evaluation run without network access; no live model request is part of any suite.
 
 ## Datasets
 
 | Set | Location | Bundles | Purpose |
 | --- | --- | --- | --- |
-| Dev | `fixtures/dev/` | `B01_starter`, `B03_approved_change`, `B05_unapproved_change`, `B06_conflicting_approvals`, `B07_approved_threshold_25`, `B08_unapproved_threshold_25`, `B09_conflicting_threshold_25`, `B10_router_clean`, `B11_router_precedence`, `B12_router_threshold`, `B13_router_runtime` | Development and regression tests; safe to inspect while iterating. `B07`–`B09` are the primary 30 → 25 minute approval fixtures; `B03`/`B05`/`B06` retain the 20-minute generalization case. `B10`–`B13` link a Python router: clean, reordered guards, strict boundary and runtime `KeyError`. |
+| Dev | `fixtures/dev/` | `B01_starter`, `B03_approved_change`, `B05_unapproved_change`, `B06_conflicting_approvals`, `B07_approved_threshold_25`, `B08_unapproved_threshold_25`, `B09_conflicting_threshold_25`, `B10_router_clean`, `B11_router_precedence`, `B12_router_threshold`, `B13_router_runtime`, `B14_router_unsupported` | Development and regression tests; safe to inspect while iterating. `B07`–`B09` are the primary 30 → 25 minute approval fixtures; `B03`/`B05`/`B06` retain the 20-minute generalization case. `B10`–`B13` link a Python router: clean, reordered guards, strict boundary and runtime `KeyError`. |
 | Development evidence | `fixtures/dev_evidence/holdout_v1/` | `H01_clean`, `H02_renamed`, `H03_spec_reordered`, `H04_approved_threshold`, `H05_tampered_approval` | Frozen historical evidence from Stage 1. These bundles were inspected during debugging, so they are no longer sealed; the recorded labels still run as ordinary regression tests. |
-| Sealed Stage 1 holdout | `holdout/bundles/` | `F01_clean`, `F02_renamed`, `F03_approved_threshold`, `F04_unapproved_threshold`, `F05_tampered_approval` | Reserved for final Stage 1 evaluation. Authored before any final-evaluation run and not executed during Stage 1 development or the follow-up corrections. |
-| Sealed Stage 2 semantic holdout | `holdout_stage2/bundles/` | `G01_valid_original`, `G02_valid_approved_25`, `G03_precedence_defect`, `G04_code_boundary_defect`, `G05_conflicting_approvals` | Frozen before any Stage 2 algorithm exists; reserved for the Stage 2 semantic evaluation. Never executed or tuned against. |
+| Sealed Stage 1 holdout | `holdout/bundles/` | `F01_clean`, `F02_renamed`, `F03_approved_threshold`, `F04_unapproved_threshold`, `F05_tampered_approval` | Authored before any final-evaluation run and not executed during Stage 1 development or the follow-up corrections; executed once at the end of Stage 4 (8/10 decisions across both sealed sets). |
+| Evaluation fixtures | `evaluation/bundles/` | `E01_valid_approved_25` … `E10_paraphrased_wording` | Stage 4 development cases: approved threshold, missing branch, wrong destination, interacting exceptions, unsupported language/Python, missing evidence, unusual formulation and two metamorphic pairs. Labels in `evaluation/cases/`. |
+| Sealed Stage 2 semantic holdout | `holdout_stage2/bundles/` | `G01_valid_original`, `G02_valid_approved_25`, `G03_precedence_defect`, `G04_code_boundary_defect`, `G05_conflicting_approvals` | Frozen before any Stage 2 algorithm exists; executed once at the end of Stage 4 and never tuned against. |
 
 Labels live outside every bundle directory (`fixtures/dev_evidence/holdout_v1/labels/`, `holdout/labels/` and `holdout_stage2/labels/`). Bundles contain no `expected` fields, and the reviewer never reads the labels. Each set has a `MANIFEST.sha256` covering bundles, labels and metadata; `tests/unit/test_holdout_isolation.py` and `tests/unit/test_stage2_holdout_isolation.py` recompute the sealed hashes, confirm labels live outside bundles, and fail if any development test references the sealed sets. The Stage 2 test also pins the Stage 1 manifest hash `e10de058ceb51586f16c657c75e4fd3b4fd9cbded6f76beda9a4e0c648ba6f41` so the earlier set cannot drift.
 
@@ -58,13 +59,17 @@ uv run verityflow resolve fixtures/dev/B07_approved_threshold_25
 uv run verityflow map fixtures/dev/B01_starter --artifact all
 uv run verityflow review fixtures/dev/B10_router_clean
 uv run verityflow review fixtures/dev/B10_router_clean --model fake --model-scenario valid
+
+# Stage 4: full CPU-only offline evaluation and the one-shot sealed run.
+uv run python scripts/run_offline.py
+uv run python scripts/run_final_evaluation.py   # run once; do not tune against it
 ```
 
 `verityflow review` prints the full `ReviewReport` as JSON with `--model off` (the default). Enabled modes print `{"review": ..., "model_analysis": ...}`. Exit codes: `0` for PASS, `1` for any other status, `2` for an input/configuration error; the code always follows the deterministic status, never the model output.
 
 Integration tests (`tests/integration/test_bundle_pipeline.py`) run load → parse → compile → resolve → map on dev bundles and verify evidence anchors with `LineIndex`. `tests/integration/test_review.py` runs the end-to-end reviewer on B01 and B10–B14, asserting status, finding category, validated witness content, sampled-mode disclosure, status precedence and CLI exit codes. `tests/integration/test_dev_evidence_stage1.py` compares the frozen H01–H05 development evidence against its recorded labels field by field.
 
-A sealed-holdout evaluation test is deliberately not present: `F01–F05` are reserved for final Stage 1 evaluation and `G01–G05` for Stage 2, where each set will be run once against the final implementation and its recorded labels.
+A sealed-holdout evaluation test is deliberately not present in the ordinary suite. The one-shot `scripts/run_final_evaluation.py` executes F01–F05 and G01–G05 with the final reviewer, reads their labels only after each subprocess exits, and writes `reports/evaluation/holdout_results.json`. It was run once against implementation `7f55c5d`; the results are recorded below.
 
 ## Stage 2 baseline
 
@@ -79,7 +84,7 @@ The first complete, runnable deterministic reviewer is commit `4702939` and is t
 | Sealed Stage 2 holdout manifest | `a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4` |
 | Sealed Stage 1 holdout manifest | `e10de058ceb51586f16c657c75e4fd3b4fd9cbded6f76beda9a4e0c648ba6f41` |
 
-Stage 2 was implemented and tuned only against `fixtures/dev/`. The labels of neither sealed set were loaded, and neither set was executed. The exact run command for the final evaluation is `uv run verityflow review holdout_stage2/bundles/<name>` under the configuration above, compared field by field with `holdout_stage2/labels/<name>.json`.
+Stage 2 was implemented and tuned only against `fixtures/dev/`. At the time the baseline was frozen, the labels of neither sealed set were loaded and neither set was executed. The final evaluation later ran both sets once with the Stage 4 reviewer (`scripts/run_final_evaluation.py`), not with the baseline; the Stage 2 baseline itself was compared with the final reviewer on the identical 27 development bundles (`evaluation/baseline.py`, `reports/baseline/comparison.json`).
 
 ## Exhaustive and sampled verification
 
@@ -135,15 +140,44 @@ Additional unit coverage: prompt versioning and escaping (`test_model_prompt.py`
 
 Live Gemini status: **not exercised.** No credentials were provided, and the adapter is tested only for fail-closed behaviour. No live accuracy, latency or cost result is claimed.
 
+## Stage 4 evaluation
+
+Dataset: 27 development bundles (12 B-lineage, H01–H05, E01–E10) and 10 sealed bundles
+(F01–F05, G01–G05), 37 total. Development expectations: 10 PASS, 11 CHANGES_REQUIRED, 6
+INCOMPLETE. The development manifest is `evaluation/MANIFEST.sha256` at SHA-256
+`962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7`; the dataset freeze commit is
+`7f55c5db37b3176f590d6852210078dac56b4b03`. Labels were produced by the independent oracle
+(`evaluation/oracle.py`) plus manual reasoning, never by the reviewer. Sealed labels live outside
+bundles and were read only after reviewer execution.
+
+| Measurement | Result |
+| --- | --- |
+| Final development decisions | 27/27 exact; false PASS 0/17; false PASS on defective 0/11; false blocks 0/10 |
+| Development findings | 38 findings; identification 11/11; rule/artifact/version 21/21; all 78 counterexamples validated; 3 unsupported; 0 duplicates |
+| Development coverage | 109 effective requirements: 96 full, 13 partial, 13 unreviewed; source 109/109, spec 102/109, workflow 106/109, code 20/24; evidence 109/109; 63 exhaustive comparisons |
+| Development resources | 18.554 s total (0.687 s mean); 138,956 input bytes; 24,600 evaluated cells; 0 model requests |
+| Baseline (identical inputs) | 27/27 exact; same finding and coverage counts; 19.441 s; `4702939fdabfb97a60aa89fd37a70d0678a56996` |
+| Ablation (partitioning off) | 10/27 exact; actual PASS 0 / CHANGES_REQUIRED 4 / INCOMPLETE 23; 24,600 → 315 cells; 78 → 15 counterexamples; 18.554 → 17.619 s |
+| Sealed decisions (single run) | 8/10; false PASS 0/4; false PASS on defective 0/2; false blocks 1/6; correct CHANGES_REQUIRED 2/2; correct INCOMPLETE 1/2 |
+| Sealed outcome detail | `F03` expected PASS → CHANGES_REQUIRED (two THRESHOLD_CHANGED); `G05` expected INCOMPLETE → CHANGES_REQUIRED (extra STRUCTURAL, WRONG_DESTINATION); `G03`/`G04` expected counterexample tickets did not match; `G04` category SCRIPT_DISAGREEMENT instead of THRESHOLD_CHANGED |
+| Fake model scenarios (separate) | 51 requests over 17 scenarios × 3 bundles; 30 completed, 21 failed by design, 18 retries; status unchanged everywhere; real model calls 0 |
+| Sealed manifest integrity | both unchanged before and after the run |
+
+The sealed errors are retained without correction. No implementation, label or fixture was changed
+after the run. `scripts/run_final_evaluation.py` exits 1 whenever any decision is wrong, so this
+8/10 run exits 1 by design; the report is still written, schema-validated and retained. The reports are `reports/final/{metrics,findings,coverage,counterexamples}.json`,
+`reports/baseline/{metrics,comparison}.json`, `reports/ablation/metrics.json`,
+`reports/evaluation/{dataset_manifest,model_scenarios,holdout_results}.json` and
+`reports/debugging/debugging_examples.json`, all validated against the committed schemas.
+
 ## Current results
 
-- Default suite: **372 passed** (Stage 1 baseline 221 retained; Stage 2 adds 85; Stage 3 adds 66).
-- Sealed Stage 1 holdout: **not executed** (reserved for final evaluation).
-- Sealed Stage 2 semantic holdout: **not executed** (reserved for final evaluation against `stage2-baseline`).
-- Live model calls: **none**. Stage 3 uses the fake client and a fail-closed credential check.
-- `ruff check .`: clean.
-- `ruff format --check .`: clean, 113 files.
-- `mypy` (strict, `src`): clean, 60 source files.
+- Default suite: **375 passed** (221 Stage 1 retained; Stage 2 +85; Stage 3 +66; Stage 4 +3).
+- Schema count: **30**; all files match the models.
+- `ruff check .`: clean; `ruff format --check .`: clean, 130 files; `mypy` (strict, `src`): clean, 62 files.
+- `uv run python scripts/run_offline.py`: exits 0; all report schemas validate; both manifests intact.
+- Sealed Stage 1 and Stage 2 holdouts: executed **once** by `scripts/run_final_evaluation.py`; 8/10 decisions correct; results retained.
+- Live model calls: **none**. Stage 3 and the offline evaluation use the fake client; the Gemini adapter fails closed without credentials.
 
 ## Checkpoint provenance
 
@@ -165,4 +199,4 @@ The original H01–H05 set was read during Stage 1 debugging and is now reclassi
 1. `H03_spec_reordered` initially failed mapping. Investigation showed the fixture generator had only shuffled the array order while leaving priorities 1, 2, 3 intact. Under D-009 this is correctly a no-op, so the fixture did not implement its own intent. The generator was corrected to swap the priority values; the spec, bundle and the old holdout `MANIFEST.sha256` were regenerated. Labels were not changed.
 2. `H05_tampered_approval` failed only in the test helper, which compared gap-severity categories against a label that intentionally includes the INFO `UNAPPROVED_CHANGE` finding. The helper now compares all finding categories. The pipeline output already matched the label.
 
-Both changes are recorded in `docs/debugging_log.md`. No implementation behaviour was changed to satisfy a label. `F01–F05` were authored after this reclassification and have not been run, inspected through the reviewer, modified or regenerated since the freeze; their manifest hash remains `e10de058ceb51586f16c657c75e4fd3b4fd9cbded6f76beda9a4e0c648ba6f41`. The newer `G01–G05` set was authored and frozen in commit `b392653` with hand-derived labels and has not been executed either.
+Both changes are recorded in `docs/debugging_log.md`. No implementation behaviour was changed to satisfy a label. `F01–F05` were authored after this reclassification and were not run through the reviewer, modified or regenerated until the single Stage 4 final evaluation; their manifest hash remains `e10de058ceb51586f16c657c75e4fd3b4fd9cbded6f76beda9a4e0c648ba6f41`. The newer `G01–G05` set was authored and frozen in commit `b392653` with hand-derived labels. F and G were executed once, at the end of Stage 4, by `scripts/run_final_evaluation.py`; the `F03` and `G05` deviations are recorded above and in `docs/limitations.md`.

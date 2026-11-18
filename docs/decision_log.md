@@ -186,13 +186,13 @@ Format: ID · date · decision · rationale · alternatives considered · status
 - **Decision:** Move H01–H05 unchanged to `fixtures/dev_evidence/holdout_v1/` (bundles, labels and manifest) and treat them as development evidence, because they were inspected during debugging and H03 was regenerated. Author a new sealed set F01–F05 in a claims-triage domain under `holdout/`, freeze labels and `MANIFEST.sha256`, and record the generator hash, bundle/label names, implementation checkpoint `04d9ea6`, docs checkpoint `9f55815` and reservation policy in `holdout/GENERATION.json`.
 - **Why:** A holdout that has been read and modified cannot support an unbiased final evaluation. Historical records are preserved rather than erased.
 - **How to apply:** `tests/integration/test_dev_evidence_stage1.py` runs the recorded H01–H05 expectations as ordinary regression tests. `tests/unit/test_holdout_isolation.py` verifies the sealed manifest, label isolation and generation metadata, and fails if a development test executes the sealed set. Do not run the pipeline on F01–F05 before final evaluation.
-- **Status:** Accepted; the fresh set has not been executed.
+- **Status:** Accepted; executed once at the end of Stage 4 (D-050); no tuning followed.
 
 ### D-036 · 2026-11-17 · Stage 2 semantic holdout frozen before verification
 - **Decision:** Add a sealed `holdout_stage2/` set (G01–G05) in the support-ticket domain: valid original, valid approved 30 → 25 revision, precedence defect over individually correct rules, code/workflow boundary disagreement, and an unresolved approval conflict. Bundle contents, labels, manifest and generation metadata are frozen in commit `b392653`; the manifest SHA-256 is `a76fa4bc27dbd28aba49762720ba5292eabcbddbfeb0fe1362a1c6922ae7c3e4`.
 - **Why:** Stage 2 needs semantic labels that were not produced or tuned against its implementation. Authoring them before any Stage 2 verifier exists, with a distinct domain-mix from F01–F05, keeps the final evaluation independent.
 - **How to apply:** `scripts/build_stage2_holdout.py` regenerates the set only if the freeze is deliberately broken; seed `20261117` selects one distinct equivalent threshold phrasing per bundle. Labels live in `holdout_stage2/labels/`, are hand-derived, and never enter the reviewer. `tests/unit/test_stage2_holdout_isolation.py` checks manifests, labels, metadata and that development tests do not reference the set. Do not execute or edit G01–G05 before the Stage 2 evaluation.
-- **Status:** Accepted; the set has not been executed.
+- **Status:** Accepted; executed once at the end of Stage 4 (D-050); no tuning followed.
 
 ### D-037 · 2026-11-17 · Baseline checkpoint and generation commit are separate
 - **Decision:** `holdout/GENERATION.json`'s `implementation_checkpoint` (`04d9ea6`) names the Stage 1 implementation baseline the labels target; it is not the commit that generated the files (`9a420cd`). The Stage 2 set records `provenance.baseline_implementation_checkpoint` (`04d9ea6`) and `provenance.fixture_generation_base_commit` (`9a420cd`) explicitly, and the exact generation commit (`b392653`) is recorded in `docs/evaluation_protocol.md` because a commit cannot contain its own hash. The F set is not edited, to preserve manifest `e10de058…`.
@@ -247,3 +247,33 @@ Format: ID · date · decision · rationale · alternatives considered · status
 - **Why:** Caching is an optional convenience, but reusing output across a changed approval set or a changed report could surface a stale PASS. A status check makes that failure impossible even if a future key component is forgotten.
 - **How to apply:** Add every new authority-bearing input to the key, keep the status check unconditional, and never persist the cache across processes. `test_model_review.py::test_cache_invalidates_when_approvals_change` pins hit → miss after a hash-bound approval change.
 - **Status:** Accepted.
+
+### D-046 · 2026-11-18 · The Stage 4 dataset is 27 development and 10 sealed bundles
+- **Decision:** Freeze 37 evaluation bundles: 12 B-lineage development fixtures, H01–H05, E01–E10 (27 development) and F01–F05 plus G01–G05 (10 sealed). Development expectations are 10 PASS, 11 CHANGES_REQUIRED and 6 INCOMPLETE. The development manifest is `evaluation/MANIFEST.sha256` (SHA-256 `962f092d…`) and `evaluation/DATASET.json` records the freeze commit `7f55c5db37b3176f590d6852210078dac56b4b03`, per-bundle hashes, label provenance and both sealed manifest hashes.
+- **Why:** The request requires at least 12 bundles, at least 3 valid, 6 defective and 3 incomplete, four or more reserved from tuning, and preserved B/H/F/G material. The development set is used for regression; the sealed set is the only unseen measure. Labels are never part of reviewer input.
+- **How to apply:** Use `evaluation/cases/*.json` as the labelled development set and `scripts/run_offline.py` as the only ordinary evaluation. Do not regenerate fixtures, labels or manifests to improve a result. Do not add expected outcomes to a bundle.
+- **Status:** Accepted; dataset frozen before the sealed execution.
+
+### D-047 · 2026-11-18 · Labels come from an independent oracle, not the reviewer
+- **Decision:** `evaluation/oracle.py` is a separately written first-match router with its own three-valued logic, hash-bound approval resolution and probe tickets. It imports none of the review orchestrator, spec verifier, workflow interpreter, AST interpreter or counterexample generator. Each label records its method (`independent-oracle and manual reasoning`) and source evidence. The sealed labels were authored before the execution and remain outside the bundle directories.
+- **Why:** Labels produced by the implementation under test would make correctness circular, and importing its verifiers would reproduce their bugs. Independent derivation is what makes a mismatch evidence.
+- **How to apply:** Keep the oracle dependency-free. A new label must state its method and evidence; a reviewer output must never be edited into a label. `reports/evaluation/dataset_manifest.json` records the label hashes.
+- **Status:** Accepted.
+
+### D-048 · 2026-11-18 · The baseline is materialized from git, never patched
+- **Decision:** `evaluation/baseline.py` resolves `stage2-baseline` to `4702939fdabfb97a60aa89fd37a70d0678a56996`, verifies the commit prefix, extracts `git archive --format=tar` into a cache keyed by the commit, and runs it with an explicit `PYTHONPATH`. The adapter records `uv.lock` SHA-256 `9deec83379b4cdf064863795d988923ccdda846a72fc66a4232b06098dedb409` and the baseline's missing features (no model flag, no partitioning switch). Baseline and final use the same 27 bundle bytes and configuration.
+- **Why:** Patching or reimplementing the baseline would make the comparison non-reproducible and could hide a regression. Extracting immutable git objects proves what ran.
+- **How to apply:** Never edit the baseline snapshot or install it over the working tree. The baseline/final table is in `reports/baseline/comparison.json`; the sealed set was not run against the baseline, and that scope limit is documented.
+- **Status:** Accepted.
+
+### D-049 · 2026-11-18 · One controlled ablation: disable domain partitioning
+- **Decision:** `domain_partitioning.enabled` defaults to `true`; `configs/no_domain_partitioning.toml` is byte-identical otherwise and disables numeric representative/boundary generation. Disabled mode evaluates a small fixed ticket set, marks every numeric comparison `UNREVIEWED` with an explicit scope and can never report exhaustive or PASS. It is the only ablation.
+- **Why:** Partitioning drives boundary and interaction coverage; disabling it tests whether those witnesses depend on the mechanism while keeping the truth table honest. A disabled reviewer that claimed exhaustiveness would manufacture false PASSes.
+- **How to apply:** Keep the two configs otherwise identical and evaluate the same 27 bundles. Results: 27/27 → 10/27 exact, 24,600 → 315 cells, 78 → 15 counterexamples, 18.554 → 17.619 s; no false PASS because the reviewer abstains. Do not run additional ablations and report them as controlled.
+- **Status:** Accepted; single run recorded in `reports/ablation/metrics.json`.
+
+### D-050 · 2026-11-18 · The sealed set was executed once and its errors are retained
+- **Decision:** `scripts/run_final_evaluation.py` ran F01–F05 and G01–G05 exactly once against implementation `7f55c5d`, refused an uncommitted implementation tree, read labels only after each reviewer subprocess, verified both sealed manifests before and after, and wrote `reports/evaluation/holdout_results.json`. The result is 8/10 correct: F03 was a false block and G05 over-reported CHANGES_REQUIRED; G03/G04 finding witnesses and G04's category were wrong. No code, fixture, label or configuration was changed after seeing these outcomes.
+- **Why:** A sealed set is only unbiased if it is not used for iteration. Retaining the failures is the honest result; fixing them after inspection would convert the final evaluation into training data. The offline evaluation remains the reproducible ordinary command, and the sealed run remains a separate, documented one-shot.
+- **How to apply:** Do not rerun the sealed evaluation to seek a better result and do not tune against `holdout_results.json`. Future corrections require a new, newly frozen set and a newly declared baseline. Fake-model results stay separate from deterministic metrics and are never used as accuracy evidence.
+- **Status:** Accepted; sealed results retained.

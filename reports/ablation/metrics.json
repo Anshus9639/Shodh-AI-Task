@@ -1,0 +1,1303 @@
+{
+  "header": {
+    "report": "ablation",
+    "generated_at": "2026-11-18T00:58:51+00:00",
+    "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "baseline_revision": null,
+    "config_sha256": "2e3c4c5891e328ee6686c77cd4f2c1813c3ee26b00b7719b135ab0b5039c8d40",
+    "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+    "bundle_count": 27,
+    "model_execution_mode": "off (deterministic; no model requests)",
+    "unsupported_scope": [
+      "real-model semantic performance is not measured by this report",
+      "sealed holdout labels are excluded from reviewer input"
+    ]
+  },
+  "enabled": {
+    "header": {
+      "report": "final",
+      "generated_at": "2026-11-18T00:58:16+00:00",
+      "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+      "baseline_revision": null,
+      "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+      "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+      "bundle_count": 27,
+      "model_execution_mode": "off (deterministic; no model requests)",
+      "unsupported_scope": [
+        "real-model semantic performance is not measured by this report",
+        "sealed holdout labels are excluded from reviewer input"
+      ]
+    },
+    "decision": {
+      "total_cases": 27,
+      "expected_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "actual_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "correct_pass": {
+        "numerator": 10,
+        "denominator": 10
+      },
+      "false_pass": {
+        "numerator": 0,
+        "denominator": 17
+      },
+      "false_pass_on_defective": {
+        "numerator": 0,
+        "denominator": 11
+      },
+      "correct_changes_required": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "false_block": {
+        "numerator": 0,
+        "denominator": 10
+      },
+      "correct_incomplete": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "abstentions_by_expected": {
+        "PASS": 0,
+        "CHANGES_REQUIRED": 0,
+        "INCOMPLETE": 6
+      },
+      "overall_correct": {
+        "numerator": 27,
+        "denominator": 27
+      }
+    },
+    "finding_quality": {
+      "findings_total": 38,
+      "defective_cases": 11,
+      "correct_defect_identification": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "correct_rule_reference": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact_version": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "evidence_location": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "structured_evidence": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "valid_evidence": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "message_witness": {
+        "numerator": 16,
+        "denominator": 21
+      },
+      "valid_counterexamples": {
+        "numerator": 78,
+        "denominator": 78
+      },
+      "blocker_severity_on_defects": {
+        "numerator": 20,
+        "denominator": 21
+      },
+      "unsupported_findings": 3,
+      "duplicate_findings": 0
+    },
+    "coverage": {
+      "total_effective_requirements": 109,
+      "fully_reviewed": 96,
+      "partially_reviewed": 13,
+      "unreviewed": 13,
+      "unsupported_expressions": 3,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "specification_coverage": {
+        "numerator": 102,
+        "denominator": 109
+      },
+      "workflow_coverage": {
+        "numerator": 106,
+        "denominator": 109
+      },
+      "code_coverage": {
+        "numerator": 20,
+        "denominator": 24
+      },
+      "evidence_completeness": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "comparison_modes": {
+        "exhaustive": 63
+      }
+    },
+    "resources": {
+      "total_runtime_seconds": 16.977,
+      "mean_runtime_seconds": 0.629,
+      "bundle_count": 27,
+      "input_bytes": 138956,
+      "counterexample_combinations": 24600,
+      "model_requests": 0,
+      "model_successes": 0,
+      "model_failures": 0,
+      "model_retries": 0,
+      "fake_client_calls": 0,
+      "real_model_calls": 0
+    },
+    "cases": [
+      {
+        "bundle_id": "B01_starter",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.625,
+        "input_bytes": 4594,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B03_approved_change",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.653,
+        "input_bytes": 5625,
+        "cells_checked": 1200,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B05_unapproved_change",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.62,
+        "input_bytes": 5274,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B06_conflicting_approvals",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.613,
+        "input_bytes": 5979,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B07_approved_threshold_25",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.675,
+        "input_bytes": 5642,
+        "cells_checked": 1200,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B08_unapproved_threshold_25",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.606,
+        "input_bytes": 5291,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B09_conflicting_threshold_25",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.598,
+        "input_bytes": 5993,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B10_router_clean",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.637,
+        "input_bytes": 5466,
+        "cells_checked": 1440,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B11_router_precedence",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.658,
+        "input_bytes": 5471,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B12_router_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.674,
+        "input_bytes": 5469,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B13_router_runtime",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.646,
+        "input_bytes": 5543,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B14_router_unsupported",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.638,
+        "input_bytes": 5562,
+        "cells_checked": 1440,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E01_valid_approved_25",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.624,
+        "input_bytes": 5638,
+        "cells_checked": 1200,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E02_missing_branch",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.666,
+        "input_bytes": 4048,
+        "cells_checked": 720,
+        "findings": 6,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E03_wrong_destination",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.635,
+        "input_bytes": 4600,
+        "cells_checked": 720,
+        "findings": 4,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E04_interacting_exceptions",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.611,
+        "input_bytes": 5069,
+        "cells_checked": 720,
+        "findings": 6,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E05_unsupported_language",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.607,
+        "input_bytes": 4672,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E06_unsupported_python",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.598,
+        "input_bytes": 5508,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E07_missing_evidence",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.656,
+        "input_bytes": 4603,
+        "cells_checked": 360,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 1
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E08_unusual_formulation",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.613,
+        "input_bytes": 4609,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E09_reordered_records",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.621,
+        "input_bytes": 4604,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E10_paraphrased_wording",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.61,
+        "input_bytes": 4615,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H01_clean",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.611,
+        "input_bytes": 4592,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H02_renamed",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.66,
+        "input_bytes": 4634,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H03_spec_reordered",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.602,
+        "input_bytes": 4601,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H04_approved_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.621,
+        "input_bytes": 5628,
+        "cells_checked": 1200,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H05_tampered_approval",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.597,
+        "input_bytes": 5626,
+        "cells_checked": 720,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      }
+    ]
+  },
+  "disabled": {
+    "header": {
+      "report": "ablation",
+      "generated_at": "2026-11-18T00:58:51+00:00",
+      "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+      "baseline_revision": null,
+      "config_sha256": "2e3c4c5891e328ee6686c77cd4f2c1813c3ee26b00b7719b135ab0b5039c8d40",
+      "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+      "bundle_count": 27,
+      "model_execution_mode": "off (deterministic; no model requests)",
+      "unsupported_scope": [
+        "real-model semantic performance is not measured by this report",
+        "sealed holdout labels are excluded from reviewer input"
+      ]
+    },
+    "decision": {
+      "total_cases": 27,
+      "expected_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "actual_counts": {
+        "PASS": 0,
+        "CHANGES_REQUIRED": 4,
+        "INCOMPLETE": 23
+      },
+      "correct_pass": {
+        "numerator": 0,
+        "denominator": 10
+      },
+      "false_pass": {
+        "numerator": 0,
+        "denominator": 17
+      },
+      "false_pass_on_defective": {
+        "numerator": 0,
+        "denominator": 11
+      },
+      "correct_changes_required": {
+        "numerator": 4,
+        "denominator": 11
+      },
+      "false_block": {
+        "numerator": 0,
+        "denominator": 10
+      },
+      "correct_incomplete": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "abstentions_by_expected": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 7,
+        "INCOMPLETE": 6
+      },
+      "overall_correct": {
+        "numerator": 10,
+        "denominator": 27
+      }
+    },
+    "finding_quality": {
+      "findings_total": 81,
+      "defective_cases": 11,
+      "correct_defect_identification": {
+        "numerator": 4,
+        "denominator": 11
+      },
+      "correct_rule_reference": {
+        "numerator": 7,
+        "denominator": 7
+      },
+      "correct_artifact": {
+        "numerator": 7,
+        "denominator": 7
+      },
+      "correct_artifact_version": {
+        "numerator": 7,
+        "denominator": 7
+      },
+      "evidence_location": {
+        "numerator": 0,
+        "denominator": 7
+      },
+      "structured_evidence": {
+        "numerator": 0,
+        "denominator": 7
+      },
+      "valid_evidence": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "message_witness": {
+        "numerator": 5,
+        "denominator": 7
+      },
+      "valid_counterexamples": {
+        "numerator": 15,
+        "denominator": 15
+      },
+      "blocker_severity_on_defects": {
+        "numerator": 7,
+        "denominator": 7
+      },
+      "unsupported_findings": 2,
+      "duplicate_findings": 0
+    },
+    "coverage": {
+      "total_effective_requirements": 109,
+      "fully_reviewed": 77,
+      "partially_reviewed": 4,
+      "unreviewed": 32,
+      "unsupported_expressions": 2,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 81,
+        "denominator": 109
+      },
+      "specification_coverage": {
+        "numerator": 75,
+        "denominator": 109
+      },
+      "workflow_coverage": {
+        "numerator": 79,
+        "denominator": 109
+      },
+      "code_coverage": {
+        "numerator": 14,
+        "denominator": 24
+      },
+      "evidence_completeness": {
+        "numerator": 81,
+        "denominator": 109
+      },
+      "comparison_modes": {
+        "unreviewed": 63
+      }
+    },
+    "resources": {
+      "total_runtime_seconds": 16.427,
+      "mean_runtime_seconds": 0.608,
+      "bundle_count": 27,
+      "input_bytes": 138956,
+      "counterexample_combinations": 315,
+      "model_requests": 0,
+      "model_successes": 0,
+      "model_failures": 0,
+      "model_retries": 0,
+      "fake_client_calls": 0,
+      "real_model_calls": 0
+    },
+    "cases": [
+      {
+        "bundle_id": "B01_starter",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.631,
+        "input_bytes": 4594,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B03_approved_change",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.587,
+        "input_bytes": 5625,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B05_unapproved_change",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.582,
+        "input_bytes": 5274,
+        "cells_checked": 10,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B06_conflicting_approvals",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.581,
+        "input_bytes": 5979,
+        "cells_checked": 10,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B07_approved_threshold_25",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.621,
+        "input_bytes": 5642,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B08_unapproved_threshold_25",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.617,
+        "input_bytes": 5291,
+        "cells_checked": 10,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B09_conflicting_threshold_25",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.578,
+        "input_bytes": 5993,
+        "cells_checked": 10,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B10_router_clean",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.594,
+        "input_bytes": 5466,
+        "cells_checked": 20,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B11_router_precedence",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.59,
+        "input_bytes": 5471,
+        "cells_checked": 20,
+        "findings": 4,
+        "comparison_modes": {
+          "unreviewed": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B12_router_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.634,
+        "input_bytes": 5469,
+        "cells_checked": 20,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B13_router_runtime",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.616,
+        "input_bytes": 5543,
+        "cells_checked": 20,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B14_router_unsupported",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.599,
+        "input_bytes": 5562,
+        "cells_checked": 20,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E01_valid_approved_25",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.587,
+        "input_bytes": 5638,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E02_missing_branch",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.587,
+        "input_bytes": 4048,
+        "cells_checked": 10,
+        "findings": 6,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E03_wrong_destination",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.633,
+        "input_bytes": 4600,
+        "cells_checked": 10,
+        "findings": 6,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E04_interacting_exceptions",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.602,
+        "input_bytes": 5069,
+        "cells_checked": 10,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E05_unsupported_language",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.59,
+        "input_bytes": 4672,
+        "cells_checked": 10,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E06_unsupported_python",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.588,
+        "input_bytes": 5508,
+        "cells_checked": 10,
+        "findings": 3,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E07_missing_evidence",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.603,
+        "input_bytes": 4603,
+        "cells_checked": 5,
+        "findings": 4,
+        "comparison_modes": {
+          "unreviewed": 1
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E08_unusual_formulation",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.71,
+        "input_bytes": 4609,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E09_reordered_records",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.647,
+        "input_bytes": 4604,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E10_paraphrased_wording",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.657,
+        "input_bytes": 4615,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H01_clean",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.582,
+        "input_bytes": 4592,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H02_renamed",
+        "expected_status": "PASS",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.587,
+        "input_bytes": 4634,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H03_spec_reordered",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.635,
+        "input_bytes": 4601,
+        "cells_checked": 10,
+        "findings": 4,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H04_approved_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "INCOMPLETE",
+        "correct": false,
+        "runtime_seconds": 0.597,
+        "input_bytes": 5628,
+        "cells_checked": 10,
+        "findings": 2,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H05_tampered_approval",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.592,
+        "input_bytes": 5626,
+        "cells_checked": 10,
+        "findings": 4,
+        "comparison_modes": {
+          "unreviewed": 2
+        },
+        "error": null
+      }
+    ]
+  },
+  "changes": [
+    {
+      "bundle_id": "B01_starter",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B03_approved_change",
+      "expected_status": "CHANGES_REQUIRED",
+      "enabled_status": "CHANGES_REQUIRED",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B05_unapproved_change",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B07_approved_threshold_25",
+      "expected_status": "CHANGES_REQUIRED",
+      "enabled_status": "CHANGES_REQUIRED",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B08_unapproved_threshold_25",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B10_router_clean",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 4
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 4
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B12_router_threshold",
+      "expected_status": "CHANGES_REQUIRED",
+      "enabled_status": "CHANGES_REQUIRED",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 4
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 4
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B13_router_runtime",
+      "expected_status": "CHANGES_REQUIRED",
+      "enabled_status": "CHANGES_REQUIRED",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 4
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 4
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "B14_router_unsupported",
+      "expected_status": "CHANGES_REQUIRED",
+      "enabled_status": "CHANGES_REQUIRED",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 4
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 4
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "E01_valid_approved_25",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "E04_interacting_exceptions",
+      "expected_status": "CHANGES_REQUIRED",
+      "enabled_status": "CHANGES_REQUIRED",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "E08_unusual_formulation",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "E09_reordered_records",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "E10_paraphrased_wording",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "H01_clean",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "H02_renamed",
+      "expected_status": "PASS",
+      "enabled_status": "PASS",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    },
+    {
+      "bundle_id": "H04_approved_threshold",
+      "expected_status": "CHANGES_REQUIRED",
+      "enabled_status": "CHANGES_REQUIRED",
+      "disabled_status": "INCOMPLETE",
+      "enabled_comparison_modes": {
+        "exhaustive": 2
+      },
+      "disabled_comparison_modes": {
+        "unreviewed": 2
+      },
+      "reason": "numeric comparisons were left unreviewed, so the reviewer reports INCOMPLETE instead of claiming a verified PASS or a verified defect"
+    }
+  ]
+}

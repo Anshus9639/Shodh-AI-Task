@@ -1,0 +1,103 @@
+{
+  "header": {
+    "report": "debugging",
+    "generated_at": "2026-11-18T00:53:12+00:00",
+    "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "baseline_revision": null,
+    "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+    "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+    "bundle_count": 0,
+    "model_execution_mode": "off (deterministic; no model requests)",
+    "unsupported_scope": [
+      "real-model semantic performance is not measured by this report",
+      "sealed holdout labels are excluded from reviewer input"
+    ]
+  },
+  "examples": [
+    {
+      "example_id": "D-01",
+      "title": "A sampled review asserted a cause for a requirement the sample never exercised",
+      "origin": "docs/debugging_log.md entry reproduced from git history",
+      "fix_commit": "528aaf7615f729979ab157f063571ba5d0005592",
+      "parent_commit": "ace94797209f58dca50911851e32247081127bfa",
+      "failing_run": {
+        "command": "python -m pytest tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed -q -p no:cacheprovider  (PYTHONPATH=<snapshot>\\src)",
+        "exit_code": 1,
+        "output": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_sampled_space_is_incomplete_and_disclosed ________________\n\n    def test_sampled_space_is_incomplete_and_disclosed() -> None:\n        config = Config(limits=Limits(max_cells=8))\n        report = _review(\"B10_router_clean\", config=config)\n    \n        assert report.status is ReviewStatus.INCOMPLETE\n        assert not report.exhaustive\n        assert all(record.mode is ComparisonMode.SAMPLED for record in report.comparisons)\n        assert any(scope.kind == \"sampling\" for scope in report.unreviewed)\n        assert any(\n            check.name == \"sampling\" and check.outcome.value == \"coverage_gap\"\n            for check in report.checks\n        )\n        assert \"combinations were not evaluated\" in report.detail\n        interaction = [\n            finding for finding in report.findings if finding.category is FindingCategory.INTERACTION\n        ]\n        assert interaction\n>       assert all(\"is shadowed\" not in finding.message for finding in interaction)\nE       assert False\nE        +  where False = all(<generator object test_sampled_space_is_incomplete_and_disclosed.<locals>.<genexpr> at 0x0000029136081E50>)\n\ntests\\integration\\test_review.py:110: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed\n1 failed in 0.69s",
+        "runtime_seconds": 1.563,
+        "commit": "ace94797209f58dca50911851e32247081127bfa",
+        "label": "parent source with the regression test from the fix commit"
+      },
+      "diagnosis": "The sampled B10 review emitted an INTERACTION/COVERAGE_GAP finding whose message said the unexercised rule 'is shadowed by earlier requirements or cannot be satisfied'. An eight-cell sample of a 2,400-cell space cannot establish either cause. The added assertion rejected the shadow language and required the message to say the rule was not exercised and its firing is unreviewed; the assertion failed against the parent source.",
+      "root_cause": "analyze_interactions formatted one fixed message for every never-fired rule. The exhaustive case genuinely observes that a rule never fires in the whole space, but the sampled case only observes absence from the evaluated sample. The formatter conflated the two, and review.py's interaction UnreviewedScope used the same unconditional wording.",
+      "code_change": "diff --git a/src/verityflow/verify/interactions.py b/src/verityflow/verify/interactions.py\nindex a1d4c0e..5e75ad6 100644\n--- a/src/verityflow/verify/interactions.py\n+++ b/src/verityflow/verify/interactions.py\n@@ -56,13 +56,18 @@ def analyze_interactions(policy: Policy, space: TicketSpace) -> InteractionAnaly\n             if rule.exception_of is not None\n             else \"the rule\"\n         )\n+        cause = (\n+            \"is shadowed by earlier requirements or cannot be satisfied\"\n+            if space.exhaustive\n+            else \"was not exercised by any sampled ticket combination, so whether it \"\n+            \"can fire is unreviewed\"\n+        )\n         findings.append(\n             make_finding(\n                 FindingCategory.INTERACTION,\n                 Severity.COVERAGE_GAP,\n                 f\"requirement {rule.rule_ref!r} never fires in any {qualifier} ticket \"\n-                f\"combination; {role} is shadowed by earlier requirements or cannot be \"\n-                \"satisfied\",\n+                f\"combination; {role} {cause}\",\n                 rule_ref=rule.rule_ref,\n                 artifact_id=_REQUIREMENTS,\n                 explanation=(\ndiff --git a/src/verityflow/verify/review.py b/src/verityflow/verify/review.py\nindex 4b68a4c..4720fb3 100644\n--- a/src/verityflow/verify/review.py\n+++ b/src/verityflow/verify/review.py\n@@ -208,7 +208,11 @@ def review_loaded(\n             UnreviewedScope(\n                 kind=\"interaction\",\n                 description=(\n-                    \"requirement rules that never fire have no observable behaviour: \"\n+                    (\n+                        \"requirement rules that never fire have no observable behaviour: \"\n+                        if verification.space.exhaustive\n+                        else \"requirement rules not exercised by the sampled ticket space: \"\n+                    )\n                     + \", \".join(interaction.unreachable_rules)\n                 ),\n                 rule_refs=interaction.unreachable_rules,\n",
+      "code_change_files": [
+        "src/verityflow/verify/interactions.py",
+        "src/verityflow/verify/review.py"
+      ],
+      "regression_test": {
+        "test_id": "tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed",
+        "test_change": "diff --git a/tests/integration/test_review.py b/tests/integration/test_review.py\nindex 72c4b2b..c04539c 100644\n--- a/tests/integration/test_review.py\n+++ b/tests/integration/test_review.py\n@@ -103,6 +103,12 @@ def test_sampled_space_is_incomplete_and_disclosed() -> None:\n         for check in report.checks\n     )\n     assert \"combinations were not evaluated\" in report.detail\n+    interaction = [\n+        finding for finding in report.findings if finding.category is FindingCategory.INTERACTION\n+    ]\n+    assert interaction\n+    assert all(\"is shadowed\" not in finding.message for finding in interaction)\n+    assert all(\"unreviewed\" in finding.message for finding in interaction)\n \n \n def test_cli_exit_codes_follow_the_review_status(tmp_path: Path) -> None:\n"
+      },
+      "result_after_fix": {
+        "command": "python -m pytest tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed -q -p no:cacheprovider  (PYTHONPATH=<snapshot>\\src)",
+        "exit_code": 0,
+        "output": ".                                                                        [100%]\n1 passed in 0.53s",
+        "runtime_seconds": 1.383,
+        "commit": "528aaf7615f729979ab157f063571ba5d0005592",
+        "label": "fix commit source and test"
+      },
+      "current_head_run": {
+        "command": "python -m pytest tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed -q -p no:cacheprovider  (PYTHONPATH=<snapshot>\\src)",
+        "exit_code": 0,
+        "output": ".                                                                        [100%]\n1 passed in 0.77s",
+        "runtime_seconds": 1.708,
+        "commit": "7f55c5db37b3176f590d6852210078dac56b4b03",
+        "label": "current HEAD"
+      },
+      "verification": "The failing run executes the parent commit's source with the fix commit's regression test in an isolated git archive snapshot; the passing runs execute the fix commit and current HEAD with their own test files."
+    },
+    {
+      "example_id": "D-02",
+      "title": "An unsupported router region was found but omitted from the unreviewed scope",
+      "origin": "docs/debugging_log.md entry reproduced from git history",
+      "fix_commit": "f0dbb0c0d3108235630c79f33ae66a48421c6ece",
+      "parent_commit": "528aaf7615f729979ab157f063571ba5d0005592",
+      "failing_run": {
+        "command": "python -m pytest tests/integration/test_review.py::test_sampled_blocker_with_unsupported_code_keeps_both_disclosures -q -p no:cacheprovider  (PYTHONPATH=<snapshot>\\src)",
+        "exit_code": 1,
+        "output": "F                                                                        [100%]\n================================== FAILURES ===================================\n______ test_sampled_blocker_with_unsupported_code_keeps_both_disclosures ______\n\n    def test_sampled_blocker_with_unsupported_code_keeps_both_disclosures() -> None:\n        # E. A sampled blocker and an unsupported code region coexist: the blocker\n        # decides the status, the unsupported region stays disclosed as unreviewed.\n        report = _review(\"B14_router_unsupported\", config=Config(limits=Limits(max_cells=12)))\n    \n        assert report.status is ReviewStatus.CHANGES_REQUIRED\n        assert not report.exhaustive\n        code = next(item for item in report.comparisons if item.name == \"code\")\n        assert code.mode is ComparisonMode.SAMPLED\n        assert any(\n            item.validated and item.inputs.get(\"wait_time\") == 30 for item in code.counterexamples\n        )\n        unsupported = [\n            finding\n            for finding in report.findings\n            if finding.category is FindingCategory.UNSUPPORTED_CODE\n        ]\n        assert unsupported\n        assert all(finding.severity is Severity.COVERAGE_GAP for finding in unsupported)\n>       assert any(\n            scope.kind == \"code\" and scope.artifact == \"ROUTER@1.0\" for scope in report.unreviewed\n        )\nE       assert False\nE        +  where False = any(<generator object test_sampled_blocker_with_unsupported_code_keeps_both_disclosures.<locals>.<genexpr> at 0x00000247D8F44110>)\n\ntests\\integration\\test_review.py:194: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/integration/test_review.py::test_sampled_blocker_with_unsupported_code_keeps_both_disclosures\n1 failed in 0.83s",
+        "runtime_seconds": 1.805,
+        "commit": "528aaf7615f729979ab157f063571ba5d0005592",
+        "label": "parent source with the regression test from the fix commit"
+      },
+      "diagnosis": "B14_router_unsupported reviewed with max_cells=12 contains a validated wait_time=30 blocker and an undeclared-destination region in the router. At the parent commit the blocker did decide CHANGES_REQUIRED, the validated counterexample was re-routed, and UNSUPPORTED_CODE/COVERAGE_GAP findings were present, but the unsupported region was absent from the machine-readable unreviewed scopes. The added assertion that requires a 'code' scope for ROUTER@1.0 failed against the parent source.",
+      "root_cause": "_verify_artifacts appended UNSUPPORTED_CODE findings to the findings list but never added the corresponding UnreviewedScope, so the report's unreviewed list silently omitted a router region the interpreter could not evaluate. The same commit also pinned the blocker-first status precedence - implemented since 4702939 but untested and contradicted by documentation claiming sampled status was capped at INCOMPLETE - with tests A-E.",
+      "code_change": "diff --git a/src/verityflow/verify/review.py b/src/verityflow/verify/review.py\nindex 4720fb3..ae0b7b2 100644\n--- a/src/verityflow/verify/review.py\n+++ b/src/verityflow/verify/review.py\n@@ -271,6 +271,9 @@ def review_loaded(\n         and confirmed is not None\n         and all(record.mode is ComparisonMode.EXHAUSTIVE for record in verification.comparisons)\n     )\n+    # Precedence is deliberate: a validated blocker was observed on an evaluated\n+    # ticket and independently re-routed, so unreviewed regions elsewhere cannot\n+    # downgrade it. Sampling only caps the status when no blocker was established.\n     if blocker:\n         status = ReviewStatus.CHANGES_REQUIRED\n     elif gap or not exhaustive or unreviewed:\n@@ -587,6 +590,22 @@ def _verify_artifacts(\n             workflow_ref=workflow_reference,\n         )\n         code_findings.extend(code_result.findings)\n+        unsupported = [\n+            finding.message\n+            for finding in code_result.findings\n+            if finding.category is FindingCategory.UNSUPPORTED_CODE\n+        ]\n+        if unsupported:\n+            unreviewed.append(\n+                UnreviewedScope(\n+                    kind=\"code\",\n+                    description=(\n+                        \"part of the linked router could not be interpreted: \"\n+                        + \"; \".join(unsupported)\n+                    ),\n+                    artifact=code_program.artifact_ref,\n+                )\n+            )\n         comparisons.append(code_result.record)\n         if code_result.workflow_agreement is not None:\n             comparisons.append(code_result.workflow_agreement)\n",
+      "code_change_files": [
+        "src/verityflow/verify/review.py"
+      ],
+      "regression_test": {
+        "test_id": "tests/integration/test_review.py::test_sampled_blocker_with_unsupported_code_keeps_both_disclosures",
+        "test_change": "diff --git a/tests/integration/test_review.py b/tests/integration/test_review.py\nindex c04539c..f80a96d 100644\n--- a/tests/integration/test_review.py\n+++ b/tests/integration/test_review.py\n@@ -111,6 +111,92 @@ def test_sampled_space_is_incomplete_and_disclosed() -> None:\n     assert all(\"unreviewed\" in finding.message for finding in interaction)\n \n \n+def test_sampled_boundary_blocker_requires_changes_and_discloses_unreviewed_scope() -> None:\n+    # A. A validated blocker inside an evaluated sample is decisive even though\n+    # other combinations were never reviewed.\n+    report = _review(\"B12_router_threshold\", config=Config(limits=Limits(max_cells=12)))\n+\n+    code = next(item for item in report.comparisons if item.name == \"code\")\n+    assert code.mode is ComparisonMode.SAMPLED\n+    assert not code.equal\n+    boundary = [\n+        item\n+        for item in code.counterexamples\n+        if item.validated and item.inputs.get(\"wait_time\") == 30\n+    ]\n+    assert boundary\n+    assert boundary[0].requirement_outcome == \"destination 'escalation_queue'\"\n+    assert boundary[0].artifact_outcome == \"destination 'normal_queue'\"\n+\n+    assert report.status is ReviewStatus.CHANGES_REQUIRED\n+    assert not report.exhaustive\n+    assert FindingCategory.THRESHOLD_CHANGED in _categories(report)\n+    # The blocker does not hide the fact that most of the space is unreviewed.\n+    assert any(scope.kind == \"sampling\" for scope in report.unreviewed)\n+    assert \"combinations were not evaluated\" in report.detail\n+\n+\n+def test_sampled_review_without_an_established_blocker_is_incomplete() -> None:\n+    # B. Sampling alone caps the status at INCOMPLETE when no blocker exists.\n+    report = _review(\"B10_router_clean\", config=Config(limits=Limits(max_cells=8)))\n+\n+    assert report.status is ReviewStatus.INCOMPLETE\n+    assert not report.exhaustive\n+    assert not any(finding.severity is Severity.BLOCKER for finding in report.findings)\n+    assert any(scope.kind == \"sampling\" for scope in report.unreviewed)\n+\n+\n+def test_exhaustive_valid_implementation_passes() -> None:\n+    # C. PASS requires exhaustive, complete, covered, blocker-free evaluation.\n+    report = _review(\"B10_router_clean\")\n+\n+    assert report.exhaustive\n+    assert report.status is ReviewStatus.PASS\n+    assert all(\n+        finding.severity not in {Severity.BLOCKER, Severity.COVERAGE_GAP}\n+        for finding in report.findings\n+    )\n+    assert all(item.covered for item in report.coverage)\n+\n+\n+def test_exhaustive_implementation_with_a_blocker_requires_changes() -> None:\n+    # D. An exhaustively demonstrated blocker still yields CHANGES_REQUIRED.\n+    report = _review(\"B12_router_threshold\")\n+\n+    assert report.exhaustive\n+    assert report.status is ReviewStatus.CHANGES_REQUIRED\n+    assert FindingCategory.THRESHOLD_CHANGED in _categories(report)\n+    code = next(item for item in report.comparisons if item.name == \"code\")\n+    assert any(\n+        item.validated and item.inputs.get(\"wait_time\") == 30 for item in code.counterexamples\n+    )\n+\n+\n+def test_sampled_blocker_with_unsupported_code_keeps_both_disclosures() -> None:\n+    # E. A sampled blocker and an unsupported code region coexist: the blocker\n+    # decides the status, the unsupported region stays disclosed as unreviewed.\n+    report = _review(\"B14_router_unsupported\", config=Config(limits=Limits(max_cells=12)))\n+\n+    assert report.status is ReviewStatus.CHANGES_REQUIRED\n+    assert not report.exhaustive\n+    code = next(item for item in report.comparisons if item.name == \"code\")\n+    assert code.mode is ComparisonMode.SAMPLED\n+    assert any(\n+        item.validated and item.inputs.get(\"wait_time\") == 30 for item in code.counterexamples\n+    )\n+    unsupported = [\n+        finding\n+        for finding in report.findings\n+        if finding.category is FindingCategory.UNSUPPORTED_CODE\n+    ]\n+    assert unsupported\n+    assert all(finding.severity is Severity.COVERAGE_GAP for finding in unsupported)\n+    assert any(\n+        scope.kind == \"code\" and scope.artifact == \"ROUTER@1.0\" for scope in report.unreviewed\n+    )\n+    assert any(scope.kind == \"sampling\" for scope in report.unreviewed)\n+\n+\n def test_cli_exit_codes_follow_the_review_status(tmp_path: Path) -> None:\n     runner = CliRunner()\n     passing = runner.invoke(app, [\"review\", str(DEV / \"B01_starter\")])\n"
+      },
+      "result_after_fix": {
+        "command": "python -m pytest tests/integration/test_review.py::test_sampled_blocker_with_unsupported_code_keeps_both_disclosures -q -p no:cacheprovider  (PYTHONPATH=<snapshot>\\src)",
+        "exit_code": 0,
+        "output": ".                                                                        [100%]\n1 passed in 0.53s",
+        "runtime_seconds": 1.407,
+        "commit": "f0dbb0c0d3108235630c79f33ae66a48421c6ece",
+        "label": "fix commit source and test"
+      },
+      "current_head_run": {
+        "command": "python -m pytest tests/integration/test_review.py::test_sampled_blocker_with_unsupported_code_keeps_both_disclosures -q -p no:cacheprovider  (PYTHONPATH=<snapshot>\\src)",
+        "exit_code": 0,
+        "output": ".                                                                        [100%]\n1 passed in 0.66s",
+        "runtime_seconds": 1.568,
+        "commit": "7f55c5db37b3176f590d6852210078dac56b4b03",
+        "label": "current HEAD"
+      },
+      "verification": "The failing run executes the parent commit's source with the fix commit's regression test in an isolated git archive snapshot; the passing runs execute the fix commit and current HEAD with their own test files."
+    }
+  ]
+}

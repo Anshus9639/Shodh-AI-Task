@@ -1,0 +1,1769 @@
+{
+  "header": {
+    "report": "final",
+    "generated_at": "2026-11-18T00:58:16+00:00",
+    "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "baseline_revision": null,
+    "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+    "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+    "bundle_count": 27,
+    "model_execution_mode": "off (deterministic; no model requests)",
+    "unsupported_scope": [
+      "real-model semantic performance is not measured by this report",
+      "sealed holdout labels are excluded from reviewer input"
+    ]
+  },
+  "cases": [
+    {
+      "bundle_id": "B01_starter",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "B03_approved_change",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "spec",
+          "artifact_ref": "SPEC@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 600,
+          "combinations_total": 600,
+          "combinations_skipped": 0,
+          "detail": "144 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 20
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 21
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 22
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "workflow",
+          "artifact_ref": "WF@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 600,
+          "combinations_total": 600,
+          "combinations_skipped": 0,
+          "detail": "144 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 20
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 21
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 22
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "B05_unapproved_change",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "B06_conflicting_approvals",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "B07_approved_threshold_25",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "spec",
+          "artifact_ref": "SPEC@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 600,
+          "combinations_total": 600,
+          "combinations_skipped": 0,
+          "detail": "144 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 25
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 26
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 27
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "workflow",
+          "artifact_ref": "WF@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 600,
+          "combinations_total": 600,
+          "combinations_skipped": 0,
+          "detail": "144 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 25
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 26
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 27
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "B08_unapproved_threshold_25",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "B09_conflicting_threshold_25",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "B10_router_clean",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "B11_router_precedence",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "code",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "18 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "code",
+              "requirement_ref": "R1",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the router tests equivalent guards in a different order than the effective requirements; the first-match order changes the outcome",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R1",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the router tests equivalent guards in a different order than the effective requirements; the first-match order changes the outcome",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R1",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the router tests equivalent guards in a different order than the effective requirements; the first-match order changes the outcome",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "code_vs_workflow",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "workflow WF@1.0 and the linked router route 18 evaluated ticket combination(s) to different outcomes",
+          "counterexamples": [
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "manual",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "manual",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "manual",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "B12_router_threshold",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "code",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "36 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "code",
+              "requirement_ref": "R3",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 30 vs > 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R3",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": false,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 30 vs > 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R3",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 30 vs > 30)",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "code_vs_workflow",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "workflow WF@1.0 and the linked router route 36 evaluated ticket combination(s) to different outcomes",
+          "counterexamples": [
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "escalation",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "escalation",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": false,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "escalation",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "B13_router_runtime",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "code",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "24 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "code",
+              "requirement_ref": "R1",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": null,
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "error: KeyError: 'vip'",
+              "validated": true,
+              "explanation": "the linked router raised a runtime error on a ticket the requirements route without error",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R1",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": null,
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "error: KeyError: 'vip'",
+              "validated": true,
+              "explanation": "the linked router raised a runtime error on a ticket the requirements route without error",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R1",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": null,
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "error: KeyError: 'vip'",
+              "validated": true,
+              "explanation": "the linked router raised a runtime error on a ticket the requirements route without error",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "code_vs_workflow",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "workflow WF@1.0 and the linked router route 24 evaluated ticket combination(s) to different outcomes",
+          "counterexamples": [
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "manual",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": null,
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "error: KeyError: 'vip'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "manual",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": null,
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "error: KeyError: 'vip'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "manual",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": null,
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "error: KeyError: 'vip'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "B14_router_unsupported",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "code",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "63 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "code",
+              "requirement_ref": "R4",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": "technical",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "unsupported: router returned undeclared destination 'legacy'",
+              "validated": true,
+              "explanation": "part of the router cannot be interpreted within the supported subset; these tickets are unreviewed",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R4",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": "technical",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "unsupported: router returned undeclared destination 'legacy'",
+              "validated": true,
+              "explanation": "part of the router cannot be interpreted within the supported subset; these tickets are unreviewed",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R3",
+              "artifact_ref": "ROUTER@1.0",
+              "inputs": {
+                "category": "technical",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "unsupported: router returned undeclared destination 'legacy'",
+              "validated": true,
+              "explanation": "part of the router cannot be interpreted within the supported subset; these tickets are unreviewed",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R3",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked router and the effective requirements route this ticket to different destinations",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R3",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": false,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked router and the effective requirements route this ticket to different destinations",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code",
+              "requirement_ref": "R3",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked router and the effective requirements route this ticket to different destinations",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "code_vs_workflow",
+          "artifact_ref": "ROUTER@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "workflow WF@1.0 and the linked router route 63 evaluated ticket combination(s) to different outcomes",
+          "counterexamples": [
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "escalation",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "escalation",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": false,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "code_vs_workflow",
+              "requirement_ref": "escalation",
+              "artifact_ref": "route",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": null,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the linked workflow and the linked router route this ticket to different outcomes",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "E01_valid_approved_25",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "E02_missing_branch",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "spec",
+          "artifact_ref": "SPEC@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "72 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the specification has no rule for this ticket and falls through to its default, while the effective requirements route it to a specific destination",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the specification has no rule for this ticket and falls through to its default, while the effective requirements route it to a specific destination",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": null
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the specification has no rule for this ticket and falls through to its default, while the effective requirements route it to a specific destination",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "S3",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "the firing entries differ and no more specific diagnosis applies; the concrete witness is the evidence",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "S3",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 31
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "the firing entries differ and no more specific diagnosis applies; the concrete witness is the evidence",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "S3",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 32
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "the firing entries differ and no more specific diagnosis applies; the concrete witness is the evidence",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "workflow",
+          "artifact_ref": "WF@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "72 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'normal_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'normal_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": null
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'normal_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "escalation",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'escalation_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "escalation",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 31
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'escalation_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "escalation",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 32
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'escalation_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "E03_wrong_destination",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "spec",
+          "artifact_ref": "SPEC@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "72 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "S2",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the firing conditions are equivalent but destinations differ ('priority_queue' vs 'normal_queue')",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "S2",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the firing conditions are equivalent but destinations differ ('priority_queue' vs 'normal_queue')",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R2",
+              "artifact_ref": "S2",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the firing conditions are equivalent but destinations differ ('priority_queue' vs 'normal_queue')",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "workflow",
+          "artifact_ref": "WF@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "72 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "priority",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "equivalent routing conditions lead to different destinations ('priority_queue' vs 'normal_queue')",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "priority",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "equivalent routing conditions lead to different destinations ('priority_queue' vs 'normal_queue')",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R2",
+              "artifact_ref": "priority",
+              "inputs": {
+                "category": "__other__",
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "equivalent routing conditions lead to different destinations ('priority_queue' vs 'normal_queue')",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "E04_interacting_exceptions",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "spec",
+          "artifact_ref": "SPEC@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "72 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "spec",
+              "requirement_ref": "R4",
+              "artifact_ref": "S4",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the firing entries differ and no more specific diagnosis applies; the concrete witness is the evidence",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R4",
+              "artifact_ref": "S4",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the firing entries differ and no more specific diagnosis applies; the concrete witness is the evidence",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R4",
+              "artifact_ref": "S4",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": null
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the firing entries differ and no more specific diagnosis applies; the concrete witness is the evidence",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3.exception",
+              "artifact_ref": "S3",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "requirement 'R3.exception' is an exception of 'R3' but the spec routes the exception region differently",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3.exception",
+              "artifact_ref": "S3",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 31
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "requirement 'R3.exception' is an exception of 'R3' but the spec routes the exception region differently",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3.exception",
+              "artifact_ref": "S3",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 32
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "requirement 'R3.exception' is an exception of 'R3' but the spec routes the exception region differently",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "workflow",
+          "artifact_ref": "WF@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "72 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R4",
+              "artifact_ref": "priority",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'priority_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R4",
+              "artifact_ref": "priority",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'priority_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R4",
+              "artifact_ref": "priority",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": null
+              },
+              "requirement_outcome": "destination 'normal_queue'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "the workflow routes this ticket to 'priority_queue' while the effective requirements route it elsewhere",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3.exception",
+              "artifact_ref": "escalation",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "requirement 'R3.exception' is an exception of 'R3' but the workflow does not implement it",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3.exception",
+              "artifact_ref": "escalation",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 31
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "requirement 'R3.exception' is an exception of 'R3' but the workflow does not implement it",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3.exception",
+              "artifact_ref": "escalation",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 32
+              },
+              "requirement_outcome": "destination 'priority_queue'",
+              "artifact_outcome": "destination 'escalation_queue'",
+              "validated": true,
+              "explanation": "requirement 'R3.exception' is an exception of 'R3' but the workflow does not implement it",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "E05_unsupported_language",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "E06_unsupported_python",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "E07_missing_evidence",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "E08_unusual_formulation",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "E09_reordered_records",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "E10_paraphrased_wording",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "H01_clean",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "H02_renamed",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "comparisons": []
+    },
+    {
+      "bundle_id": "H03_spec_reordered",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "spec",
+          "artifact_ref": "SPEC@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 360,
+          "combinations_total": 360,
+          "combinations_skipped": 0,
+          "detail": "18 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "spec",
+              "requirement_ref": "R1",
+              "artifact_ref": "S2",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 28
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "both decision lists contain equivalent entries with the same destinations in a different order; the first-match order changes the outcome",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R1",
+              "artifact_ref": "S2",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 29
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "both decision lists contain equivalent entries with the same destinations in a different order; the first-match order changes the outcome",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R1",
+              "artifact_ref": "S2",
+              "inputs": {
+                "category": null,
+                "priority": "urgent",
+                "vip": true,
+                "wait_time": 30
+              },
+              "requirement_outcome": "destination 'manual_review'",
+              "artifact_outcome": "destination 'priority_queue'",
+              "validated": true,
+              "explanation": "both decision lists contain equivalent entries with the same destinations in a different order; the first-match order changes the outcome",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "H04_approved_threshold",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "comparisons": [
+        {
+          "name": "spec",
+          "artifact_ref": "SPEC@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 600,
+          "combinations_total": 600,
+          "combinations_skipped": 0,
+          "detail": "144 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 20
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 21
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "spec",
+              "requirement_ref": "R3",
+              "artifact_ref": "SPEC:default",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 22
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        },
+        {
+          "name": "workflow",
+          "artifact_ref": "WF@1.0",
+          "mode": "exhaustive",
+          "equal": false,
+          "cells_checked": 600,
+          "combinations_total": 600,
+          "combinations_skipped": 0,
+          "detail": "144 ticket combinations route differently",
+          "counterexamples": [
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 20
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 21
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            },
+            {
+              "comparison": "workflow",
+              "requirement_ref": "R3",
+              "artifact_ref": "normal",
+              "inputs": {
+                "category": "__other__",
+                "priority": "__other__",
+                "vip": true,
+                "wait_time": 22
+              },
+              "requirement_outcome": "destination 'escalation_queue'",
+              "artifact_outcome": "destination 'normal_queue'",
+              "validated": true,
+              "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 20 vs >= 30)",
+              "outputs_differ": true,
+              "valid": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "bundle_id": "H05_tampered_approval",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "comparisons": []
+    }
+  ]
+}

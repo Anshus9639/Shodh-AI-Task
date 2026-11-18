@@ -1,0 +1,2557 @@
+{
+  "header": {
+    "report": "final",
+    "generated_at": "2026-11-18T00:58:16+00:00",
+    "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "baseline_revision": null,
+    "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+    "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+    "bundle_count": 27,
+    "model_execution_mode": "off (deterministic; no model requests)",
+    "unsupported_scope": [
+      "real-model semantic performance is not measured by this report",
+      "sealed holdout labels are excluded from reviewer input"
+    ]
+  },
+  "cases": [
+    {
+      "bundle_id": "B01_starter",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "B03_approved_change",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=18",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=18",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=20",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=18",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "B05_unapproved_change",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "B06_conflicting_approvals",
+      "actual_status": "INCOMPLETE",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "B07_approved_threshold_25",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=23",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=23",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=25",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=23",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "B08_unapproved_threshold_25",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "B09_conflicting_threshold_25",
+      "actual_status": "INCOMPLETE",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "B10_router_clean",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": null,
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "urgent",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 30
+          },
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 4
+      }
+    },
+    {
+      "bundle_id": "B11_router_precedence",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": null,
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "urgent",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 30
+          },
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 4
+      }
+    },
+    {
+      "bundle_id": "B12_router_threshold",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": null,
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "urgent",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 31
+          },
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 4
+      }
+    },
+    {
+      "bundle_id": "B13_router_runtime",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": null,
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "urgent",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 30
+          },
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 4
+      }
+    },
+    {
+      "bundle_id": "B14_router_unsupported",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 2,
+      "partially_reviewed": 2,
+      "unreviewed": 2,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": null,
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "urgent",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 31
+          },
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": "ROUTER@1.0",
+          "code_witness": {
+            "category": "__other__",
+            "priority": "__other__",
+            "vip": true,
+            "wait_time": 28
+          },
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": false
+        }
+      ],
+      "unreviewed_scopes": [
+        {
+          "kind": "code",
+          "description": "part of the linked router could not be interpreted: the linked router could not be interpreted for 36 evaluated ticket combination(s): router returned undeclared destination 'legacy'",
+          "rule_refs": [],
+          "artifact": "ROUTER@1.0"
+        }
+      ],
+      "comparison_modes": {
+        "exhaustive": 4
+      }
+    },
+    {
+      "bundle_id": "E01_valid_approved_25",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=23",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=23",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=25",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=23",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E02_missing_branch",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 1,
+      "missing_workflow_element": 1,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [],
+          "workflow_elements": [],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E03_wrong_destination",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 1,
+      "missing_workflow_element": 1,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [],
+          "workflow_elements": [],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E04_interacting_exceptions",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 5,
+      "fully_reviewed": 3,
+      "partially_reviewed": 2,
+      "unreviewed": 2,
+      "missing_spec_element": 1,
+      "missing_workflow_element": 1,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3.exception",
+          "destination": "priority_queue",
+          "spec_elements": [],
+          "workflow_elements": [],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3.exception' fires at category='__other__', priority='__other__', vip=True, wait_time=30"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=False, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": false
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E05_unsupported_language",
+      "actual_status": "INCOMPLETE",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E06_unsupported_python",
+      "actual_status": "INCOMPLETE",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 4,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [
+        {
+          "kind": "artifact",
+          "description": "statement For is not supported",
+          "rule_refs": [],
+          "artifact": "ROUTER@1.0"
+        }
+      ],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E07_missing_evidence",
+      "actual_status": "INCOMPLETE",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 4,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [
+        {
+          "kind": "artifact",
+          "description": "spec artifact SPEC@1.0 could not be parsed; the specification is unreviewed",
+          "rule_refs": [],
+          "artifact": "SPEC@1.0"
+        }
+      ],
+      "comparison_modes": {
+        "exhaustive": 1
+      }
+    },
+    {
+      "bundle_id": "E08_unusual_formulation",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E09_reordered_records",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "E10_paraphrased_wording",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "H01_clean",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "H02_renamed",
+      "actual_status": "PASS",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S-ALPHA"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S-ALPHA",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S-BETA"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S-BETA",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S-GAMMA"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S-GAMMA",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "RENAMED:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via RENAMED:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "H03_spec_reordered",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "H04_approved_threshold",
+      "actual_status": "CHANGES_REQUIRED",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 3,
+      "partially_reviewed": 1,
+      "unreviewed": 1,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=18",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=18",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=20",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": false
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=18",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    },
+    {
+      "bundle_id": "H05_tampered_approval",
+      "actual_status": "INCOMPLETE",
+      "exhaustive": true,
+      "effective_requirements": 4,
+      "fully_reviewed": 4,
+      "partially_reviewed": 0,
+      "unreviewed": 0,
+      "missing_spec_element": 0,
+      "missing_workflow_element": 0,
+      "missing_code_witness": 0,
+      "entries": [
+        {
+          "rule_ref": "R1",
+          "destination": "manual_review",
+          "spec_elements": [
+            "S1"
+          ],
+          "workflow_elements": [
+            "manual"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R1' fires at category=<absent>, priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S1",
+            "workflow WF@1.0 routes the same tickets via manual"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R2",
+          "destination": "priority_queue",
+          "spec_elements": [
+            "S2"
+          ],
+          "workflow_elements": [
+            "priority"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R2' fires at category='__other__', priority='urgent', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via S2",
+            "workflow WF@1.0 routes the same tickets via priority"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R3",
+          "destination": "escalation_queue",
+          "spec_elements": [
+            "S3"
+          ],
+          "workflow_elements": [
+            "escalation"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R3' fires at category='__other__', priority='__other__', vip=True, wait_time=30",
+            "spec SPEC@1.0 routes the same tickets via S3",
+            "workflow WF@1.0 routes the same tickets via escalation"
+          ],
+          "covered": true
+        },
+        {
+          "rule_ref": "R4",
+          "destination": "normal_queue",
+          "spec_elements": [
+            "SPEC:default"
+          ],
+          "workflow_elements": [
+            "normal"
+          ],
+          "code_artifact": null,
+          "code_witness": null,
+          "evidence": [
+            "requirement 'R4' fires at category='__other__', priority='__other__', vip=True, wait_time=28",
+            "spec SPEC@1.0 routes the same tickets via SPEC:default",
+            "workflow WF@1.0 routes the same tickets via normal"
+          ],
+          "covered": true
+        }
+      ],
+      "unreviewed_scopes": [],
+      "comparison_modes": {
+        "exhaustive": 2
+      }
+    }
+  ]
+}

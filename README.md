@@ -2,7 +2,7 @@
 
 Deterministic-first workflow compliance reviewer. It parses versioned business requirements, compiles them into an ordered first-match policy, resolves hash-bound approvals, and verifies the specification, workflow graph and linked Python router against that policy over a disclosed ticket space. Linked Python is AST-interpreted, never executed. Every claim carries evidence; unsupported input, ambiguity and sampling are reported, never guessed.
 
-Status: **Stage 3 complete (awaiting review).** The deterministic reviewer and `review` CLI are implemented and tagged `stage2-baseline` (`4702939`); the Stage 2 status correction is `f0dbb0c`. Stage 3 adds a supplementary model layer (`off`, `fake`, `gemini`) that can only add advisory collections and can never change a status, finding, approval decision or configuration. Stage 4 is not implemented.
+Status: **Stage 4 complete (final submission).** The deterministic reviewer and `review` CLI are tagged `stage2-baseline` (`4702939`); the Stage 2 status correction is `f0dbb0c`, and Stage 3 adds a supplementary model layer (`off`, `fake`, `gemini`) that can only add advisory collections and can never change a status, finding, approval decision or configuration. Stage 4 adds a frozen evaluation dataset (27 development and 10 sealed bundles), an independent oracle, a baseline adapter, one controlled ablation and schema-validated reports. Measured results: 27/27 development decisions, 8/10 sealed decisions, 0 false PASS, one sealed false block; the sealed errors are retained and documented, not tuned away.
 
 ## Documentation
 
@@ -13,6 +13,8 @@ Status: **Stage 3 complete (awaiting review).** The deterministic reviewer and `
 - [Debugging log](docs/debugging_log.md)
 - [Implementation plan](docs/implementation_plan.md)
 - [Decision log](docs/decision_log.md)
+- [Engineering note](docs/engineering_note.md)
+- [AI assistance note](docs/ai_assistance_note.md)
 
 ## Toolchain
 
@@ -48,6 +50,12 @@ uv run verityflow review fixtures/dev/B10_router_clean
 # Optional supplementary model analysis, explicitly opt-in. Default is `off`.
 uv run verityflow review fixtures/dev/B10_router_clean --model fake --model-scenario valid
 uv run verityflow review fixtures/dev/B12_router_threshold --model gemini   # needs credentials
+
+# Full offline evaluation: tests, fixture validation, baseline, ablation, reports.
+uv run python scripts/run_offline.py
+
+# One-shot sealed evaluation. Run once; do not tune against its outcomes.
+uv run python scripts/run_final_evaluation.py
 ```
 
 `review` exit codes: `0` PASS, `1` CHANGES_REQUIRED or INCOMPLETE, `2` invalid input (unreadable bundle, malformed config, bad option). The exit code always follows the deterministic report, in every model mode. With `--model off` (the default) the command prints the unchanged `ReviewReport`; enabled modes print `{"review": ..., "model_analysis": ...}`. The Stage 1 commands share exit codes `0`/`1`/`2` for no gap, gap/blocker, and invalid input.
@@ -62,7 +70,7 @@ Model output is advisory. It is validated against the deterministic report (know
 
 ## Contracts
 
-The Pydantic models in `src/verityflow/models/` are the source of truth. Beyond the bundle, spec, workflow, dictionary, change and report contracts, standalone schemas are exported for the five required input surfaces: anchored requirements (`requirements_source`, `anchored_requirement`), specification (`spec`, `spec_rule`, `spec_default`), versioned workflow (`workflow`, `workflow_node`, `workflow_branch`), linked Python code (`artifact_entry`, `code_link`) and approvals (`approval_record`). Stage 3 adds `model_request`, `model_response` and `model_analysis` (22 schemas total). Regenerate the committed schemas with:
+The Pydantic models in `src/verityflow/models/` are the source of truth. Beyond the bundle, spec, workflow, dictionary, change and report contracts, standalone schemas are exported for the five required input surfaces: anchored requirements (`requirements_source`, `anchored_requirement`), specification (`spec`, `spec_rule`, `spec_default`), versioned workflow (`workflow`, `workflow_node`, `workflow_branch`), linked Python code (`artifact_entry`, `code_link`) and approvals (`approval_record`). Stage 3 adds `model_request`, `model_response` and `model_analysis`; Stage 4 adds eight evaluation report schemas (30 total). Regenerate the committed schemas with:
 
 ```
 uv run python scripts/export_schemas.py   # writes schemas/*.schema.json
@@ -74,7 +82,12 @@ Fixtures are generated deterministically:
 uv run python scripts/build_fixtures.py             # fixtures/dev + sealed Stage 1 holdout
 uv run python scripts/build_stage2_holdout.py       # sealed Stage 2 semantic holdout
 uv run python scripts/build_stage2_dev_fixtures.py  # fixtures/dev B10-B14 only
+uv run python scripts/build_stage4_eval_fixtures.py # evaluation/bundles E01-E10
+uv run python scripts/build_eval_labels.py          # evaluation/cases + oracle labels
+uv run python scripts/build_dataset_manifest.py --freeze-commit <sha1>
 ```
+
+The Stage 4 development dataset and its labels are frozen. Regenerating them changes the hashes recorded in `evaluation/MANIFEST.sha256` and `evaluation/DATASET.json`; do not regenerate to improve a result.
 
 Both `holdout/` and `holdout_stage2/` are frozen after their freezing commits; do not regenerate them.
 
@@ -89,4 +102,4 @@ uv run ruff format --check .
 uv run mypy
 ```
 
-Current results: 372 default tests passed; ruff, ruff format and strict mypy (`src`, 60 files) clean. Neither sealed set (`holdout/`, `holdout_stage2/`) has been executed; they are reserved for final Stage 1 and Stage 2 evaluation. No live model request was made: Stage 3 tests use the fake client and assert the Gemini adapter fails closed without credentials.
+Current results: 375 default tests passed; ruff, ruff format and strict mypy (`src`, 62 files) clean; all 30 schemas match their models. `scripts/run_offline.py` exits 0 and validates every report. The sealed sets were executed exactly once by `scripts/run_final_evaluation.py`: 8/10 decisions correct, both sealed manifests unchanged, no tuning afterwards. No live model request was made: Stage 3 and the offline evaluation use the fake client only, and the Gemini adapter fails closed without credentials.

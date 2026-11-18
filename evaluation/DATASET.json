@@ -10,7 +10,7 @@
     "INCOMPLETE": 6
   },
   "implementation_checkpoint": "b63da40",
-  "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)",
+  "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03",
   "config": {
     "path": "configs/default.toml",
     "sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61"
@@ -42,7 +42,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B03_approved_change",
@@ -65,7 +65,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B05_unapproved_change",
@@ -88,7 +88,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B06_conflicting_approvals",
@@ -111,7 +111,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B07_approved_threshold_25",
@@ -134,7 +134,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B08_unapproved_threshold_25",
@@ -157,7 +157,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B09_conflicting_threshold_25",
@@ -180,7 +180,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B10_router_clean",
@@ -203,7 +203,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B11_router_precedence",
@@ -226,7 +226,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B12_router_threshold",
@@ -249,7 +249,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B13_router_runtime",
@@ -272,7 +272,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "B14_router_unsupported",
@@ -295,7 +295,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E01_valid_approved_25",
@@ -318,7 +318,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E02_missing_branch",
@@ -340,7 +340,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E03_wrong_destination",
@@ -362,7 +362,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E04_interacting_exceptions",
@@ -384,7 +384,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E05_unsupported_language",
@@ -406,7 +406,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E06_unsupported_python",
@@ -429,7 +429,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E07_missing_evidence",
@@ -451,7 +451,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E08_unusual_formulation",
@@ -473,7 +473,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E09_reordered_records",
@@ -495,7 +495,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "E10_paraphrased_wording",
@@ -517,7 +517,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "352416174f91f38fae0eb8a5016516611e6198ce282aa1db0faee6b433e88526",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "H01_clean",
@@ -539,7 +539,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "H02_renamed",
@@ -561,7 +561,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "H03_spec_reordered",
@@ -583,7 +583,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "H04_approved_threshold",
@@ -606,7 +606,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "H05_tampered_approval",
@@ -629,7 +629,7 @@
       "generation_config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
       "generator_sha256": "f714bcb6cbd98b9efc39708da91053c4d10a3dcdc08c8a9bdcdfde35b0635bd9",
       "implementation_checkpoint": "b63da40",
-      "dataset_freeze_commit": "first commit that adds evaluation/ (recorded in docs/evaluation_protocol.md)"
+      "dataset_freeze_commit": "7f55c5db37b3176f590d6852210078dac56b4b03"
     },
     {
       "bundle_id": "F01_clean",
