@@ -1,0 +1,339 @@
+{
+  "cases": [
+    {
+      "bundle_id": "A_original_30",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "status_correct": true,
+      "expected_applied_changes": null,
+      "actual_applied_changes": [],
+      "applied_changes_correct": null,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [],
+      "expected_primary": "",
+      "primary_present": false,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "B_approved_25_impl_25",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "status_correct": true,
+      "expected_applied_changes": [
+        "C1@1"
+      ],
+      "actual_applied_changes": [
+        "C1@1"
+      ],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 25,
+      "expected_defect_classes": [],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [],
+      "expected_primary": "",
+      "primary_present": false,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "C_approved_25_impl_30",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "status_correct": true,
+      "expected_applied_changes": [
+        "C1@1"
+      ],
+      "actual_applied_changes": [
+        "C1@1"
+      ],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 25,
+      "expected_defect_classes": [
+        "THRESHOLD_CHANGED"
+      ],
+      "actual_blocker_categories": [
+        "THRESHOLD_CHANGED",
+        "THRESHOLD_CHANGED",
+        "THRESHOLD_CHANGED"
+      ],
+      "disclosed_categories": [],
+      "expected_primary": "THRESHOLD_CHANGED",
+      "primary_present": true,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "D_unapproved_25_impl_30",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "status_correct": true,
+      "expected_applied_changes": [],
+      "actual_applied_changes": [],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [],
+      "expected_primary": "",
+      "primary_present": false,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "E_wrong_revision_binding",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "status_correct": true,
+      "expected_applied_changes": [],
+      "actual_applied_changes": [],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [
+        "STALE_CHANGE"
+      ],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [
+        "STALE_CHANGE"
+      ],
+      "expected_primary": "STALE_CHANGE",
+      "primary_present": true,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "F_wrong_operator",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "status_correct": true,
+      "expected_applied_changes": null,
+      "actual_applied_changes": [],
+      "applied_changes_correct": null,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [
+        "WRONG_OPERATOR"
+      ],
+      "actual_blocker_categories": [
+        "WRONG_OPERATOR"
+      ],
+      "disclosed_categories": [],
+      "expected_primary": "WRONG_OPERATOR",
+      "primary_present": true,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "G_unit_conversion",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "status_correct": true,
+      "expected_applied_changes": [
+        "C1@1"
+      ],
+      "actual_applied_changes": [
+        "C1@1"
+      ],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 25,
+      "expected_defect_classes": [],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [],
+      "expected_primary": "",
+      "primary_present": false,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "H_sequential_changes",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "status_correct": true,
+      "expected_applied_changes": [
+        "C1@1",
+        "C2@1"
+      ],
+      "actual_applied_changes": [
+        "C1@1",
+        "C2@1"
+      ],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 24,
+      "expected_defect_classes": [],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [],
+      "expected_primary": "",
+      "primary_present": false,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "I_conflicting_disputed_impl",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "status_correct": true,
+      "expected_applied_changes": null,
+      "actual_applied_changes": [],
+      "applied_changes_correct": null,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [
+        "UNDETERMINED_CONFLICT"
+      ],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT"
+      ],
+      "expected_primary": "UNDETERMINED_CONFLICT",
+      "primary_present": true,
+      "conflict_analysis_entries": 1,
+      "conflict_handling_correct": true,
+      "error": null
+    },
+    {
+      "bundle_id": "J_conflict_plus_independent_defect",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "status_correct": true,
+      "expected_applied_changes": null,
+      "actual_applied_changes": [],
+      "applied_changes_correct": null,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [
+        "UNDETERMINED_CONFLICT",
+        "PRECEDENCE"
+      ],
+      "actual_blocker_categories": [
+        "PRECEDENCE"
+      ],
+      "disclosed_categories": [
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT"
+      ],
+      "expected_primary": "PRECEDENCE",
+      "primary_present": true,
+      "conflict_analysis_entries": 1,
+      "conflict_handling_correct": true,
+      "error": null
+    },
+    {
+      "bundle_id": "K_multiple_conflicts",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "status_correct": true,
+      "expected_applied_changes": null,
+      "actual_applied_changes": [],
+      "applied_changes_correct": null,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [
+        "UNDETERMINED_CONFLICT"
+      ],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT"
+      ],
+      "expected_primary": "UNDETERMINED_CONFLICT",
+      "primary_present": true,
+      "conflict_analysis_entries": 2,
+      "conflict_handling_correct": true,
+      "error": null
+    },
+    {
+      "bundle_id": "L_valid_supersession",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "status_correct": true,
+      "expected_applied_changes": [],
+      "actual_applied_changes": [],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [],
+      "expected_primary": "",
+      "primary_present": false,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "M_invalid_approval_hash",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "status_correct": true,
+      "expected_applied_changes": [],
+      "actual_applied_changes": [],
+      "applied_changes_correct": true,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [
+        "INVALID_APPROVAL"
+      ],
+      "actual_blocker_categories": [],
+      "disclosed_categories": [
+        "INVALID_APPROVAL"
+      ],
+      "expected_primary": "INVALID_APPROVAL",
+      "primary_present": true,
+      "conflict_analysis_entries": 0,
+      "conflict_handling_correct": null,
+      "error": null
+    },
+    {
+      "bundle_id": "N_conflict_plus_runtime_error",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "status_correct": true,
+      "expected_applied_changes": null,
+      "actual_applied_changes": [],
+      "applied_changes_correct": null,
+      "expected_effective_threshold": 30,
+      "expected_defect_classes": [
+        "UNDETERMINED_CONFLICT",
+        "RUNTIME_ERROR"
+      ],
+      "actual_blocker_categories": [
+        "RUNTIME_ERROR"
+      ],
+      "disclosed_categories": [
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT",
+        "UNDETERMINED_CONFLICT"
+      ],
+      "expected_primary": "RUNTIME_ERROR",
+      "primary_present": true,
+      "conflict_analysis_entries": 1,
+      "conflict_handling_correct": true,
+      "error": null
+    }
+  ],
+  "summary": {
+    "cases": 14,
+    "status_correct": {
+      "numerator": 14,
+      "denominator": 14
+    },
+    "applied_changes_correct": {
+      "numerator": 8,
+      "denominator": 8
+    },
+    "conflict_handling_correct": {
+      "numerator": 4,
+      "denominator": 4
+    }
+  }
+}

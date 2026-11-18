@@ -1,0 +1,185 @@
+{
+  "baseline_stage4": {
+    "numerator": 78,
+    "denominator": 78
+  },
+  "remediation": {
+    "cases": [
+      {
+        "bundle_id": "S1_integer_boundary",
+        "scenarios": [
+          "integer boundary"
+        ],
+        "expected_primary": "THRESHOLD_CHANGED",
+        "actual_blocker_categories": [
+          "THRESHOLD_CHANGED"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 1,
+        "validated_counterexamples": 6,
+        "total_counterexamples": 6,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      },
+      {
+        "bundle_id": "S2_decimal_boundary",
+        "scenarios": [
+          "decimal boundary"
+        ],
+        "expected_primary": "THRESHOLD_CHANGED",
+        "actual_blocker_categories": [
+          "THRESHOLD_CHANGED"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 1,
+        "validated_counterexamples": 6,
+        "total_counterexamples": 6,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      },
+      {
+        "bundle_id": "S3_continuous_boundary",
+        "scenarios": [
+          "continuous domain"
+        ],
+        "expected_primary": "THRESHOLD_CHANGED",
+        "actual_blocker_categories": [
+          "THRESHOLD_CHANGED"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 1,
+        "validated_counterexamples": 6,
+        "total_counterexamples": 6,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      },
+      {
+        "bundle_id": "S4_missing_value_precedence",
+        "scenarios": [
+          "missing-value precedence"
+        ],
+        "expected_primary": "PRECEDENCE",
+        "actual_blocker_categories": [
+          "PRECEDENCE"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 1,
+        "validated_counterexamples": 6,
+        "total_counterexamples": 6,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      },
+      {
+        "bundle_id": "S5_exception_overlap",
+        "scenarios": [
+          "overlapping urgency and exception"
+        ],
+        "expected_primary": "PRECEDENCE",
+        "actual_blocker_categories": [
+          "PRECEDENCE"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 1,
+        "validated_counterexamples": 6,
+        "total_counterexamples": 6,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      },
+      {
+        "bundle_id": "S6_wrong_destination",
+        "scenarios": [
+          "destination disagreement"
+        ],
+        "expected_primary": "WRONG_DESTINATION",
+        "actual_blocker_categories": [
+          "WRONG_DESTINATION"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 1,
+        "validated_counterexamples": 6,
+        "total_counterexamples": 6,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      },
+      {
+        "bundle_id": "S7_runtime_error",
+        "scenarios": [
+          "runtime error"
+        ],
+        "expected_primary": "RUNTIME_ERROR",
+        "actual_blocker_categories": [
+          "RUNTIME_ERROR"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 1,
+        "validated_counterexamples": 6,
+        "total_counterexamples": 6,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      },
+      {
+        "bundle_id": "S8_overlapping_numeric_rules",
+        "scenarios": [
+          "multiple applicable rules"
+        ],
+        "expected_primary": "MISSING_EXCEPTION",
+        "actual_blocker_categories": [
+          "MISSING_EXCEPTION"
+        ],
+        "primary_correct": true,
+        "diagnosis_is_specific": true,
+        "confirmed_findings": 3,
+        "validated_counterexamples": 9,
+        "total_counterexamples": 9,
+        "traces_present": true,
+        "evidence_on_both_sides": true,
+        "status": "CHANGES_REQUIRED",
+        "error": null
+      }
+    ],
+    "summary": {
+      "cases": 8,
+      "primary_correct": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "specific_diagnosis": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "validated_counterexamples": {
+        "numerator": 51,
+        "denominator": 51
+      },
+      "traces_present": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "evidence_on_both_sides": {
+        "numerator": 8,
+        "denominator": 8
+      }
+    }
+  }
+}

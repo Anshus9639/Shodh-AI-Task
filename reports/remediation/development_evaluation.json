@@ -1,0 +1,1236 @@
+{
+  "header": {
+    "report": "remediation_development_comparison",
+    "generated_at": "2026-11-18T10:05:36+00:00",
+    "code_revision": "37766b793506c81e387c4f3977b9756e254490cc",
+    "model_execution_mode": "off (deterministic; no model requests)"
+  },
+  "retained_stage4": {
+    "path": "reports/final/metrics.json",
+    "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "decision": {
+      "total_cases": 27,
+      "expected_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "actual_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "correct_pass": {
+        "numerator": 10,
+        "denominator": 10
+      },
+      "false_pass": {
+        "numerator": 0,
+        "denominator": 17
+      },
+      "false_pass_on_defective": {
+        "numerator": 0,
+        "denominator": 11
+      },
+      "correct_changes_required": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "false_block": {
+        "numerator": 0,
+        "denominator": 10
+      },
+      "correct_incomplete": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "abstentions_by_expected": {
+        "PASS": 0,
+        "CHANGES_REQUIRED": 0,
+        "INCOMPLETE": 6
+      },
+      "overall_correct": {
+        "numerator": 27,
+        "denominator": 27
+      }
+    },
+    "finding_quality": {
+      "findings_total": 38,
+      "defective_cases": 11,
+      "correct_defect_identification": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "correct_rule_reference": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact_version": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "evidence_location": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "structured_evidence": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "valid_evidence": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "message_witness": {
+        "numerator": 16,
+        "denominator": 21
+      },
+      "valid_counterexamples": {
+        "numerator": 78,
+        "denominator": 78
+      },
+      "blocker_severity_on_defects": {
+        "numerator": 20,
+        "denominator": 21
+      },
+      "unsupported_findings": 3,
+      "duplicate_findings": 0
+    },
+    "reports_sha256": {
+      "REPORT.md": "3988621ce1acb72f2268962a877317ee7e489b3f2b24080a0d100d1ed4f402f8",
+      "counterexamples.json": "de78cf6a9140340faa274c095351069b3fa62f02b3eb9192ce613aa276547860",
+      "coverage.json": "4f5ca124c6f1732d733dc1dc3a0e7b4f5f1e21dd86dce58bc4e915ce82b0f071",
+      "findings.json": "c77501d8e00822ff30a3971f1b499ba92327466305d356373317cbae1e3cc4f6",
+      "metrics.json": "5501596b6736a5e00914b1cb040c188b47072eb0e3a07e2f0ad139174299d8f7"
+    }
+  },
+  "stage4_dev_rerun": {
+    "header": {
+      "report": "remediation_stage4_dev",
+      "generated_at": "2026-11-18T10:05:36+00:00",
+      "code_revision": "37766b793506c81e387c4f3977b9756e254490cc",
+      "baseline_revision": null,
+      "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+      "dataset_manifest_sha256": "bb392fee502535d134b52f5a11afede4f2134b69608c811a27c78e17933ce069",
+      "bundle_count": 27,
+      "model_execution_mode": "off (deterministic; no model requests)",
+      "unsupported_scope": [
+        "real-model semantic performance is not measured by this report",
+        "sealed holdout cases are not executed or referenced by this report"
+      ]
+    },
+    "decision": {
+      "total_cases": 27,
+      "expected_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "actual_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "correct_pass": {
+        "numerator": 10,
+        "denominator": 10
+      },
+      "false_pass": {
+        "numerator": 0,
+        "denominator": 17
+      },
+      "false_pass_on_defective": {
+        "numerator": 0,
+        "denominator": 11
+      },
+      "correct_changes_required": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "false_block": {
+        "numerator": 0,
+        "denominator": 10
+      },
+      "correct_incomplete": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "abstentions_by_expected": {
+        "PASS": 0,
+        "CHANGES_REQUIRED": 0,
+        "INCOMPLETE": 6
+      },
+      "overall_correct": {
+        "numerator": 27,
+        "denominator": 27
+      }
+    },
+    "finding_quality": {
+      "findings_total": 33,
+      "defective_cases": 11,
+      "correct_defect_identification": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "correct_rule_reference": {
+        "numerator": 18,
+        "denominator": 18
+      },
+      "correct_artifact": {
+        "numerator": 18,
+        "denominator": 18
+      },
+      "correct_artifact_version": {
+        "numerator": 18,
+        "denominator": 18
+      },
+      "evidence_location": {
+        "numerator": 18,
+        "denominator": 18
+      },
+      "structured_evidence": {
+        "numerator": 18,
+        "denominator": 18
+      },
+      "valid_evidence": {
+        "numerator": 37,
+        "denominator": 37
+      },
+      "message_witness": {
+        "numerator": 16,
+        "denominator": 18
+      },
+      "valid_counterexamples": {
+        "numerator": 78,
+        "denominator": 78
+      },
+      "blocker_severity_on_defects": {
+        "numerator": 17,
+        "denominator": 18
+      },
+      "unsupported_findings": 3,
+      "duplicate_findings": 0
+    },
+    "coverage": {
+      "total_effective_requirements": 109,
+      "fully_reviewed": 96,
+      "partially_reviewed": 13,
+      "unreviewed": 13,
+      "unsupported_expressions": 3,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "specification_coverage": {
+        "numerator": 102,
+        "denominator": 109
+      },
+      "workflow_coverage": {
+        "numerator": 106,
+        "denominator": 109
+      },
+      "code_coverage": {
+        "numerator": 20,
+        "denominator": 24
+      },
+      "evidence_completeness": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "comparison_modes": {
+        "exhaustive": 63
+      }
+    },
+    "resources": {
+      "total_runtime_seconds": 30.212,
+      "mean_runtime_seconds": 1.119,
+      "bundle_count": 27,
+      "input_bytes": 138956,
+      "counterexample_combinations": 24600,
+      "model_requests": 0,
+      "model_successes": 0,
+      "model_failures": 0,
+      "model_retries": 0,
+      "fake_client_calls": 0,
+      "real_model_calls": 0
+    },
+    "cases": [
+      {
+        "bundle_id": "B01_starter",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.808,
+        "input_bytes": 4594,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B03_approved_change",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.824,
+        "input_bytes": 5625,
+        "cells_checked": 1200,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B05_unapproved_change",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.815,
+        "input_bytes": 5274,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B06_conflicting_approvals",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.818,
+        "input_bytes": 5979,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B07_approved_threshold_25",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.925,
+        "input_bytes": 5642,
+        "cells_checked": 1200,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B08_unapproved_threshold_25",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.101,
+        "input_bytes": 5291,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B09_conflicting_threshold_25",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 1.217,
+        "input_bytes": 5993,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B10_router_clean",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.243,
+        "input_bytes": 5466,
+        "cells_checked": 1440,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B11_router_precedence",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.179,
+        "input_bytes": 5471,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B12_router_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.687,
+        "input_bytes": 5469,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B13_router_runtime",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.74,
+        "input_bytes": 5543,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B14_router_unsupported",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.287,
+        "input_bytes": 5562,
+        "cells_checked": 1440,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E01_valid_approved_25",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.187,
+        "input_bytes": 5638,
+        "cells_checked": 1200,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E02_missing_branch",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.997,
+        "input_bytes": 4048,
+        "cells_checked": 720,
+        "findings": 5,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E03_wrong_destination",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.13,
+        "input_bytes": 4600,
+        "cells_checked": 720,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E04_interacting_exceptions",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.187,
+        "input_bytes": 5069,
+        "cells_checked": 720,
+        "findings": 4,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E05_unsupported_language",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 1.07,
+        "input_bytes": 4672,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E06_unsupported_python",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 1.178,
+        "input_bytes": 5508,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E07_missing_evidence",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 1.176,
+        "input_bytes": 4603,
+        "cells_checked": 360,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 1
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E08_unusual_formulation",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.509,
+        "input_bytes": 4609,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E09_reordered_records",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.485,
+        "input_bytes": 4604,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E10_paraphrased_wording",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.031,
+        "input_bytes": 4615,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H01_clean",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.011,
+        "input_bytes": 4592,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H02_renamed",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.874,
+        "input_bytes": 4634,
+        "cells_checked": 720,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H03_spec_reordered",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.832,
+        "input_bytes": 4601,
+        "cells_checked": 720,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H04_approved_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.926,
+        "input_bytes": 5628,
+        "cells_checked": 1200,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H05_tampered_approval",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.974,
+        "input_bytes": 5626,
+        "cells_checked": 720,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 2
+        },
+        "error": null
+      }
+    ]
+  },
+  "remediation_dev": {
+    "header": {
+      "report": "remediation_dev",
+      "generated_at": "2026-11-18T10:05:36+00:00",
+      "code_revision": "37766b793506c81e387c4f3977b9756e254490cc",
+      "baseline_revision": null,
+      "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+      "dataset_manifest_sha256": "cfd9516c31d2d2abfbc32b4f8ad3879c340fb58b85157561705153a968b8d792",
+      "bundle_count": 22,
+      "model_execution_mode": "off (deterministic; no model requests)",
+      "unsupported_scope": [
+        "real-model semantic performance is not measured by this report",
+        "sealed holdout cases are not executed or referenced by this report"
+      ]
+    },
+    "decision": {
+      "total_cases": 22,
+      "expected_counts": {
+        "PASS": 6,
+        "CHANGES_REQUIRED": 12,
+        "INCOMPLETE": 4
+      },
+      "actual_counts": {
+        "PASS": 6,
+        "CHANGES_REQUIRED": 12,
+        "INCOMPLETE": 4
+      },
+      "correct_pass": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "false_pass": {
+        "numerator": 0,
+        "denominator": 16
+      },
+      "false_pass_on_defective": {
+        "numerator": 0,
+        "denominator": 12
+      },
+      "correct_changes_required": {
+        "numerator": 12,
+        "denominator": 12
+      },
+      "false_block": {
+        "numerator": 0,
+        "denominator": 6
+      },
+      "correct_incomplete": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "abstentions_by_expected": {
+        "PASS": 0,
+        "CHANGES_REQUIRED": 0,
+        "INCOMPLETE": 4
+      },
+      "overall_correct": {
+        "numerator": 22,
+        "denominator": 22
+      }
+    },
+    "finding_quality": {
+      "findings_total": 36,
+      "defective_cases": 12,
+      "correct_defect_identification": {
+        "numerator": 12,
+        "denominator": 12
+      },
+      "correct_rule_reference": {
+        "numerator": 24,
+        "denominator": 24
+      },
+      "correct_artifact": {
+        "numerator": 24,
+        "denominator": 24
+      },
+      "correct_artifact_version": {
+        "numerator": 24,
+        "denominator": 24
+      },
+      "evidence_location": {
+        "numerator": 24,
+        "denominator": 24
+      },
+      "structured_evidence": {
+        "numerator": 24,
+        "denominator": 24
+      },
+      "valid_evidence": {
+        "numerator": 53,
+        "denominator": 53
+      },
+      "message_witness": {
+        "numerator": 22,
+        "denominator": 24
+      },
+      "valid_counterexamples": {
+        "numerator": 108,
+        "denominator": 108
+      },
+      "blocker_severity_on_defects": {
+        "numerator": 16,
+        "denominator": 24
+      },
+      "unsupported_findings": 0,
+      "duplicate_findings": 0
+    },
+    "coverage": {
+      "total_effective_requirements": 90,
+      "fully_reviewed": 74,
+      "partially_reviewed": 16,
+      "unreviewed": 16,
+      "unsupported_expressions": 0,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 90,
+        "denominator": 90
+      },
+      "specification_coverage": {
+        "numerator": 89,
+        "denominator": 90
+      },
+      "workflow_coverage": {
+        "numerator": 89,
+        "denominator": 90
+      },
+      "code_coverage": {
+        "numerator": 84,
+        "denominator": 90
+      },
+      "evidence_completeness": {
+        "numerator": 90,
+        "denominator": 90
+      },
+      "comparison_modes": {
+        "exhaustive": 88
+      }
+    },
+    "resources": {
+      "total_runtime_seconds": 22.103,
+      "mean_runtime_seconds": 1.005,
+      "bundle_count": 22,
+      "input_bytes": 136795,
+      "counterexample_combinations": 39840,
+      "model_requests": 0,
+      "model_successes": 0,
+      "model_failures": 0,
+      "model_retries": 0,
+      "fake_client_calls": 0,
+      "real_model_calls": 0
+    },
+    "cases": [
+      {
+        "bundle_id": "A_original_30",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.039,
+        "input_bytes": 5455,
+        "cells_checked": 1440,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "B_approved_25_impl_25",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.105,
+        "input_bytes": 6472,
+        "cells_checked": 2400,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "C_approved_25_impl_30",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.025,
+        "input_bytes": 6472,
+        "cells_checked": 2400,
+        "findings": 3,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "D_unapproved_25_impl_30",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.981,
+        "input_bytes": 6121,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "E_wrong_revision_binding",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.942,
+        "input_bytes": 6475,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "F_wrong_operator",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.898,
+        "input_bytes": 5457,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "G_unit_conversion",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.15,
+        "input_bytes": 6470,
+        "cells_checked": 2400,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "H_sequential_changes",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 1.126,
+        "input_bytes": 7245,
+        "cells_checked": 2400,
+        "findings": 0,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "I_conflicting_disputed_impl",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 1.033,
+        "input_bytes": 6828,
+        "cells_checked": 2400,
+        "findings": 4,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "J_conflict_plus_independent_defect",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.121,
+        "input_bytes": 6835,
+        "cells_checked": 2400,
+        "findings": 5,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "K_multiple_conflicts",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.974,
+        "input_bytes": 7932,
+        "cells_checked": 1440,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "L_valid_supersession",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "correct": true,
+        "runtime_seconds": 0.905,
+        "input_bytes": 6841,
+        "cells_checked": 1440,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "M_invalid_approval_hash",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "correct": true,
+        "runtime_seconds": 0.927,
+        "input_bytes": 6474,
+        "cells_checked": 1440,
+        "findings": 2,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "N_conflict_plus_runtime_error",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.017,
+        "input_bytes": 6807,
+        "cells_checked": 2400,
+        "findings": 5,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S1_integer_boundary",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.969,
+        "input_bytes": 5460,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S2_decimal_boundary",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.036,
+        "input_bytes": 5481,
+        "cells_checked": 2400,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S3_continuous_boundary",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.999,
+        "input_bytes": 5463,
+        "cells_checked": 960,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S4_missing_value_precedence",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.93,
+        "input_bytes": 5469,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S5_exception_overlap",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.98,
+        "input_bytes": 6558,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S6_wrong_destination",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.015,
+        "input_bytes": 5499,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S7_runtime_error",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 0.925,
+        "input_bytes": 5435,
+        "cells_checked": 1440,
+        "findings": 1,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      },
+      {
+        "bundle_id": "S8_overlapping_numeric_rules",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "correct": true,
+        "runtime_seconds": 1.005,
+        "input_bytes": 5546,
+        "cells_checked": 2400,
+        "findings": 3,
+        "comparison_modes": {
+          "exhaustive": 4
+        },
+        "error": null
+      }
+    ]
+  },
+  "remediation_finding_quality": {
+    "confirmed_findings": 16,
+    "disclosed_gap_findings": 16,
+    "info_findings": 4,
+    "structured_location": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "validated_source_evidence": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "validated_implementation_evidence": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "corrections": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "message_witness": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "valid_counterexamples": {
+      "numerator": 108,
+      "denominator": 108
+    },
+    "duplicate_findings": 0,
+    "unsupported_findings": 0,
+    "false_blockers_on_expected_pass_cases": {
+      "numerator": 0,
+      "denominator": 6
+    }
+  },
+  "comparison": {
+    "stage4_dev_decision_correct": {
+      "numerator": 27,
+      "denominator": 27
+    },
+    "remediation_dev_decision_correct": {
+      "numerator": 22,
+      "denominator": 22
+    },
+    "stage4_dev_structured_evidence": {
+      "numerator": 18,
+      "denominator": 18
+    },
+    "remediation_dev_structured_evidence": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "stage4_dev_valid_counterexamples": {
+      "numerator": 78,
+      "denominator": 78
+    },
+    "remediation_dev_valid_counterexamples": {
+      "numerator": 108,
+      "denominator": 108
+    },
+    "evidence_coverage": {
+      "decisions": {
+        "retained": {
+          "numerator": 27,
+          "denominator": 27
+        },
+        "stage4_dev": {
+          "numerator": 27,
+          "denominator": 27
+        },
+        "remediation_dev": {
+          "numerator": 22,
+          "denominator": 22
+        }
+      },
+      "false_block": {
+        "retained": {
+          "numerator": 0,
+          "denominator": 10
+        },
+        "stage4_dev": {
+          "numerator": 0,
+          "denominator": 10
+        },
+        "remediation_dev": {
+          "numerator": 0,
+          "denominator": 6
+        }
+      },
+      "denominator_note": "Retained counting scores one identifying finding per defective case; post-remediation runs score every BLOCKER after duplicate merging, so denominators differ where duplicate omission findings were merged",
+      "retained_stage4": {
+        "decisions_correct": "27/27",
+        "findings_total": 38,
+        "blockers": "27 of 38 findings",
+        "structured_locations": "0/21",
+        "structured_evidence": "0/21",
+        "validated_source_evidence": "not measured (no evidence items)",
+        "validated_implementation_evidence": "not measured (no evidence items)",
+        "recommended_corrections": "not measured (field absent)",
+        "message_witness": "16/21",
+        "valid_counterexamples": "78/78",
+        "duplicate_findings": 0,
+        "unsupported_findings": 3
+      },
+      "stage4_dev_rerun": {
+        "confirmed_findings": 22,
+        "structured_locations": "22/22",
+        "validated_source_evidence": "22/22",
+        "validated_implementation_evidence": "22/22",
+        "recommended_corrections": "22/22",
+        "message_witness": "21/22",
+        "valid_counterexamples": "78/78",
+        "duplicate_findings": 0,
+        "unsupported_findings": 3,
+        "false_blockers_on_expected_pass_cases": "0/10"
+      },
+      "remediation_dev": {
+        "confirmed_findings": 16,
+        "structured_locations": "16/16",
+        "validated_source_evidence": "16/16",
+        "validated_implementation_evidence": "16/16",
+        "recommended_corrections": "16/16",
+        "message_witness": "16/16",
+        "valid_counterexamples": "108/108",
+        "duplicate_findings": 0,
+        "unsupported_findings": 0,
+        "false_blockers_on_expected_pass_cases": "0/6"
+      }
+    },
+    "note": "Stage 4 development results are retained and re-executed only to measure the same development set; remediation development results are not unseen-test accuracy"
+  }
+}

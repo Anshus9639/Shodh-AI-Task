@@ -1,0 +1,1330 @@
+{
+  "header": {
+    "report": "remediation_baseline",
+    "generated_at": "2026-11-18T10:05:36+00:00",
+    "source": "reports/final/findings.json",
+    "retained_code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "retained_unchanged": true,
+    "reports_sha256": {
+      "REPORT.md": "3988621ce1acb72f2268962a877317ee7e489b3f2b24080a0d100d1ed4f402f8",
+      "counterexamples.json": "de78cf6a9140340faa274c095351069b3fa62f02b3eb9192ce613aa276547860",
+      "coverage.json": "4f5ca124c6f1732d733dc1dc3a0e7b4f5f1e21dd86dce58bc4e915ce82b0f071",
+      "findings.json": "c77501d8e00822ff30a3971f1b499ba92327466305d356373317cbae1e3cc4f6",
+      "metrics.json": "5501596b6736a5e00914b1cb040c188b47072eb0e3a07e2f0ad139174299d8f7"
+    },
+    "method": "copied from the retained Stage 4 report; not re-executed"
+  },
+  "stage4_dev": {
+    "header": {
+      "report": "final",
+      "generated_at": "2026-11-18T00:58:16+00:00",
+      "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+      "baseline_revision": null,
+      "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+      "dataset_manifest_sha256": "962f092db97baeb33c953a04634f0cd1a6ba07a0388e952db833cb919e4888c7",
+      "bundle_count": 27,
+      "model_execution_mode": "off (deterministic; no model requests)",
+      "unsupported_scope": [
+        "real-model semantic performance is not measured by this report",
+        "sealed holdout labels are excluded from reviewer input"
+      ]
+    },
+    "cases": [
+      {
+        "bundle_id": "B01_starter",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "B03_approved_change",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "THRESHOLD_CHANGED"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-THRESHOLD_CHANGED-1cc93bf8",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "rule_ref": "R3",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=20 the effective requirements route to 'escalation_queue' via R3, but the specification routes to destination 'normal_queue' via SPEC:default",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-THRESHOLD_CHANGED-92a1be74",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "rule_ref": "R3",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=20 the effective requirements route to 'escalation_queue' via R3, but the workflow ends at destination 'normal_queue' via normal",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 6,
+        "counterexamples_valid": 6,
+        "error": null
+      },
+      {
+        "bundle_id": "B05_unapproved_change",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [
+          {
+            "finding_id": "F-UNAPPROVED_CHANGE-f1583941",
+            "severity": "INFO",
+            "category": "UNAPPROVED_CHANGE",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "message": "change C1@1: no active, hash-bound approval record for this change version",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "B06_conflicting_approvals",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "expected_defect_classes": [
+          "UNDETERMINED_CONFLICT"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-UNDETERMINED_CONFLICT-79b0ad76",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "message": "change C1@1: active approval records disagree (approve and reject)",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "B07_approved_threshold_25",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "THRESHOLD_CHANGED"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-THRESHOLD_CHANGED-084a1545",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "rule_ref": "R3",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'escalation_queue' via R3, but the specification routes to destination 'normal_queue' via SPEC:default",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-THRESHOLD_CHANGED-2d28e28f",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "rule_ref": "R3",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'escalation_queue' via R3, but the workflow ends at destination 'normal_queue' via normal",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 6,
+        "counterexamples_valid": 6,
+        "error": null
+      },
+      {
+        "bundle_id": "B08_unapproved_threshold_25",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [
+          {
+            "finding_id": "F-UNAPPROVED_CHANGE-f1583941",
+            "severity": "INFO",
+            "category": "UNAPPROVED_CHANGE",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "message": "change C1@1: no active, hash-bound approval record for this change version",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "B09_conflicting_threshold_25",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "expected_defect_classes": [
+          "UNDETERMINED_CONFLICT"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-UNDETERMINED_CONFLICT-79b0ad76",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "message": "change C1@1: active approval records disagree (approve and reject)",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "B10_router_clean",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "B11_router_precedence",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "PRECEDENCE"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-PRECEDENCE-ee0cb386",
+            "severity": "BLOCKER",
+            "category": "PRECEDENCE",
+            "rule_ref": "R1",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "message": "at category=<absent>, priority='urgent', vip=true, wait_time=28 the effective requirements route to 'manual_review' via R1, but the linked router (router.py) yields destination 'priority_queue' (destination)",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 6,
+        "counterexamples_valid": 6,
+        "error": null
+      },
+      {
+        "bundle_id": "B12_router_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "THRESHOLD_CHANGED"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-THRESHOLD_CHANGED-318424e9",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=30 the effective requirements route to 'escalation_queue' via R3, but the linked router (router.py) yields destination 'normal_queue' (destination)",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 6,
+        "counterexamples_valid": 6,
+        "error": null
+      },
+      {
+        "bundle_id": "B13_router_runtime",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "RUNTIME_ERROR"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-RUNTIME_ERROR-469599d0",
+            "severity": "BLOCKER",
+            "category": "RUNTIME_ERROR",
+            "rule_ref": "R1",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "message": "the linked router cannot route category=<absent>, priority='__other__', vip=<absent>, wait_time=28: KeyError: 'vip'",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 6,
+        "counterexamples_valid": 6,
+        "error": null
+      },
+      {
+        "bundle_id": "B14_router_unsupported",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "SCRIPT_DISAGREEMENT",
+          "THRESHOLD_CHANGED",
+          "UNSUPPORTED_CODE"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-UNSUPPORTED_CODE-74383aec",
+            "severity": "COVERAGE_GAP",
+            "category": "UNSUPPORTED_CODE",
+            "rule_ref": "R4",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "message": "the linked router could not be interpreted for 36 evaluated ticket combination(s): router returned undeclared destination 'legacy'",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          },
+          {
+            "finding_id": "F-SCRIPT_DISAGREEMENT-bfd0e746",
+            "severity": "BLOCKER",
+            "category": "SCRIPT_DISAGREEMENT",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=30 the effective requirements route to 'escalation_queue' via R3, but the linked router (router.py) yields destination 'normal_queue' (destination)",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 9,
+        "counterexamples_valid": 9,
+        "error": null
+      },
+      {
+        "bundle_id": "E01_valid_approved_25",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "E02_missing_branch",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "MISSING_BRANCH",
+          "MISSING_REQUIREMENT"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-MISSING_BRANCH-8a7719ed",
+            "severity": "BLOCKER",
+            "category": "MISSING_BRANCH",
+            "rule_ref": "R2",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=28 the effective requirements route to 'priority_queue' via R2, but the specification routes to destination 'normal_queue' via SPEC:default",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-STRUCTURAL-8d10fd4d",
+            "severity": "BLOCKER",
+            "category": "STRUCTURAL",
+            "rule_ref": "R2",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=30 the effective requirements route to 'priority_queue' via R2, but the specification routes to destination 'escalation_queue' via S3",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_REQUIREMENT-de96406b",
+            "severity": "BLOCKER",
+            "category": "MISSING_REQUIREMENT",
+            "rule_ref": "R2",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "effective requirement 'R2' (destination 'priority_queue') has no semantically agreeing spec entry in any evaluated ticket; rule IDs are not used for this comparison",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-WRONG_DESTINATION-dda0e428",
+            "severity": "BLOCKER",
+            "category": "WRONG_DESTINATION",
+            "rule_ref": "R2",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=28 the effective requirements route to 'priority_queue' via R2, but the workflow ends at destination 'normal_queue' via normal",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-WRONG_DESTINATION-6b8b2b22",
+            "severity": "BLOCKER",
+            "category": "WRONG_DESTINATION",
+            "rule_ref": "R2",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=30 the effective requirements route to 'priority_queue' via R2, but the workflow ends at destination 'escalation_queue' via escalation",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_REQUIREMENT-6ac8aab0",
+            "severity": "BLOCKER",
+            "category": "MISSING_REQUIREMENT",
+            "rule_ref": "R2",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "effective requirement 'R2' (destination 'priority_queue') is never reached with an agreeing workflow destination in any evaluated ticket",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 12,
+        "counterexamples_valid": 12,
+        "error": null
+      },
+      {
+        "bundle_id": "E03_wrong_destination",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "WRONG_DESTINATION"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-WRONG_DESTINATION-5242b3d4",
+            "severity": "BLOCKER",
+            "category": "WRONG_DESTINATION",
+            "rule_ref": "R2",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=28 the effective requirements route to 'priority_queue' via R2, but the specification routes to destination 'normal_queue' via S2",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_REQUIREMENT-de96406b",
+            "severity": "BLOCKER",
+            "category": "MISSING_REQUIREMENT",
+            "rule_ref": "R2",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "effective requirement 'R2' (destination 'priority_queue') has no semantically agreeing spec entry in any evaluated ticket; rule IDs are not used for this comparison",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-WRONG_DESTINATION-07d9b5b0",
+            "severity": "BLOCKER",
+            "category": "WRONG_DESTINATION",
+            "rule_ref": "R2",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=28 the effective requirements route to 'priority_queue' via R2, but the workflow ends at destination 'normal_queue' via priority",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_REQUIREMENT-6ac8aab0",
+            "severity": "BLOCKER",
+            "category": "MISSING_REQUIREMENT",
+            "rule_ref": "R2",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "effective requirement 'R2' (destination 'priority_queue') is never reached with an agreeing workflow destination in any evaluated ticket",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 6,
+        "counterexamples_valid": 6,
+        "error": null
+      },
+      {
+        "bundle_id": "E04_interacting_exceptions",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "MISSING_EXCEPTION"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-STRUCTURAL-0dc2a13c",
+            "severity": "BLOCKER",
+            "category": "STRUCTURAL",
+            "rule_ref": "R4",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=28 the effective requirements route to 'normal_queue' via R4, but the specification routes to destination 'priority_queue' via S4",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_EXCEPTION-3e996441",
+            "severity": "BLOCKER",
+            "category": "MISSING_EXCEPTION",
+            "rule_ref": "R3.exception",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=30 the effective requirements route to 'priority_queue' via R3.exception, but the specification routes to destination 'escalation_queue' via S3",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_EXCEPTION-5cba5451",
+            "severity": "BLOCKER",
+            "category": "MISSING_EXCEPTION",
+            "rule_ref": "R3.exception",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "effective requirement 'R3.exception' (destination 'priority_queue') has no semantically agreeing spec entry in any evaluated ticket; rule IDs are not used for this comparison",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-WRONG_DESTINATION-5867cc94",
+            "severity": "BLOCKER",
+            "category": "WRONG_DESTINATION",
+            "rule_ref": "R4",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=28 the effective requirements route to 'normal_queue' via R4, but the workflow ends at destination 'priority_queue' via priority",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_EXCEPTION-74cbe44d",
+            "severity": "BLOCKER",
+            "category": "MISSING_EXCEPTION",
+            "rule_ref": "R3.exception",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=30 the effective requirements route to 'priority_queue' via R3.exception, but the workflow ends at destination 'escalation_queue' via escalation",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-MISSING_EXCEPTION-d0015c4b",
+            "severity": "BLOCKER",
+            "category": "MISSING_EXCEPTION",
+            "rule_ref": "R3.exception",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "effective requirement 'R3.exception' (destination 'priority_queue') is never reached with an agreeing workflow destination in any evaluated ticket",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 12,
+        "counterexamples_valid": 12,
+        "error": null
+      },
+      {
+        "bundle_id": "E05_unsupported_language",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "expected_defect_classes": [
+          "UNSUPPORTED_LANGUAGE"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-UNSUPPORTED_LANGUAGE-76565e70",
+            "severity": "COVERAGE_GAP",
+            "category": "UNSUPPORTED_LANGUAGE",
+            "rule_ref": null,
+            "artifact_id": "REQ",
+            "artifact_version": "1.0",
+            "message": "normative-looking prose is outside the supported rule grammar",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 5,
+              "line_end": 5,
+              "col_start": null,
+              "col_end": null,
+              "excerpt": "Refunds must be routed to the finance team by a senior reviewer."
+            },
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": false,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": true,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "E06_unsupported_python",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "expected_defect_classes": [
+          "UNSUPPORTED_CODE"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-UNSUPPORTED_CODE-8725999d",
+            "severity": "COVERAGE_GAP",
+            "category": "UNSUPPORTED_CODE",
+            "rule_ref": null,
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "message": "router artifact ROUTER@1.0 cannot be reviewed: statement For is not supported",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": false,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "E07_missing_evidence",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "expected_defect_classes": [
+          "PROVENANCE_FAILURE"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-PROVENANCE_FAILURE-83dde695",
+            "severity": "COVERAGE_GAP",
+            "category": "PROVENANCE_FAILURE",
+            "rule_ref": null,
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "sha256 mismatch: manifest declares 0000000000000000000000000000000000000000000000000000000000000000, file has 39922aa90772623f7134d35f66e5a811457fd3a74b750d05356765f7f0e05499",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": false,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          },
+          {
+            "finding_id": "F-PROVENANCE_FAILURE-6f21032c",
+            "severity": "COVERAGE_GAP",
+            "category": "PROVENANCE_FAILURE",
+            "rule_ref": null,
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "specification artifact SPEC@1.0 was not loaded",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": false,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "E08_unusual_formulation",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "E09_reordered_records",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "E10_paraphrased_wording",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "H01_clean",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "H02_renamed",
+        "expected_status": "PASS",
+        "actual_status": "PASS",
+        "expected_defect_classes": [],
+        "findings": [],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      },
+      {
+        "bundle_id": "H03_spec_reordered",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "PRECEDENCE"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-PRECEDENCE-b812f026",
+            "severity": "BLOCKER",
+            "category": "PRECEDENCE",
+            "rule_ref": "R1",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category=<absent>, priority='urgent', vip=true, wait_time=28 the effective requirements route to 'manual_review' via R1, but the specification routes to destination 'priority_queue' via S2",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 3,
+        "counterexamples_valid": 3,
+        "error": null
+      },
+      {
+        "bundle_id": "H04_approved_threshold",
+        "expected_status": "CHANGES_REQUIRED",
+        "actual_status": "CHANGES_REQUIRED",
+        "expected_defect_classes": [
+          "THRESHOLD_CHANGED"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-THRESHOLD_CHANGED-1cc93bf8",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "rule_ref": "R3",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=20 the effective requirements route to 'escalation_queue' via R3, but the specification routes to destination 'normal_queue' via SPEC:default",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          },
+          {
+            "finding_id": "F-THRESHOLD_CHANGED-92a1be74",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "rule_ref": "R3",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=20 the effective requirements route to 'escalation_queue' via R3, but the workflow ends at destination 'normal_queue' via normal",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": true,
+              "severity_is_blocker": true
+            }
+          }
+        ],
+        "counterexamples_total": 6,
+        "counterexamples_valid": 6,
+        "error": null
+      },
+      {
+        "bundle_id": "H05_tampered_approval",
+        "expected_status": "INCOMPLETE",
+        "actual_status": "INCOMPLETE",
+        "expected_defect_classes": [
+          "INVALID_APPROVAL"
+        ],
+        "findings": [
+          {
+            "finding_id": "F-INVALID_APPROVAL-e5a305db",
+            "severity": "COVERAGE_GAP",
+            "category": "INVALID_APPROVAL",
+            "rule_ref": "R3",
+            "artifact_id": "bundle.json",
+            "artifact_version": "1.0",
+            "message": "approval 'A5' is bound to a different content hash; the change C1@1 is treated as unapproved",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": true,
+              "rule_reference_valid": true,
+              "artifact_exists": false,
+              "artifact_version_matches": false,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          },
+          {
+            "finding_id": "F-UNAPPROVED_CHANGE-f1583941",
+            "severity": "INFO",
+            "category": "UNAPPROVED_CHANGE",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "message": "change C1@1: no active, hash-bound approval record for this change version",
+            "location": null,
+            "evidence_count": 0,
+            "assessment": {
+              "matches_expected_class": false,
+              "rule_reference_valid": true,
+              "artifact_exists": true,
+              "artifact_version_matches": true,
+              "location_resolves": false,
+              "has_structured_evidence": false,
+              "evidence_items_valid": 0,
+              "message_has_witness": false,
+              "severity_is_blocker": false
+            }
+          }
+        ],
+        "counterexamples_total": 0,
+        "counterexamples_valid": 0,
+        "error": null
+      }
+    ]
+  },
+  "stage4_metrics": {
+    "decision": {
+      "total_cases": 27,
+      "expected_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "actual_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "correct_pass": {
+        "numerator": 10,
+        "denominator": 10
+      },
+      "false_pass": {
+        "numerator": 0,
+        "denominator": 17
+      },
+      "false_pass_on_defective": {
+        "numerator": 0,
+        "denominator": 11
+      },
+      "correct_changes_required": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "false_block": {
+        "numerator": 0,
+        "denominator": 10
+      },
+      "correct_incomplete": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "abstentions_by_expected": {
+        "PASS": 0,
+        "CHANGES_REQUIRED": 0,
+        "INCOMPLETE": 6
+      },
+      "overall_correct": {
+        "numerator": 27,
+        "denominator": 27
+      }
+    },
+    "finding_quality": {
+      "findings_total": 38,
+      "defective_cases": 11,
+      "correct_defect_identification": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "correct_rule_reference": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact_version": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "evidence_location": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "structured_evidence": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "valid_evidence": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "message_witness": {
+        "numerator": 16,
+        "denominator": 21
+      },
+      "valid_counterexamples": {
+        "numerator": 78,
+        "denominator": 78
+      },
+      "blocker_severity_on_defects": {
+        "numerator": 20,
+        "denominator": 21
+      },
+      "unsupported_findings": 3,
+      "duplicate_findings": 0
+    },
+    "coverage": {
+      "total_effective_requirements": 109,
+      "fully_reviewed": 96,
+      "partially_reviewed": 13,
+      "unreviewed": 13,
+      "unsupported_expressions": 3,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "specification_coverage": {
+        "numerator": 102,
+        "denominator": 109
+      },
+      "workflow_coverage": {
+        "numerator": 106,
+        "denominator": 109
+      },
+      "code_coverage": {
+        "numerator": 20,
+        "denominator": 24
+      },
+      "evidence_completeness": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "comparison_modes": {
+        "exhaustive": 63
+      }
+    }
+  }
+}

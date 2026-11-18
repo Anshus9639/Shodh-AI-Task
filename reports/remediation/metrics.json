@@ -1,0 +1,380 @@
+{
+  "header": {
+    "report": "remediation_dev",
+    "generated_at": "2026-11-18T10:05:36+00:00",
+    "code_revision": "37766b793506c81e387c4f3977b9756e254490cc",
+    "baseline_revision": null,
+    "config_sha256": "6e3170f2c12de08a541ac9b447481ed072e12bc1eda5a49e50cb74d813acfd61",
+    "dataset_manifest_sha256": "cfd9516c31d2d2abfbc32b4f8ad3879c340fb58b85157561705153a968b8d792",
+    "bundle_count": 22,
+    "model_execution_mode": "off (deterministic; no model requests)",
+    "unsupported_scope": [
+      "real-model semantic performance is not measured by this report",
+      "sealed holdout cases are not executed or referenced by this report"
+    ]
+  },
+  "decision": {
+    "total_cases": 22,
+    "expected_counts": {
+      "PASS": 6,
+      "CHANGES_REQUIRED": 12,
+      "INCOMPLETE": 4
+    },
+    "actual_counts": {
+      "PASS": 6,
+      "CHANGES_REQUIRED": 12,
+      "INCOMPLETE": 4
+    },
+    "correct_pass": {
+      "numerator": 6,
+      "denominator": 6
+    },
+    "false_pass": {
+      "numerator": 0,
+      "denominator": 16
+    },
+    "false_pass_on_defective": {
+      "numerator": 0,
+      "denominator": 12
+    },
+    "correct_changes_required": {
+      "numerator": 12,
+      "denominator": 12
+    },
+    "false_block": {
+      "numerator": 0,
+      "denominator": 6
+    },
+    "correct_incomplete": {
+      "numerator": 4,
+      "denominator": 4
+    },
+    "abstentions_by_expected": {
+      "PASS": 0,
+      "CHANGES_REQUIRED": 0,
+      "INCOMPLETE": 4
+    },
+    "overall_correct": {
+      "numerator": 22,
+      "denominator": 22
+    }
+  },
+  "finding_quality": {
+    "confirmed_findings": 16,
+    "disclosed_gap_findings": 16,
+    "info_findings": 4,
+    "structured_location": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "validated_source_evidence": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "validated_implementation_evidence": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "corrections": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "message_witness": {
+      "numerator": 16,
+      "denominator": 16
+    },
+    "valid_counterexamples": {
+      "numerator": 108,
+      "denominator": 108
+    },
+    "duplicate_findings": 0,
+    "unsupported_findings": 0,
+    "false_blockers_on_expected_pass_cases": {
+      "numerator": 0,
+      "denominator": 6
+    }
+  },
+  "harness_finding_metrics": {
+    "findings_total": 36,
+    "defective_cases": 12,
+    "correct_defect_identification": {
+      "numerator": 12,
+      "denominator": 12
+    },
+    "correct_rule_reference": {
+      "numerator": 24,
+      "denominator": 24
+    },
+    "correct_artifact": {
+      "numerator": 24,
+      "denominator": 24
+    },
+    "correct_artifact_version": {
+      "numerator": 24,
+      "denominator": 24
+    },
+    "evidence_location": {
+      "numerator": 24,
+      "denominator": 24
+    },
+    "structured_evidence": {
+      "numerator": 24,
+      "denominator": 24
+    },
+    "valid_evidence": {
+      "numerator": 53,
+      "denominator": 53
+    },
+    "message_witness": {
+      "numerator": 22,
+      "denominator": 24
+    },
+    "valid_counterexamples": {
+      "numerator": 108,
+      "denominator": 108
+    },
+    "blocker_severity_on_defects": {
+      "numerator": 16,
+      "denominator": 24
+    },
+    "unsupported_findings": 0,
+    "duplicate_findings": 0
+  },
+  "coverage": {
+    "total_effective_requirements": 90,
+    "fully_reviewed": 74,
+    "partially_reviewed": 16,
+    "unreviewed": 16,
+    "unsupported_expressions": 0,
+    "missing_evidence": 0,
+    "source_coverage": {
+      "numerator": 90,
+      "denominator": 90
+    },
+    "specification_coverage": {
+      "numerator": 89,
+      "denominator": 90
+    },
+    "workflow_coverage": {
+      "numerator": 89,
+      "denominator": 90
+    },
+    "code_coverage": {
+      "numerator": 84,
+      "denominator": 90
+    },
+    "evidence_completeness": {
+      "numerator": 90,
+      "denominator": 90
+    },
+    "comparison_modes": {
+      "exhaustive": 88
+    }
+  },
+  "resources": {
+    "total_runtime_seconds": 22.103,
+    "mean_runtime_seconds": 1.005,
+    "bundle_count": 22,
+    "input_bytes": 136795,
+    "counterexample_combinations": 39840,
+    "model_requests": 0,
+    "model_successes": 0,
+    "model_failures": 0,
+    "model_retries": 0,
+    "fake_client_calls": 0,
+    "real_model_calls": 0
+  },
+  "approval_resolution": {
+    "cases": 14,
+    "status_correct": {
+      "numerator": 14,
+      "denominator": 14
+    },
+    "applied_changes_correct": {
+      "numerator": 8,
+      "denominator": 8
+    },
+    "conflict_handling_correct": {
+      "numerator": 4,
+      "denominator": 4
+    }
+  },
+  "conflict_handling": {
+    "numerator": 4,
+    "denominator": 4
+  },
+  "semantic_counterexamples": {
+    "cases": 8,
+    "primary_correct": {
+      "numerator": 8,
+      "denominator": 8
+    },
+    "specific_diagnosis": {
+      "numerator": 8,
+      "denominator": 8
+    },
+    "validated_counterexamples": {
+      "numerator": 51,
+      "denominator": 51
+    },
+    "traces_present": {
+      "numerator": 8,
+      "denominator": 8
+    },
+    "evidence_on_both_sides": {
+      "numerator": 8,
+      "denominator": 8
+    }
+  },
+  "retained_stage4_baseline": {
+    "source": "reports/final/metrics.json",
+    "code_revision": "7f55c5db37b3176f590d6852210078dac56b4b03",
+    "decision": {
+      "total_cases": 27,
+      "expected_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "actual_counts": {
+        "PASS": 10,
+        "CHANGES_REQUIRED": 11,
+        "INCOMPLETE": 6
+      },
+      "correct_pass": {
+        "numerator": 10,
+        "denominator": 10
+      },
+      "false_pass": {
+        "numerator": 0,
+        "denominator": 17
+      },
+      "false_pass_on_defective": {
+        "numerator": 0,
+        "denominator": 11
+      },
+      "correct_changes_required": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "false_block": {
+        "numerator": 0,
+        "denominator": 10
+      },
+      "correct_incomplete": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "abstentions_by_expected": {
+        "PASS": 0,
+        "CHANGES_REQUIRED": 0,
+        "INCOMPLETE": 6
+      },
+      "overall_correct": {
+        "numerator": 27,
+        "denominator": 27
+      }
+    },
+    "finding_quality": {
+      "findings_total": 38,
+      "defective_cases": 11,
+      "correct_defect_identification": {
+        "numerator": 11,
+        "denominator": 11
+      },
+      "correct_rule_reference": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "correct_artifact_version": {
+        "numerator": 21,
+        "denominator": 21
+      },
+      "evidence_location": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "structured_evidence": {
+        "numerator": 0,
+        "denominator": 21
+      },
+      "valid_evidence": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "message_witness": {
+        "numerator": 16,
+        "denominator": 21
+      },
+      "valid_counterexamples": {
+        "numerator": 78,
+        "denominator": 78
+      },
+      "blocker_severity_on_defects": {
+        "numerator": 20,
+        "denominator": 21
+      },
+      "unsupported_findings": 3,
+      "duplicate_findings": 0
+    },
+    "coverage": {
+      "total_effective_requirements": 109,
+      "fully_reviewed": 96,
+      "partially_reviewed": 13,
+      "unreviewed": 13,
+      "unsupported_expressions": 3,
+      "missing_evidence": 0,
+      "source_coverage": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "specification_coverage": {
+        "numerator": 102,
+        "denominator": 109
+      },
+      "workflow_coverage": {
+        "numerator": 106,
+        "denominator": 109
+      },
+      "code_coverage": {
+        "numerator": 20,
+        "denominator": 24
+      },
+      "evidence_completeness": {
+        "numerator": 109,
+        "denominator": 109
+      },
+      "comparison_modes": {
+        "exhaustive": 63
+      }
+    },
+    "reports_sha256": {
+      "REPORT.md": "3988621ce1acb72f2268962a877317ee7e489b3f2b24080a0d100d1ed4f402f8",
+      "counterexamples.json": "de78cf6a9140340faa274c095351069b3fa62f02b3eb9192ce613aa276547860",
+      "coverage.json": "4f5ca124c6f1732d733dc1dc3a0e7b4f5f1e21dd86dce58bc4e915ce82b0f071",
+      "findings.json": "c77501d8e00822ff30a3971f1b499ba92327466305d356373317cbae1e3cc4f6",
+      "metrics.json": "5501596b6736a5e00914b1cb040c188b47072eb0e3a07e2f0ad139174299d8f7"
+    },
+    "retained_unchanged": true
+  },
+  "notes": "sealed holdouts were not executed; remediation development accuracy is not unseen-test accuracy; the original Stage 4 report remains the retained baseline",
+  "approval_tests": {
+    "cases": 14,
+    "status_correct": {
+      "numerator": 14,
+      "denominator": 14
+    },
+    "applied_changes_correct": {
+      "numerator": 8,
+      "denominator": 8
+    },
+    "conflict_handling_correct": {
+      "numerator": 4,
+      "denominator": 4
+    }
+  }
+}

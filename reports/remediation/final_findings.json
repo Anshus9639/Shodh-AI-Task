@@ -1,0 +1,3500 @@
+{
+  "header": {
+    "report": "remediation_final_findings",
+    "generated_at": "2026-11-18T10:05:36+00:00",
+    "code_revision": "37766b793506c81e387c4f3977b9756e254490cc",
+    "bundle_count": 22,
+    "schema_validation": {
+      "numerator": 41,
+      "denominator": 41
+    }
+  },
+  "schema_validation": {
+    "numerator": 41,
+    "denominator": 41
+  },
+  "cases": [
+    {
+      "bundle_id": "A_original_30",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "error": null,
+      "findings": [],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "B_approved_25_impl_25",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "error": null,
+      "findings": [],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "C_approved_25_impl_30",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-THRESHOLD_CHANGED-05aadc73",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'escalation_queue' via R3, but the specification routes to destination 'normal_queue' via SPEC:default",
+            "rule_ref": "R3",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "spec.json",
+                  "pointer": "/default",
+                  "excerpt": "{\"destination\":\"normal_queue\"}"
+                },
+                "excerpt": "{\"destination\":\"normal_queue\"}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "SPEC",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/default",
+                "path": "spec.json",
+                "source_hash": "0072a5c0dcd542f49262880e3778c8ee45c5e3216d1a81be94a987856657274b",
+                "excerpt": "{\"destination\":\"normal_queue\"}",
+                "evidence_role": "SPECIFICATION",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+            "recommendation": "Change the bound for wait_time >= 25 minutes in SPEC@1.0 so the comparison matches the effective requirement wait_time >= 25 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-THRESHOLD_CHANGED-42b287b8",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'escalation_queue' via R3, but the workflow ends at destination 'normal_queue' via normal",
+            "rule_ref": "R3",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "workflow.json",
+                  "pointer": "/nodes/0/branches/3",
+                  "excerpt": "{\"branch_id\":\"b5\",\"target\":\"normal\",\"version\":\"1.0\"}"
+                },
+                "excerpt": "{\"branch_id\":\"b5\",\"target\":\"normal\",\"version\":\"1.0\"}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "WF",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/nodes/0/branches/3",
+                "path": "workflow.json",
+                "source_hash": "7b74897b41a7320888912e8aed69f2729d4a100cfff98349e5d45b4f4fcbb920",
+                "excerpt": "{\"branch_id\":\"b5\",\"target\":\"normal\",\"version\":\"1.0\"}",
+                "evidence_role": "WORKFLOW_BRANCH",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+            "recommendation": "Change the bound for wait_time >= 25 minutes in WF@1.0 so the comparison matches the effective requirement wait_time >= 25 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-THRESHOLD_CHANGED-8281559a",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'escalation_queue' via R3, but the linked router (router.py) yields destination 'normal_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 9,
+                  "line_end": 9,
+                  "col_start": 34,
+                  "col_end": 59,
+                  "excerpt": "ticket[\"wait_time\"] >= 30"
+                },
+                "excerpt": "ticket[\"wait_time\"] >= 30"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:9-9",
+                "path": "router.py",
+                "source_hash": "83c737898231ca1eaad3dd70a51a21b42569fd70dd0f47ef1a3670c26400e6ba",
+                "excerpt": "ticket[\"wait_time\"] >= 30",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 9,
+                "line_end": 9,
+                "col_start": 34,
+                "col_end": 59
+              }
+            ],
+            "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 25 vs >= 30)",
+            "recommendation": "Change the bound for wait_time >= 25 minutes in ROUTER@1.0 so the comparison matches the effective requirement wait_time >= 25 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "D_unapproved_25_impl_30",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-UNAPPROVED_CHANGE-efb47a3b",
+            "severity": "INFO",
+            "category": "UNAPPROVED_CHANGE",
+            "source": "deterministic",
+            "message": "change C1@1: no active, hash-bound approval record for this change version",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "883c07be7b5daa1ea0fe72355e1ce0a7f4d6113ae8c432f084787a5ec49adb45",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Update CHG so that the effective requirement R3 is implemented exactly: wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "E_wrong_revision_binding",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-STALE_CHANGE-fb87303e",
+            "severity": "COVERAGE_GAP",
+            "category": "STALE_CHANGE",
+            "source": "deterministic",
+            "message": "change C1@1: change targets REQ@2.0, but the effective requirements are REQ@1.0",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"2.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"2.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"60cdc08f133334c6f9d155c218cf63e1786f290c52fee8dea9ec10eba7577ae1\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"60cdc08f133334c6f9d155c218cf63e1786f290c52fee8dea9ec10eba7577ae1\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "3a8b3ab701d0af6b8ba73feff5b7f35a7b988ede3048c841ea5e6162ca3018aa",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"2.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "03b81b51d72715bec12565c5d1d6a1e917bc099d957f0d0acb33f4096e920a6c",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"60cdc08f133334c6f9d155c218cf63e1786f290c52fee8dea9ec10eba7577ae1\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Update CHG so that the effective requirement R3 is implemented exactly: wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "F_wrong_operator",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-WRONG_OPERATOR-d6d2a478",
+            "severity": "BLOCKER",
+            "category": "WRONG_OPERATOR",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=28 the effective requirements route to 'normal_queue' via R4, but the linked router (router.py) yields destination 'escalation_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 9,
+                  "line_end": 9,
+                  "col_start": 34,
+                  "col_end": 58,
+                  "excerpt": "ticket[\"wait_time\"] < 30"
+                },
+                "excerpt": "ticket[\"wait_time\"] < 30"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:9-9",
+                "path": "router.py",
+                "source_hash": "f976688ba501a9c94c383ee0c4b04a5a93a78c9401f6a54379822270bbb92738",
+                "excerpt": "ticket[\"wait_time\"] < 30",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 9,
+                "line_end": 9,
+                "col_start": 34,
+                "col_end": 58
+              }
+            ],
+            "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 30 vs < 30)",
+            "recommendation": "Change the bound for wait_time >= 30 minutes in ROUTER@1.0 so the comparison matches the effective requirement wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "G_unit_conversion",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "error": null,
+      "findings": [],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "H_sequential_changes",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "error": null,
+      "findings": [],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "I_conflicting_disputed_impl",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-e0bcd9e8",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "change C1@1: active approval records disagree (approve and reject)",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/1",
+                  "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "883c07be7b5daa1ea0fe72355e1ce0a7f4d6113ae8c432f084787a5ec49adb45",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "981533cf52ae50bdb5d079b4cd90ff8b548504fa392a3881a11e3e480fc07940",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/1",
+                "path": "bundle.json",
+                "source_hash": "981533cf52ae50bdb5d079b4cd90ff8b548504fa392a3881a11e3e480fc07940",
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Resolve the conflicting approval records for this change before relying on any policy that depends on it."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-3c4efff0",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the specification routes to destination 'escalation_queue' via S4",
+            "rule_ref": "R3",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "spec.json",
+                  "pointer": "/rules/2/when",
+                  "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}"
+                },
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "SPEC",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/rules/2/when",
+                "path": "spec.json",
+                "source_hash": "7d4398667abb4df971efc4da8b57037c8e8ad7c8a8ee054e1a5456b55ffb4bb4",
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}",
+                "evidence_role": "SPECIFICATION",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-b6b6fced",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the workflow ends at destination 'escalation_queue' via escalation",
+            "rule_ref": "R3",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "workflow.json",
+                  "pointer": "/nodes/0/branches/2",
+                  "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}"
+                },
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "WF",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/nodes/0/branches/2",
+                "path": "workflow.json",
+                "source_hash": "0a151253039f62dbe4fb7aca42bc780d329c911179d5360d35db17f5ff318449",
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}",
+                "evidence_role": "WORKFLOW_BRANCH",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-73786d02",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the linked router (router.py) yields destination 'escalation_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 9,
+                  "line_end": 9,
+                  "col_start": 34,
+                  "col_end": 59,
+                  "excerpt": "ticket[\"wait_time\"] >= 25"
+                },
+                "excerpt": "ticket[\"wait_time\"] >= 25"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:9-9",
+                "path": "router.py",
+                "source_hash": "5da61afeac0f439641ee16a6c2897f7700a0c9301313bccaa988768d3a36b0ee",
+                "excerpt": "ticket[\"wait_time\"] >= 25",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 9,
+                "line_end": 9,
+                "col_start": 34,
+                "col_end": 59
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": [
+        {
+          "conflict_analysis": {
+            "confirmed_base": "confirmed",
+            "affected_change_id": "C1@1",
+            "affected_rule": "R3",
+            "conflicting_approval_ids": [
+              "A1",
+              "A2"
+            ],
+            "diagnostic_variants": [
+              "variant:C1@1"
+            ],
+            "affected_conditions": [
+              "cmp|wait_time|>=|25|minutes",
+              "cmp|wait_time|>=|30|minutes"
+            ],
+            "independent_findings": [],
+            "undetermined_scope": [
+              {
+                "rule_ref": "R3",
+                "attribute": "approval",
+                "reason": "active approval records disagree (approve and reject)",
+                "change_ids": [
+                  "C1@1"
+                ]
+              }
+            ]
+          },
+          "schema_errors": []
+        }
+      ]
+    },
+    {
+      "bundle_id": "J_conflict_plus_independent_defect",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-e0bcd9e8",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "change C1@1: active approval records disagree (approve and reject)",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/1",
+                  "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "883c07be7b5daa1ea0fe72355e1ce0a7f4d6113ae8c432f084787a5ec49adb45",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "dcf2cb084b872f9a647c05af81b1da00364bae1287be26c706a28cd6ca2d7d65",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/1",
+                "path": "bundle.json",
+                "source_hash": "dcf2cb084b872f9a647c05af81b1da00364bae1287be26c706a28cd6ca2d7d65",
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Resolve the conflicting approval records for this change before relying on any policy that depends on it."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-3c4efff0",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the specification routes to destination 'escalation_queue' via S4",
+            "rule_ref": "R3",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "spec.json",
+                  "pointer": "/rules/2/when",
+                  "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}"
+                },
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "SPEC",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/rules/2/when",
+                "path": "spec.json",
+                "source_hash": "7d4398667abb4df971efc4da8b57037c8e8ad7c8a8ee054e1a5456b55ffb4bb4",
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}",
+                "evidence_role": "SPECIFICATION",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-b6b6fced",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the workflow ends at destination 'escalation_queue' via escalation",
+            "rule_ref": "R3",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "workflow.json",
+                  "pointer": "/nodes/0/branches/2",
+                  "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}"
+                },
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "WF",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/nodes/0/branches/2",
+                "path": "workflow.json",
+                "source_hash": "0a151253039f62dbe4fb7aca42bc780d329c911179d5360d35db17f5ff318449",
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}",
+                "evidence_role": "WORKFLOW_BRANCH",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-73786d02",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the linked router (router.py) yields destination 'escalation_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 9,
+                  "line_end": 9,
+                  "col_start": 34,
+                  "col_end": 59,
+                  "excerpt": "ticket[\"wait_time\"] >= 25"
+                },
+                "excerpt": "ticket[\"wait_time\"] >= 25"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:9-9",
+                "path": "router.py",
+                "source_hash": "8828e3e3a5a34b41045f3de406828c96612512c01409af59fea2f45206ebfc28",
+                "excerpt": "ticket[\"wait_time\"] >= 25",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 9,
+                "line_end": 9,
+                "col_start": 34,
+                "col_end": 59
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-PRECEDENCE-087a5100",
+            "severity": "BLOCKER",
+            "category": "PRECEDENCE",
+            "source": "deterministic",
+            "message": "at category=<absent>, priority='urgent', vip=true, wait_time=23 the effective requirements route to 'manual_review' via R1, but the linked router (router.py) yields destination 'priority_queue' (destination)",
+            "rule_ref": "R1",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 1,
+              "line_end": 1,
+              "col_start": 1,
+              "col_end": 38,
+              "excerpt": "R1. Missing category -> manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 1,
+                  "line_end": 1,
+                  "col_start": 1,
+                  "col_end": 38,
+                  "excerpt": "R1. Missing category -> manual review."
+                },
+                "excerpt": "R1. Missing category -> manual review."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 7,
+                  "line_end": 8,
+                  "col_start": 5,
+                  "col_end": 24,
+                  "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+                },
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:1-1",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R1. Missing category -> manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 1,
+                "line_end": 1,
+                "col_start": 1,
+                "col_end": 38
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:7-8",
+                "path": "router.py",
+                "source_hash": "8828e3e3a5a34b41045f3de406828c96612512c01409af59fea2f45206ebfc28",
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\"",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 7,
+                "line_end": 8,
+                "col_start": 5,
+                "col_end": 24
+              }
+            ],
+            "explanation": "the router tests equivalent guards in a different order than the effective requirements; the first-match order changes the outcome",
+            "recommendation": "Reorder the guards of ROUTER@1.0 so they follow the effective requirement order and the first matching guard produces the required destination; the affected requirement is category is absent -> 'manual_review'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": [
+        {
+          "conflict_analysis": {
+            "confirmed_base": "confirmed",
+            "affected_change_id": "C1@1",
+            "affected_rule": "R3",
+            "conflicting_approval_ids": [
+              "A1",
+              "A2"
+            ],
+            "diagnostic_variants": [
+              "variant:C1@1"
+            ],
+            "affected_conditions": [
+              "cmp|wait_time|>=|25|minutes",
+              "cmp|wait_time|>=|30|minutes"
+            ],
+            "independent_findings": [],
+            "undetermined_scope": [
+              {
+                "rule_ref": "R3",
+                "attribute": "approval",
+                "reason": "active approval records disagree (approve and reject)",
+                "change_ids": [
+                  "C1@1"
+                ]
+              }
+            ]
+          },
+          "schema_errors": []
+        }
+      ]
+    },
+    {
+      "bundle_id": "K_multiple_conflicts",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-e0bcd9e8",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "change C1@1: active approval records disagree (approve and reject)",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/1",
+                  "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "55edbd1603303c09e48f3d4d52f9b772bb61f0969a77a80f2740f208f5cd07a7",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "74d212d880dd1b91da19f56d49cb81bc908371c6bb691dbf0e660e6a5432161d",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/1",
+                "path": "bundle.json",
+                "source_hash": "74d212d880dd1b91da19f56d49cb81bc908371c6bb691dbf0e660e6a5432161d",
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Resolve the conflicting approval records for this change before relying on any policy that depends on it."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-a6618683",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "change C2@1: active approval records disagree (approve and reject)",
+            "rule_ref": "R2",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 2,
+              "line_end": 2,
+              "col_start": 1,
+              "col_end": 47,
+              "excerpt": "R2. Otherwise, urgent ticket -> priority queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 2,
+                  "line_end": 2,
+                  "col_start": 1,
+                  "col_end": 47,
+                  "excerpt": "R2. Otherwise, urgent ticket -> priority queue."
+                },
+                "excerpt": "R2. Otherwise, urgent ticket -> priority queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/1",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C2\",\"change_version\":\"1\",\"from\":{\"destination\":\"priority_queue\"},\"operation\":\"replace_destination\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R2\",\"to\":{\"destination\":\"manual_review\"}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C2\",\"change_version\":\"1\",\"from\":{\"destination\":\"priority_queue\"},\"operation\":\"replace_destination\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R2\",\"to\":{\"destination\":\"manual_review\"}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/2",
+                  "excerpt": "{\"approval_id\":\"A3\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C2\",\"change_sha256\":\"4296b710e97f38237e86a89927860c2605795c44bc79f141c6962c4bb7e69a82\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A3\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C2\",\"change_sha256\":\"4296b710e97f38237e86a89927860c2605795c44bc79f141c6962c4bb7e69a82\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/3",
+                  "excerpt": "{\"approval_id\":\"A4\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C2\",\"change_sha256\":\"4296b710e97f38237e86a89927860c2605795c44bc79f141c6962c4bb7e69a82\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A4\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C2\",\"change_sha256\":\"4296b710e97f38237e86a89927860c2605795c44bc79f141c6962c4bb7e69a82\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:2-2",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R2. Otherwise, urgent ticket -> priority queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 2,
+                "line_end": 2,
+                "col_start": 1,
+                "col_end": 47
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/1",
+                "path": "changes.json",
+                "source_hash": "55edbd1603303c09e48f3d4d52f9b772bb61f0969a77a80f2740f208f5cd07a7",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C2\",\"change_version\":\"1\",\"from\":{\"destination\":\"priority_queue\"},\"operation\":\"replace_destination\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R2\",\"to\":{\"destination\":\"manual_review\"}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/2",
+                "path": "bundle.json",
+                "source_hash": "74d212d880dd1b91da19f56d49cb81bc908371c6bb691dbf0e660e6a5432161d",
+                "excerpt": "{\"approval_id\":\"A3\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C2\",\"change_sha256\":\"4296b710e97f38237e86a89927860c2605795c44bc79f141c6962c4bb7e69a82\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/3",
+                "path": "bundle.json",
+                "source_hash": "74d212d880dd1b91da19f56d49cb81bc908371c6bb691dbf0e660e6a5432161d",
+                "excerpt": "{\"approval_id\":\"A4\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C2\",\"change_sha256\":\"4296b710e97f38237e86a89927860c2605795c44bc79f141c6962c4bb7e69a82\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Resolve the conflicting approval records for this change before relying on any policy that depends on it."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": [
+        {
+          "conflict_analysis": {
+            "confirmed_base": "confirmed",
+            "affected_change_id": "C1@1",
+            "affected_rule": "R3",
+            "conflicting_approval_ids": [
+              "A1",
+              "A2"
+            ],
+            "diagnostic_variants": [
+              "variant:C1@1",
+              "variant:C2@1"
+            ],
+            "affected_conditions": [
+              "cmp|wait_time|>=|25|minutes",
+              "cmp|wait_time|>=|30|minutes"
+            ],
+            "independent_findings": [],
+            "undetermined_scope": [
+              {
+                "rule_ref": "R3",
+                "attribute": "approval",
+                "reason": "active approval records disagree (approve and reject)",
+                "change_ids": [
+                  "C1@1"
+                ]
+              }
+            ]
+          },
+          "schema_errors": []
+        },
+        {
+          "conflict_analysis": {
+            "confirmed_base": "confirmed",
+            "affected_change_id": "C2@1",
+            "affected_rule": "R2",
+            "conflicting_approval_ids": [
+              "A3",
+              "A4"
+            ],
+            "diagnostic_variants": [
+              "variant:C1@1",
+              "variant:C2@1"
+            ],
+            "affected_conditions": [
+              "eq|priority|\"urgent\""
+            ],
+            "independent_findings": [],
+            "undetermined_scope": [
+              {
+                "rule_ref": "R2",
+                "attribute": "approval",
+                "reason": "active approval records disagree (approve and reject)",
+                "change_ids": [
+                  "C2@1"
+                ]
+              }
+            ]
+          },
+          "schema_errors": []
+        }
+      ]
+    },
+    {
+      "bundle_id": "L_valid_supersession",
+      "expected_status": "PASS",
+      "actual_status": "PASS",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-APPROVAL_IGNORED-bf69a43b",
+            "severity": "INFO",
+            "category": "APPROVAL_IGNORED",
+            "source": "deterministic",
+            "message": "approval 'A1' is superseded by A2 and grants no authority",
+            "rule_ref": null,
+            "artifact_id": "bundle.json",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "json",
+              "path": "bundle.json",
+              "pointer": "/approvals/0",
+              "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "2e18a3a6c4379b9671897a9ad60381ff47657ed2f38695ef6bb9b9c83a9c8662",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": null
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-REJECTED_CHANGE-b37f4c6a",
+            "severity": "INFO",
+            "category": "REJECTED_CHANGE",
+            "source": "deterministic",
+            "message": "change C1@1: active approval record rejects this change; it is not applied",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/1",
+                  "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[\"A1\"]}"
+                },
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[\"A1\"]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "883c07be7b5daa1ea0fe72355e1ce0a7f4d6113ae8c432f084787a5ec49adb45",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "2e18a3a6c4379b9671897a9ad60381ff47657ed2f38695ef6bb9b9c83a9c8662",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/1",
+                "path": "bundle.json",
+                "source_hash": "2e18a3a6c4379b9671897a9ad60381ff47657ed2f38695ef6bb9b9c83a9c8662",
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[\"A1\"]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Update CHG so that the effective requirement R3 is implemented exactly: wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "M_invalid_approval_hash",
+      "expected_status": "INCOMPLETE",
+      "actual_status": "INCOMPLETE",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-INVALID_APPROVAL-82ba84ce",
+            "severity": "COVERAGE_GAP",
+            "category": "INVALID_APPROVAL",
+            "source": "deterministic",
+            "message": "approval 'A1' is bound to a different content hash; the change C1@1 is treated as unapproved",
+            "rule_ref": "R3",
+            "artifact_id": "bundle.json",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "0fa24df104035615ff4fb04f358291626d3dd68884326d6281695ac9070804f1",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Update bundle.json so that the effective requirement R3 is implemented exactly: wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNAPPROVED_CHANGE-efb47a3b",
+            "severity": "INFO",
+            "category": "UNAPPROVED_CHANGE",
+            "source": "deterministic",
+            "message": "change C1@1: no active, hash-bound approval record for this change version",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "883c07be7b5daa1ea0fe72355e1ce0a7f4d6113ae8c432f084787a5ec49adb45",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "0fa24df104035615ff4fb04f358291626d3dd68884326d6281695ac9070804f1",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Update CHG so that the effective requirement R3 is implemented exactly: wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "N_conflict_plus_runtime_error",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-e0bcd9e8",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "change C1@1: active approval records disagree (approve and reject)",
+            "rule_ref": "R3",
+            "artifact_id": "CHG",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "changes.json",
+                  "pointer": "/changes/0",
+                  "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+                },
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/0",
+                  "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "bundle.json",
+                  "pointer": "/approvals/1",
+                  "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+                },
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "CHG",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/changes/0",
+                "path": "changes.json",
+                "source_hash": "883c07be7b5daa1ea0fe72355e1ce0a7f4d6113ae8c432f084787a5ec49adb45",
+                "excerpt": "{\"base_artifact\":\"REQ\",\"base_version\":\"1.0\",\"change_id\":\"C1\",\"change_version\":\"1\",\"from\":{\"unit\":\"minutes\",\"value\":30},\"operation\":\"replace_threshold\",\"rationale\":\"Policy-owner change under remediation review.\",\"sequence\":1,\"target_rule\":\"R3\",\"to\":{\"unit\":\"minutes\",\"value\":25}}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/0",
+                "path": "bundle.json",
+                "source_hash": "5b1113ae9a42bc83f079cbc0d14bf1ba45f4b41374c1c0dd697309a1ea2e8f0c",
+                "excerpt": "{\"approval_id\":\"A1\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"approve\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "bundle.json",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/approvals/1",
+                "path": "bundle.json",
+                "source_hash": "5b1113ae9a42bc83f079cbc0d14bf1ba45f4b41374c1c0dd697309a1ea2e8f0c",
+                "excerpt": "{\"approval_id\":\"A2\",\"approver_id\":\"alice\",\"approver_role\":\"policy_owner\",\"change_id\":\"C1\",\"change_sha256\":\"f8779a725d87f3dfd4a8d51baeb5800533e2ada2008e94871f260ca6a42dc0fd\",\"change_version\":\"1\",\"decision\":\"reject\",\"recorded_at\":\"2026-03-01T10:00:00Z\",\"supersedes\":[]}",
+                "evidence_role": "APPROVAL_RECORD",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": null,
+            "recommendation": "Resolve the conflicting approval records for this change before relying on any policy that depends on it."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-3c4efff0",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the specification routes to destination 'escalation_queue' via S4",
+            "rule_ref": "R3",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "spec.json",
+                  "pointer": "/rules/2/when",
+                  "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}"
+                },
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "SPEC",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/rules/2/when",
+                "path": "spec.json",
+                "source_hash": "7d4398667abb4df971efc4da8b57037c8e8ad7c8a8ee054e1a5456b55ffb4bb4",
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25}",
+                "evidence_role": "SPECIFICATION",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-b6b6fced",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the workflow ends at destination 'escalation_queue' via escalation",
+            "rule_ref": "R3",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "workflow.json",
+                  "pointer": "/nodes/0/branches/2",
+                  "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}"
+                },
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "WF",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/nodes/0/branches/2",
+                "path": "workflow.json",
+                "source_hash": "0a151253039f62dbe4fb7aca42bc780d329c911179d5360d35db17f5ff318449",
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":25},\"target\":\"escalation\",\"version\":\"1.0\"}",
+                "evidence_role": "WORKFLOW_BRANCH",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-RUNTIME_ERROR-662cf8fb",
+            "severity": "BLOCKER",
+            "category": "RUNTIME_ERROR",
+            "source": "deterministic",
+            "message": "the linked router cannot route category=<absent>, priority='__other__', vip=true, wait_time=23: KeyError: 'category'",
+            "rule_ref": "R1",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 1,
+              "line_end": 1,
+              "col_start": 1,
+              "col_end": 38,
+              "excerpt": "R1. Missing category -> manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 1,
+                  "line_end": 1,
+                  "col_start": 1,
+                  "col_end": 38,
+                  "excerpt": "R1. Missing category -> manual review."
+                },
+                "excerpt": "R1. Missing category -> manual review."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 6,
+                  "line_end": 6,
+                  "col_start": 33,
+                  "col_end": 63,
+                  "excerpt": "ticket[\"priority\"] == \"urgent\""
+                },
+                "excerpt": "ticket[\"priority\"] == \"urgent\""
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:1-1",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R1. Missing category -> manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 1,
+                "line_end": 1,
+                "col_start": 1,
+                "col_end": 38
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:6-6",
+                "path": "router.py",
+                "source_hash": "14a0dd14d0499bd86fff8e7f2b0a7c0f4bc57cedc187fc3c443ac2043b67dc2d",
+                "excerpt": "ticket[\"priority\"] == \"urgent\"",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 6,
+                "line_end": 6,
+                "col_start": 33,
+                "col_end": 63
+              }
+            ],
+            "explanation": "A runtime error means the reviewer could not establish the output for these tickets; it is reported as a defect, not as agreement.",
+            "recommendation": "Guard the lookup that raises for tickets where category is absent applies in ROUTER@1.0, so the router can return 'manual_review'."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-UNDETERMINED_CONFLICT-73786d02",
+            "severity": "COVERAGE_GAP",
+            "category": "UNDETERMINED_CONFLICT",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=25 the effective requirements route to 'normal_queue' via R4, but the linked router (router.py) yields destination 'escalation_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 8,
+                  "line_end": 8,
+                  "col_start": 34,
+                  "col_end": 59,
+                  "excerpt": "ticket[\"wait_time\"] >= 25"
+                },
+                "excerpt": "ticket[\"wait_time\"] >= 25"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:8-8",
+                "path": "router.py",
+                "source_hash": "14a0dd14d0499bd86fff8e7f2b0a7c0f4bc57cedc187fc3c443ac2043b67dc2d",
+                "excerpt": "ticket[\"wait_time\"] >= 25",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 8,
+                "line_end": 8,
+                "col_start": 34,
+                "col_end": 59
+              }
+            ],
+            "explanation": "every reproduced witness is matched by an unresolved diagnostic approval variant (variant:C1@1); the difference depends on an approval conflict and is not a confirmed defect until that approval is resolved",
+            "recommendation": "Resolve the conflicting approval records for the affected change; until the permitted policy is determined this difference is not a confirmed defect."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": [
+        {
+          "conflict_analysis": {
+            "confirmed_base": "confirmed",
+            "affected_change_id": "C1@1",
+            "affected_rule": "R3",
+            "conflicting_approval_ids": [
+              "A1",
+              "A2"
+            ],
+            "diagnostic_variants": [
+              "variant:C1@1"
+            ],
+            "affected_conditions": [
+              "cmp|wait_time|>=|25|minutes",
+              "cmp|wait_time|>=|30|minutes"
+            ],
+            "independent_findings": [],
+            "undetermined_scope": [
+              {
+                "rule_ref": "R3",
+                "attribute": "approval",
+                "reason": "active approval records disagree (approve and reject)",
+                "change_ids": [
+                  "C1@1"
+                ]
+              }
+            ]
+          },
+          "schema_errors": []
+        }
+      ]
+    },
+    {
+      "bundle_id": "S1_integer_boundary",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-THRESHOLD_CHANGED-51211977",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=30 the effective requirements route to 'escalation_queue' via R3, but the linked router (router.py) yields destination 'normal_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 9,
+                  "line_end": 9,
+                  "col_start": 34,
+                  "col_end": 58,
+                  "excerpt": "ticket[\"wait_time\"] > 30"
+                },
+                "excerpt": "ticket[\"wait_time\"] > 30"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:9-9",
+                "path": "router.py",
+                "source_hash": "22c523df295e7aacc9ac8dfecdfc258457a494007e75d7aff685e03c97c138b5",
+                "excerpt": "ticket[\"wait_time\"] > 30",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 9,
+                "line_end": 9,
+                "col_start": 34,
+                "col_end": 58
+              }
+            ],
+            "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 30 vs > 30)",
+            "recommendation": "Change the bound for wait_time >= 30 minutes in ROUTER@1.0 so the comparison matches the effective requirement wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "S2_decimal_boundary",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-THRESHOLD_CHANGED-51211977",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time='59/2' the effective requirements route to 'normal_queue' via R4, but the linked router (router.py) yields destination 'escalation_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 66,
+              "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 66,
+                  "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 9,
+                  "line_end": 9,
+                  "col_start": 34,
+                  "col_end": 61,
+                  "excerpt": "ticket[\"wait_time\"] >= 29.5"
+                },
+                "excerpt": "ticket[\"wait_time\"] >= 29.5"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R3. Otherwise, waiting is at least 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 66
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:9-9",
+                "path": "router.py",
+                "source_hash": "8901880babf3255025d298445577ca11dc9ce9d2483ac11273d00687f1abaff9",
+                "excerpt": "ticket[\"wait_time\"] >= 29.5",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 9,
+                "line_end": 9,
+                "col_start": 34,
+                "col_end": 61
+              }
+            ],
+            "explanation": "the boundary for 'wait_time' differs on the declared field domain (>= 30 vs >= 59/2)",
+            "recommendation": "Change the bound for wait_time >= 30 minutes in ROUTER@1.0 so the comparison matches the effective requirement wait_time >= 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "S3_continuous_boundary",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-THRESHOLD_CHANGED-a681e936",
+            "severity": "BLOCKER",
+            "category": "THRESHOLD_CHANGED",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=30 the effective requirements route to 'normal_queue' via R4, but the linked router (router.py) yields destination 'escalation_queue' (destination)",
+            "rule_ref": "R3",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 67,
+              "excerpt": "R3. Otherwise, waiting is more than 30 minutes -> escalation queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 67,
+                  "excerpt": "R3. Otherwise, waiting is more than 30 minutes -> escalation queue."
+                },
+                "excerpt": "R3. Otherwise, waiting is more than 30 minutes -> escalation queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 9,
+                  "line_end": 9,
+                  "col_start": 34,
+                  "col_end": 59,
+                  "excerpt": "ticket[\"wait_time\"] >= 30"
+                },
+                "excerpt": "ticket[\"wait_time\"] >= 30"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "b30e93a230e4c0a36513a17c918f6fbf8a340b6ddb564999931bf3a5ae2f8d7e",
+                "excerpt": "R3. Otherwise, waiting is more than 30 minutes -> escalation queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 67
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:9-9",
+                "path": "router.py",
+                "source_hash": "83c737898231ca1eaad3dd70a51a21b42569fd70dd0f47ef1a3670c26400e6ba",
+                "excerpt": "ticket[\"wait_time\"] >= 30",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 9,
+                "line_end": 9,
+                "col_start": 34,
+                "col_end": 59
+              }
+            ],
+            "explanation": "the boundary for 'wait_time' differs on the declared field domain (> 30 vs >= 30)",
+            "recommendation": "Change the bound for wait_time > 30 minutes in ROUTER@1.0 so the comparison matches the effective requirement wait_time > 30 minutes -> 'escalation_queue'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "S4_missing_value_precedence",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-PRECEDENCE-087a5100",
+            "severity": "BLOCKER",
+            "category": "PRECEDENCE",
+            "source": "deterministic",
+            "message": "at category=<absent>, priority='urgent', vip=true, wait_time=28 the effective requirements route to 'manual_review' via R1, but the linked router (router.py) yields destination 'priority_queue' (destination)",
+            "rule_ref": "R1",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 1,
+              "line_end": 1,
+              "col_start": 1,
+              "col_end": 38,
+              "excerpt": "R1. Missing category -> manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 1,
+                  "line_end": 1,
+                  "col_start": 1,
+                  "col_end": 38,
+                  "excerpt": "R1. Missing category -> manual review."
+                },
+                "excerpt": "R1. Missing category -> manual review."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 7,
+                  "line_end": 8,
+                  "col_start": 5,
+                  "col_end": 24,
+                  "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+                },
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:1-1",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R1. Missing category -> manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 1,
+                "line_end": 1,
+                "col_start": 1,
+                "col_end": 38
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:7-8",
+                "path": "router.py",
+                "source_hash": "552ef838edc213491a503c0c063d24ca6bb315a2023b0d0914774894b61228e5",
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\"",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 7,
+                "line_end": 8,
+                "col_start": 5,
+                "col_end": 24
+              }
+            ],
+            "explanation": "the router tests equivalent guards in a different order than the effective requirements; the first-match order changes the outcome",
+            "recommendation": "Reorder the guards of ROUTER@1.0 so they follow the effective requirement order and the first matching guard produces the required destination; the affected requirement is category is absent -> 'manual_review'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "S5_exception_overlap",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-PRECEDENCE-0ae9f2b2",
+            "severity": "BLOCKER",
+            "category": "PRECEDENCE",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=28 the effective requirements route to 'manual_review' via R2.exception, but the linked router (router.py) yields destination 'priority_queue' (destination)",
+            "rule_ref": "R2.exception",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 3,
+              "line_end": 3,
+              "col_start": 1,
+              "col_end": 48,
+              "excerpt": "Exception to R2: if vip, route to manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 3,
+                  "line_end": 3,
+                  "col_start": 1,
+                  "col_end": 48,
+                  "excerpt": "Exception to R2: if vip, route to manual review."
+                },
+                "excerpt": "Exception to R2: if vip, route to manual review."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 5,
+                  "line_end": 6,
+                  "col_start": 5,
+                  "col_end": 24,
+                  "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+                },
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:3-3",
+                "path": "requirements.txt",
+                "source_hash": "749611b9726d9be0c9cf3dd3fd7ece6376abfb6d4dbada9575fa5294f6d6a930",
+                "excerpt": "Exception to R2: if vip, route to manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 3,
+                "line_end": 3,
+                "col_start": 1,
+                "col_end": 48
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:5-6",
+                "path": "router.py",
+                "source_hash": "fa2ee818b89fa83704d5eb5ee3e0d5ff27c48c587aec71522d2f9bb52885cd38",
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\"",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 5,
+                "line_end": 6,
+                "col_start": 5,
+                "col_end": 24
+              }
+            ],
+            "explanation": "the router tests equivalent guards in a different order than the effective requirements; the first-match order changes the outcome",
+            "recommendation": "Reorder the guards of ROUTER@1.0 so they follow the effective requirement order and the first matching guard produces the required destination; the affected requirement is (priority == 'urgent' and vip == true) -> 'manual_review'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "S6_wrong_destination",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-WRONG_DESTINATION-79fa657a",
+            "severity": "BLOCKER",
+            "category": "WRONG_DESTINATION",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='urgent', vip=true, wait_time=28 the effective requirements route to 'priority_queue' via R2, but the linked router (router.py) yields destination 'manual_review' (destination)",
+            "rule_ref": "R2",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 2,
+              "line_end": 2,
+              "col_start": 1,
+              "col_end": 47,
+              "excerpt": "R2. Otherwise, urgent ticket -> priority queue."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 2,
+                  "line_end": 2,
+                  "col_start": 1,
+                  "col_end": 47,
+                  "excerpt": "R2. Otherwise, urgent ticket -> priority queue."
+                },
+                "excerpt": "R2. Otherwise, urgent ticket -> priority queue."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 7,
+                  "line_end": 7,
+                  "col_start": 33,
+                  "col_end": 63,
+                  "excerpt": "ticket[\"priority\"] == \"urgent\""
+                },
+                "excerpt": "ticket[\"priority\"] == \"urgent\""
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:2-2",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R2. Otherwise, urgent ticket -> priority queue.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 2,
+                "line_end": 2,
+                "col_start": 1,
+                "col_end": 47
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:7-7",
+                "path": "router.py",
+                "source_hash": "b5663db7e1f5b23212e034570b7045c1a0de00023bd8d44184097b9af795b884",
+                "excerpt": "ticket[\"priority\"] == \"urgent\"",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 7,
+                "line_end": 7,
+                "col_start": 33,
+                "col_end": 63
+              }
+            ],
+            "explanation": "the router implements the requirement condition but returns 'manual_review' instead of 'priority_queue'",
+            "recommendation": "Return the destination 'priority_queue' for priority == 'urgent' in ROUTER@1.0."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "S7_runtime_error",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-RUNTIME_ERROR-662cf8fb",
+            "severity": "BLOCKER",
+            "category": "RUNTIME_ERROR",
+            "source": "deterministic",
+            "message": "the linked router cannot route category=<absent>, priority='__other__', vip=true, wait_time=28: KeyError: 'category'",
+            "rule_ref": "R1",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 1,
+              "line_end": 1,
+              "col_start": 1,
+              "col_end": 38,
+              "excerpt": "R1. Missing category -> manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 1,
+                  "line_end": 1,
+                  "col_start": 1,
+                  "col_end": 38,
+                  "excerpt": "R1. Missing category -> manual review."
+                },
+                "excerpt": "R1. Missing category -> manual review."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 6,
+                  "line_end": 6,
+                  "col_start": 33,
+                  "col_end": 63,
+                  "excerpt": "ticket[\"priority\"] == \"urgent\""
+                },
+                "excerpt": "ticket[\"priority\"] == \"urgent\""
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:1-1",
+                "path": "requirements.txt",
+                "source_hash": "13b139f747ec1090608a704f287bba1871fb528661f233d37efb602d5d993bf8",
+                "excerpt": "R1. Missing category -> manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 1,
+                "line_end": 1,
+                "col_start": 1,
+                "col_end": 38
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:6-6",
+                "path": "router.py",
+                "source_hash": "b879b5b8df6a9c7a2f87c936154c960502b6885a725622d2d434d221d3b6b9d4",
+                "excerpt": "ticket[\"priority\"] == \"urgent\"",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 6,
+                "line_end": 6,
+                "col_start": 33,
+                "col_end": 63
+              }
+            ],
+            "explanation": "A runtime error means the reviewer could not establish the output for these tickets; it is reported as a defect, not as agreement.",
+            "recommendation": "Guard the lookup that raises for tickets where category is absent applies in ROUTER@1.0, so the router can return 'manual_review'."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    },
+    {
+      "bundle_id": "S8_overlapping_numeric_rules",
+      "expected_status": "CHANGES_REQUIRED",
+      "actual_status": "CHANGES_REQUIRED",
+      "error": null,
+      "findings": [
+        {
+          "finding": {
+            "finding_id": "F-MISSING_EXCEPTION-9f1cc470",
+            "severity": "BLOCKER",
+            "category": "MISSING_EXCEPTION",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=60 the effective requirements route to 'manual_review' via R3.exception, but the specification routes to destination 'escalation_queue' via S4",
+            "rule_ref": "R3.exception",
+            "artifact_id": "SPEC",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 5,
+              "line_end": 5,
+              "col_start": 1,
+              "col_end": 75,
+              "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 5,
+                  "line_end": 5,
+                  "col_start": 1,
+                  "col_end": 75,
+                  "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+                },
+                "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "spec.json",
+                  "pointer": "/rules/2/when",
+                  "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":30}"
+                },
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":30}"
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "spec.json",
+                  "pointer": "/default",
+                  "excerpt": "{\"destination\":\"normal_queue\"}"
+                },
+                "excerpt": "{\"destination\":\"normal_queue\"}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:5-5",
+                "path": "requirements.txt",
+                "source_hash": "d53218c059cdbe05a478193b30ff049dbde74203a80f69ad52be0e1adcbad79a",
+                "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 5,
+                "line_end": 5,
+                "col_start": 1,
+                "col_end": 75
+              },
+              {
+                "artifact_id": "SPEC",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/rules/2/when",
+                "path": "spec.json",
+                "source_hash": "0072a5c0dcd542f49262880e3778c8ee45c5e3216d1a81be94a987856657274b",
+                "excerpt": "{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":30}",
+                "evidence_role": "SPECIFICATION",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              },
+              {
+                "artifact_id": "SPEC",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/default",
+                "path": "spec.json",
+                "source_hash": "0072a5c0dcd542f49262880e3778c8ee45c5e3216d1a81be94a987856657274b",
+                "excerpt": "{\"destination\":\"normal_queue\"}",
+                "evidence_role": "SPECIFICATION",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "requirement 'R3.exception' is an exception of 'R3' but the spec routes the exception region differently",
+            "recommendation": "Add the exception entry for (wait_time >= 30 minutes and wait_time >= 60 minutes) -> 'manual_review' in SPEC@1.0."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-MISSING_EXCEPTION-f8cb414a",
+            "severity": "BLOCKER",
+            "category": "MISSING_EXCEPTION",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=60 the effective requirements route to 'manual_review' via R3.exception, but the workflow ends at destination 'escalation_queue' via escalation",
+            "rule_ref": "R3.exception",
+            "artifact_id": "WF",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 5,
+              "line_end": 5,
+              "col_start": 1,
+              "col_end": 75,
+              "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 5,
+                  "line_end": 5,
+                  "col_start": 1,
+                  "col_end": 75,
+                  "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+                },
+                "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+              },
+              {
+                "location": {
+                  "kind": "json",
+                  "path": "workflow.json",
+                  "pointer": "/nodes/0/branches/2",
+                  "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":30},\"target\":\"escalation\",\"version\":\"1.0\"}"
+                },
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":30},\"target\":\"escalation\",\"version\":\"1.0\"}"
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:5-5",
+                "path": "requirements.txt",
+                "source_hash": "d53218c059cdbe05a478193b30ff049dbde74203a80f69ad52be0e1adcbad79a",
+                "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 5,
+                "line_end": 5,
+                "col_start": 1,
+                "col_end": 75
+              },
+              {
+                "artifact_id": "WF",
+                "artifact_version": "1.0",
+                "anchor_type": "json_pointer",
+                "anchor_value": "/nodes/0/branches/2",
+                "path": "workflow.json",
+                "source_hash": "7b74897b41a7320888912e8aed69f2729d4a100cfff98349e5d45b4f4fcbb920",
+                "excerpt": "{\"branch_id\":\"b4\",\"condition\":{\"field\":\"wait_time\",\"kind\":\"cmp\",\"op\":\">=\",\"unit\":\"minutes\",\"value\":30},\"target\":\"escalation\",\"version\":\"1.0\"}",
+                "evidence_role": "WORKFLOW_BRANCH",
+                "line_start": null,
+                "line_end": null,
+                "col_start": null,
+                "col_end": null
+              }
+            ],
+            "explanation": "requirement 'R3.exception' is an exception of 'R3' but the workflow does not implement it",
+            "recommendation": "Add the exception branch for (wait_time >= 30 minutes and wait_time >= 60 minutes) -> 'manual_review' in WF@1.0."
+          },
+          "schema_errors": []
+        },
+        {
+          "finding": {
+            "finding_id": "F-MISSING_EXCEPTION-0bad2820",
+            "severity": "BLOCKER",
+            "category": "MISSING_EXCEPTION",
+            "source": "deterministic",
+            "message": "at category='__other__', priority='__other__', vip=true, wait_time=60 the effective requirements route to 'manual_review' via R3.exception, but the linked router (router.py) yields destination 'escalation_queue' (destination)",
+            "rule_ref": "R3.exception",
+            "artifact_id": "ROUTER",
+            "artifact_version": "1.0",
+            "location": {
+              "kind": "text",
+              "path": "requirements.txt",
+              "line_start": 5,
+              "line_end": 5,
+              "col_start": 1,
+              "col_end": 75,
+              "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+            },
+            "evidence": [
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "requirements.txt",
+                  "line_start": 5,
+                  "line_end": 5,
+                  "col_start": 1,
+                  "col_end": 75,
+                  "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+                },
+                "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review."
+              },
+              {
+                "location": {
+                  "kind": "text",
+                  "path": "router.py",
+                  "line_start": 5,
+                  "line_end": 6,
+                  "col_start": 5,
+                  "col_end": 24,
+                  "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+                },
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\""
+              }
+            ],
+            "evidence_refs": [
+              {
+                "artifact_id": "REQ",
+                "artifact_version": "1.0",
+                "anchor_type": "source_line",
+                "anchor_value": "requirements.txt:5-5",
+                "path": "requirements.txt",
+                "source_hash": "d53218c059cdbe05a478193b30ff049dbde74203a80f69ad52be0e1adcbad79a",
+                "excerpt": "Exception to R3: if waiting is at least 60 minutes, route to manual review.",
+                "evidence_role": "SOURCE_REQUIREMENT",
+                "line_start": 5,
+                "line_end": 5,
+                "col_start": 1,
+                "col_end": 75
+              },
+              {
+                "artifact_id": "ROUTER",
+                "artifact_version": "1.0",
+                "anchor_type": "named_block",
+                "anchor_value": "router.py:5-6",
+                "path": "router.py",
+                "source_hash": "83c737898231ca1eaad3dd70a51a21b42569fd70dd0f47ef1a3670c26400e6ba",
+                "excerpt": "if \"category\" not in ticket:\n        return \"manual\"",
+                "evidence_role": "PYTHON_CODE",
+                "line_start": 5,
+                "line_end": 6,
+                "col_start": 5,
+                "col_end": 24
+              }
+            ],
+            "explanation": "requirement 'R3.exception' is an exception of 'R3' but the router does not implement it",
+            "recommendation": "Add the exception guard for (wait_time >= 30 minutes and wait_time >= 60 minutes) -> 'manual_review' in ROUTER@1.0."
+          },
+          "schema_errors": []
+        }
+      ],
+      "conflict_analysis": []
+    }
+  ]
+}
