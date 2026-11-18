@@ -3,3 +3,4 @@
 fixtures/** -text
 holdout/** -text
 holdout_stage2/** -text
+evaluation/** -text

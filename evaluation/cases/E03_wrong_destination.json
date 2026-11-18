@@ -1,0 +1,34 @@
+{
+  "bundle_id": "E03_wrong_destination",
+  "suite": "development",
+  "bundle_path": "evaluation/bundles/E03_wrong_destination",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "WRONG_DESTINATION"
+    ],
+    "primary_defect": "WRONG_DESTINATION",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "Both artifacts contain the urgent condition, but its destination is normal_queue instead of priority_queue. Every urgent ticket is misrouted while the rule shape looks correct.",
+  "source_evidence": [
+    "requirements.txt R2 -> priority queue",
+    "spec.json S2 destination normal_queue",
+    "workflow.json priority terminal destination normal_queue"
+  ],
+  "scenarios": [
+    "wrong destinations"
+  ],
+  "reviewer_output_used": false
+}

@@ -1,0 +1,35 @@
+{
+  "bundle_id": "B13_router_runtime",
+  "suite": "development",
+  "bundle_path": "fixtures/dev/B13_router_runtime",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "RUNTIME_ERROR"
+    ],
+    "primary_defect": "RUNTIME_ERROR",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "The first guard evaluates ticket['vip'] whenever category is absent, without checking that vip exists. A ticket with both fields absent raises KeyError, so the router has no defined destination for an in-domain ticket; the reachable states are not equivalent to the requirements.",
+  "source_evidence": [
+    "router.py line 5 reads ticket['vip'] unguarded",
+    "dictionary.json vip is nullable",
+    "requirements.txt R1 covers any missing category"
+  ],
+  "scenarios": [
+    "runtime error",
+    "Python/workflow disagreement"
+  ],
+  "reviewer_output_used": false
+}

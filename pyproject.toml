@@ -45,6 +45,11 @@ select = ["E", "F", "I", "UP", "B", "S", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]
+# Evaluation tooling invokes only the repository's own git and interpreter.
+"evaluation/**" = ["S101", "S603", "S607"]
+"scripts/**" = ["S101", "S603", "S607"]
+# This fixture intentionally contains unsupported Python loop syntax.
+"evaluation/bundles/E06_unsupported_python/*" = ["B007"]
 
 [tool.mypy]
 python_version = "3.12"

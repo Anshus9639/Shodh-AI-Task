@@ -1,0 +1,42 @@
+{
+  "bundle_id": "E09_reordered_records",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "968c415f04c46e2f3fbf6151eb7db9e5b55254f9052d3e5d0dd2b71b12960c8d"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "c43ad3ff60ebfc2f9c4823dc1fae48d4e5a53d3211e8bd20bc37251983788a76"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "c9bd31895aac4003800700daae2a7424d616371ea2b5f43dc77909d450a4f6b7"
+    }
+  ],
+  "approvals": []
+}

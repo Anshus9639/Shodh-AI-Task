@@ -1,0 +1,34 @@
+{
+  "bundle_id": "E01_valid_approved_25",
+  "suite": "development",
+  "bundle_path": "evaluation/bundles/E01_valid_approved_25",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": null,
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "escalation_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "The hash-bound approval applies C1@1 (R3 becomes >= 25 minutes), and both the spec rule S3 and workflow branch b3 were updated to 25. All artifacts encode the effective policy, so the review passes. This is the valid counterpart to B07/H04.",
+  "source_evidence": [
+    "changes.json C1 30 -> 25 minutes",
+    "bundle.json approval hash matches",
+    "spec.json S3 and workflow.json b3 use 25"
+  ],
+  "scenarios": [
+    "approved threshold change",
+    "numeric threshold changes",
+    "declared units"
+  ],
+  "reviewer_output_used": false
+}

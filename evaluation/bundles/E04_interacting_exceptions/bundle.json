@@ -1,0 +1,42 @@
+{
+  "bundle_id": "E04_interacting_exceptions",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "83bbf626ffae26d3f6626593c0019b490803dabf386a77bddf209d00bfc0e8ba"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "a1e9c292630527152f8806d6ee851af2157bedf047bed72ce94d3b40dbd58250"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "1bc4ca11031fe49ed5bb34bc43a6fbde868427b9f5dd55cfc6ca2fc7209449f4"
+    }
+  ],
+  "approvals": []
+}

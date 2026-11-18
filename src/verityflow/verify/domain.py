@@ -165,13 +165,22 @@ def build_ticket_space(
     max_cells: int,
     extra_cuts: Mapping[str, Iterable[Fraction]] | None = None,
     extra_literals: Mapping[str, Iterable[str | bool]] | None = None,
+    partitioning_enabled: bool = True,
 ) -> TicketSpace:
     """Enumerate representative tickets induced by every compared boundary.
 
     ``extra_cuts``/``extra_literals`` add boundaries that occur only in a linked
     router's code (already converted to field units), so a code-only threshold
     still gets a representative on either side of it.
+
+    With ``partitioning_enabled=False`` only a small fixed set is evaluated: a
+    present baseline and one variation where each field is absent. Boundary and
+    interval representatives are never generated, and the space is reported as
+    ``UNREVIEWED`` so it cannot be mistaken for exhaustive verification.
     """
+    if not partitioning_enabled:
+        return _fixed_space(dictionary)
+
     analysis = condition_analysis(expressions)
     cuts_by_field: dict[str, set[Fraction]] = {
         name: set(values) for name, values in analysis.cuts.items()
@@ -221,6 +230,42 @@ def build_ticket_space(
         ),
         fields=names,
     )
+
+
+def _fixed_space(dictionary: DataDictionary) -> TicketSpace:
+    fields = tuple(sorted(dictionary.fields, key=lambda item: item.name))
+    baseline = tuple((field.name, CellValue.present(_default_value(field))) for field in fields)
+    cells = [TicketCell(baseline)]
+    for index, field in enumerate(fields):
+        varied = list(baseline)
+        varied[index] = (field.name, CellValue.absent())
+        cells.append(TicketCell(tuple(varied)))
+    return TicketSpace(
+        cells=tuple(cells),
+        mode=ComparisonMode.UNREVIEWED,
+        combinations_total=len(cells),
+        combinations_skipped=0,
+        detail=(
+            "domain partitioning is disabled: only a present baseline and one "
+            f"single-field-absent variation were evaluated ({len(cells)} tickets); "
+            "numeric boundary and interval representatives were not generated, so "
+            "equivalence is not exhaustive"
+        ),
+        fields=tuple(field.name for field in fields),
+    )
+
+
+def _default_value(field: FieldDecl) -> Fraction | str | bool:
+    if field.type is FieldType.BOOLEAN:
+        return False
+    if field.type is FieldType.STRING:
+        return field.domain[0] if field.domain else "baseline"
+    value = Fraction(0)
+    if field.min is not None and value < field.min:
+        return field.min
+    if field.max is not None and value > field.max:
+        return field.max
+    return value
 
 
 def render_inputs(cell: TicketCell) -> dict[str, str | bool | int | None]:

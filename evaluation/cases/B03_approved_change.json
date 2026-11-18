@@ -1,0 +1,36 @@
+{
+  "bundle_id": "B03_approved_change",
+  "suite": "development",
+  "bundle_path": "fixtures/dev/B03_approved_change",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "THRESHOLD_CHANGED"
+    ],
+    "primary_defect": "THRESHOLD_CHANGED",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "escalation_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "Approval A1 is bound to change C1@1 and its sha256 matches the change record, so the approved change applies: R3 becomes wait >= 20 minutes. The spec and workflow still encode >= 30 minutes. A ticket at wait=25 is sent to normal by both artifacts while the effective requirement sends it to escalation, so the artifacts are stale.",
+  "source_evidence": [
+    "changes.json C1 30 -> 20 minutes",
+    "bundle.json approvals A1 (policy_owner, hash-bound)",
+    "spec.json rule S3 and workflow.json branch b3 keep 30"
+  ],
+  "scenarios": [
+    "approved threshold change",
+    "numeric threshold changes",
+    "declared units"
+  ],
+  "reviewer_output_used": false
+}

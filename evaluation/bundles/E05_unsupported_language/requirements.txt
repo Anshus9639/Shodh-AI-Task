@@ -1,0 +1,5 @@
+R1. Missing category -> manual review.
+R2. Otherwise, urgent ticket -> priority queue.
+R3. Otherwise, waiting >= 30 minutes -> escalation queue.
+R4. All remaining tickets -> normal queue.
+Refunds must be routed to the finance team by a senior reviewer.

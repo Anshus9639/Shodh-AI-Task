@@ -1,0 +1,34 @@
+{
+  "bundle_id": "H03_spec_reordered",
+  "suite": "development",
+  "bundle_path": "fixtures/dev_evidence/holdout_v1/bundles/H03_spec_reordered",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "PRECEDENCE"
+    ],
+    "primary_defect": "PRECEDENCE",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "The spec serializes the urgent rule in the priority-1 slot and the missing-category rule in the priority-2 slot. Priorities are execution order, so a ticket with category absent and priority urgent now routes to priority instead of manual review. This is a real semantic precedence change, not a cosmetic record reorder.",
+  "source_evidence": [
+    "spec.json rules array order and priority values 1/2 are swapped",
+    "requirements.txt R1 before R2"
+  ],
+  "scenarios": [
+    "metamorphic: actual semantic precedence changes",
+    "wrong precedence"
+  ],
+  "reviewer_output_used": false
+}

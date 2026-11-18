@@ -1,0 +1,42 @@
+{
+  "bundle_id": "E05_unsupported_language",
+  "bundle_version": "1.0",
+  "review_target": {
+    "requirements": [
+      "REQ@1.0"
+    ],
+    "spec": "SPEC@1.0",
+    "workflow": "WF@1.0"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "DICT",
+      "version": "1.0",
+      "kind": "data_dictionary",
+      "path": "dictionary.json",
+      "sha256": "6589128fceeea9f2c9c6569646550b69605f1a6ef6cd048f08714e8195c06ce0"
+    },
+    {
+      "artifact_id": "REQ",
+      "version": "1.0",
+      "kind": "requirements",
+      "path": "requirements.txt",
+      "sha256": "d8abeacec0a9ca524c17f06f1a484d659382f18691edc84647c7a59b5c14634f"
+    },
+    {
+      "artifact_id": "SPEC",
+      "version": "1.0",
+      "kind": "spec",
+      "path": "spec.json",
+      "sha256": "39922aa90772623f7134d35f66e5a811457fd3a74b750d05356765f7f0e05499"
+    },
+    {
+      "artifact_id": "WF",
+      "version": "1.0",
+      "kind": "workflow",
+      "path": "workflow.json",
+      "sha256": "92c32c20b9683f539d97f4d754eb72077dfc98c3c2770f8953204c6a3efa9aeb"
+    }
+  ],
+  "approvals": []
+}

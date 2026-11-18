@@ -1,0 +1,34 @@
+{
+  "bundle_id": "E08_unusual_formulation",
+  "suite": "development",
+  "bundle_path": "evaluation/bundles/E08_unusual_formulation",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": null,
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "R3 is written 'not waiting < 30 minutes'. Over the declared integer wait domain this is equivalent to wait >= 30, and when wait is absent both formulations are UNKNOWN, so the rule does not fire and R4 handles the ticket. The spec and workflow use the equivalent >= 30 form, so the review passes within the declared domain and missing-value semantics.",
+  "source_evidence": [
+    "requirements.txt R3 uses not waiting < 30 minutes",
+    "dictionary.json aliases waiting -> wait_time",
+    "spec.json S3 uses wait_time >= 30 minutes"
+  ],
+  "scenarios": [
+    "valid unusual formulation",
+    "missing-value semantics",
+    "inclusive versus exclusive boundaries"
+  ],
+  "reviewer_output_used": false
+}

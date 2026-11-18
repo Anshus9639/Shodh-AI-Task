@@ -1,0 +1,36 @@
+{
+  "bundle_id": "E04_interacting_exceptions",
+  "suite": "development",
+  "bundle_path": "evaluation/bundles/E04_interacting_exceptions",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "MISSING_EXCEPTION"
+    ],
+    "primary_defect": "MISSING_EXCEPTION",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "The requirements place an exception to R3 before R3: a vip ticket with wait >= 30 goes to priority instead of escalation. The spec instead appends a general vip rule after the wait rule. Each rule looks plausible alone, but a vip ticket with wait >= 30 escalates (wrong), and a vip ticket with wait < 30 goes to priority (wrong). The defect appears only through the interaction of the wait rule and the vip exception.",
+  "source_evidence": [
+    "requirements.txt Exception to R3 with vip",
+    "spec.json S3 resolves before S4 (general vip rule)",
+    "workflow.json b3 resolves before b4"
+  ],
+  "scenarios": [
+    "interacting exceptions",
+    "wrong precedence",
+    "multiple individually plausible rules"
+  ],
+  "reviewer_output_used": false
+}

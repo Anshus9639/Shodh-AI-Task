@@ -27,6 +27,14 @@ class ApprovalPolicy(BaseModel):
     authorized_roles: tuple[str, ...] = ("policy_owner",)
 
 
+class DomainSettings(BaseModel):
+    """Numeric domain partitioning; disabling it is an explicit coverage reduction."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    enabled: bool = True
+
+
 class ModelSettings(BaseModel):
     """Supplementary model analysis; off by default and never authoritative."""
 
@@ -51,6 +59,7 @@ class Config(BaseModel):
 
     limits: Limits = Field(default_factory=Limits)
     approvals: ApprovalPolicy = Field(default_factory=ApprovalPolicy)
+    domain_partitioning: DomainSettings = Field(default_factory=DomainSettings)
     model: ModelSettings = Field(default_factory=ModelSettings)
 
 
@@ -80,6 +89,7 @@ __all__ = [
     "ApprovalPolicy",
     "Config",
     "ConfigError",
+    "DomainSettings",
     "Limits",
     "ModelSettings",
     "load_config",

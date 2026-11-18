@@ -1,0 +1,36 @@
+{
+  "bundle_id": "B12_router_threshold",
+  "suite": "development",
+  "bundle_path": "fixtures/dev/B12_router_threshold",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "THRESHOLD_CHANGED"
+    ],
+    "primary_defect": "THRESHOLD_CHANGED",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "The router uses wait_time > 30 while the requirement is wait_time >= 30. Every ticket with wait=30 is sent to normal instead of escalation: a strict/inclusive boundary change that the requirement does not authorize.",
+  "source_evidence": [
+    "router.py threshold comparison uses > 30",
+    "requirements.txt R3 uses >= 30 minutes",
+    "spec.json rule S3 and workflow.json branch b3 use >= 30"
+  ],
+  "scenarios": [
+    "inclusive versus exclusive boundaries",
+    "numeric comparison boundary change",
+    "Python/workflow disagreement"
+  ],
+  "reviewer_output_used": false
+}

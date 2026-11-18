@@ -503,6 +503,7 @@ def _verify_artifacts(
         max_cells=config.limits.max_cells,
         extra_cuts=extra_cuts,
         extra_literals=extra_literals,
+        partitioning_enabled=config.domain_partitioning.enabled,
     )
 
     if spec_router is not None and typed.spec is not None:

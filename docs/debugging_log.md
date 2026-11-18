@@ -99,6 +99,7 @@ Real incidents observed while building Stage 1. Each entry states the symptom, t
 - **Cause:** The unexercised-requirement loop did not distinguish exhaustive from sampled evaluation; absence from a sample was treated as evidence about the router.
 - **Fix:** In sampled mode the loop now emits `STRUCTURAL`/`COVERAGE_GAP` ("not exercised by the sample") and relies on the disclosed sampling scope; `BLOCKER` requires a validated witness. Status for the sampled B10 review is INCOMPLETE.
 - **Guard:** `tests/integration/test_review.py::test_sampled_space_is_incomplete_and_disclosed` (decision D-039).
+- **Reproduced:** `reports/debugging/debugging_examples.json` (example D-01) runs the fix commit's assertion against the parent `ace9479` source, where it fails, and against `528aaf7` and current HEAD, where it passes.
 
 ## 2026-11-18 — Sampled status was documented as capped at INCOMPLETE
 
@@ -106,6 +107,7 @@ Real incidents observed while building Stage 1. Each entry states the symptom, t
 - **Cause:** D-039 correctly stopped inferring defects from a requirement absent in the sample, but its status clause conflated "the sample is incomplete" with "no defect can be established". The orchestrator already put `BLOCKER` first, but no test or documentation pinned that precedence, and runtime `UNSUPPORTED` code was disclosed only as a finding, not as an `UnreviewedScope`.
 - **Fix:** Documented and tested the three-rule truth table (validated blocker → `CHANGES_REQUIRED`; otherwise incomplete mandatory checks → `INCOMPLETE`; otherwise `PASS`). Added a `code` unreviewed scope for runtime-unsupported router regions and a `B14_router_unsupported` dev fixture that combines a validated `wait_time = 30` blocker with an undeclared-destination region.
 - **Guard:** Tests A–E in `tests/integration/test_review.py`; decision D-041 amends D-039's status clause. Sampled reports keep `exhaustive = false` and every sampling/unreviewed disclosure.
+- **Reproduced:** `reports/debugging/debugging_examples.json` (example D-02) runs test E against the parent `528aaf7` source with the `B14_router_unsupported` fixture, where the missing `code` unreviewed scope fails, and against `f0dbb0c` and current HEAD, where it passes.
 
 ## 2026-11-18 — Gemini adapter returned the envelope instead of the model text
 

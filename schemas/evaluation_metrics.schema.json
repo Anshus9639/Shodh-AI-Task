@@ -1,0 +1,486 @@
+{
+  "$defs": {
+    "CaseRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "actual_status": {
+          "title": "Actual Status",
+          "type": "string"
+        },
+        "bundle_id": {
+          "title": "Bundle Id",
+          "type": "string"
+        },
+        "cells_checked": {
+          "minimum": 0,
+          "title": "Cells Checked",
+          "type": "integer"
+        },
+        "comparison_modes": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Comparison Modes",
+          "type": "object"
+        },
+        "correct": {
+          "title": "Correct",
+          "type": "boolean"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "expected_status": {
+          "title": "Expected Status",
+          "type": "string"
+        },
+        "findings": {
+          "minimum": 0,
+          "title": "Findings",
+          "type": "integer"
+        },
+        "input_bytes": {
+          "minimum": 0,
+          "title": "Input Bytes",
+          "type": "integer"
+        },
+        "runtime_seconds": {
+          "minimum": 0.0,
+          "title": "Runtime Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "bundle_id",
+        "expected_status",
+        "actual_status",
+        "correct",
+        "runtime_seconds",
+        "input_bytes",
+        "cells_checked",
+        "findings",
+        "comparison_modes"
+      ],
+      "title": "CaseRecord",
+      "type": "object"
+    },
+    "CoverageMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "code_coverage": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "comparison_modes": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Comparison Modes",
+          "type": "object"
+        },
+        "evidence_completeness": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "fully_reviewed": {
+          "minimum": 0,
+          "title": "Fully Reviewed",
+          "type": "integer"
+        },
+        "missing_evidence": {
+          "minimum": 0,
+          "title": "Missing Evidence",
+          "type": "integer"
+        },
+        "partially_reviewed": {
+          "minimum": 0,
+          "title": "Partially Reviewed",
+          "type": "integer"
+        },
+        "source_coverage": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "specification_coverage": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "total_effective_requirements": {
+          "minimum": 0,
+          "title": "Total Effective Requirements",
+          "type": "integer"
+        },
+        "unreviewed": {
+          "minimum": 0,
+          "title": "Unreviewed",
+          "type": "integer"
+        },
+        "unsupported_expressions": {
+          "minimum": 0,
+          "title": "Unsupported Expressions",
+          "type": "integer"
+        },
+        "workflow_coverage": {
+          "$ref": "#/$defs/Ratio"
+        }
+      },
+      "required": [
+        "total_effective_requirements",
+        "fully_reviewed",
+        "partially_reviewed",
+        "unreviewed",
+        "unsupported_expressions",
+        "missing_evidence",
+        "source_coverage",
+        "specification_coverage",
+        "workflow_coverage",
+        "code_coverage",
+        "evidence_completeness",
+        "comparison_modes"
+      ],
+      "title": "CoverageMetrics",
+      "type": "object"
+    },
+    "DecisionMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "abstentions_by_expected": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Abstentions By Expected",
+          "type": "object"
+        },
+        "actual_counts": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Actual Counts",
+          "type": "object"
+        },
+        "correct_changes_required": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "correct_incomplete": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "correct_pass": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "expected_counts": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Expected Counts",
+          "type": "object"
+        },
+        "false_block": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "false_pass": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "false_pass_on_defective": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "overall_correct": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "total_cases": {
+          "minimum": 0,
+          "title": "Total Cases",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total_cases",
+        "expected_counts",
+        "actual_counts",
+        "correct_pass",
+        "false_pass",
+        "false_pass_on_defective",
+        "correct_changes_required",
+        "false_block",
+        "correct_incomplete",
+        "abstentions_by_expected",
+        "overall_correct"
+      ],
+      "title": "DecisionMetrics",
+      "type": "object"
+    },
+    "FindingMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "blocker_severity_on_defects": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "correct_artifact": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "correct_artifact_version": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "correct_defect_identification": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "correct_rule_reference": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "defective_cases": {
+          "minimum": 0,
+          "title": "Defective Cases",
+          "type": "integer"
+        },
+        "duplicate_findings": {
+          "minimum": 0,
+          "title": "Duplicate Findings",
+          "type": "integer"
+        },
+        "evidence_location": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "findings_total": {
+          "minimum": 0,
+          "title": "Findings Total",
+          "type": "integer"
+        },
+        "message_witness": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "structured_evidence": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "unsupported_findings": {
+          "minimum": 0,
+          "title": "Unsupported Findings",
+          "type": "integer"
+        },
+        "valid_counterexamples": {
+          "$ref": "#/$defs/Ratio"
+        },
+        "valid_evidence": {
+          "$ref": "#/$defs/Ratio"
+        }
+      },
+      "required": [
+        "findings_total",
+        "defective_cases",
+        "correct_defect_identification",
+        "correct_rule_reference",
+        "correct_artifact",
+        "correct_artifact_version",
+        "evidence_location",
+        "structured_evidence",
+        "valid_evidence",
+        "message_witness",
+        "valid_counterexamples",
+        "blocker_severity_on_defects",
+        "unsupported_findings",
+        "duplicate_findings"
+      ],
+      "title": "FindingMetrics",
+      "type": "object"
+    },
+    "Ratio": {
+      "additionalProperties": false,
+      "properties": {
+        "denominator": {
+          "minimum": 0,
+          "title": "Denominator",
+          "type": "integer"
+        },
+        "numerator": {
+          "minimum": 0,
+          "title": "Numerator",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "numerator",
+        "denominator"
+      ],
+      "title": "Ratio",
+      "type": "object"
+    },
+    "ReportHeader": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baseline Revision"
+        },
+        "bundle_count": {
+          "minimum": 0,
+          "title": "Bundle Count",
+          "type": "integer"
+        },
+        "code_revision": {
+          "title": "Code Revision",
+          "type": "string"
+        },
+        "config_sha256": {
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "dataset_manifest_sha256": {
+          "title": "Dataset Manifest Sha256",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "model_execution_mode": {
+          "title": "Model Execution Mode",
+          "type": "string"
+        },
+        "report": {
+          "title": "Report",
+          "type": "string"
+        },
+        "unsupported_scope": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Unsupported Scope",
+          "type": "array"
+        }
+      },
+      "required": [
+        "report",
+        "generated_at",
+        "code_revision",
+        "config_sha256",
+        "dataset_manifest_sha256",
+        "bundle_count",
+        "model_execution_mode"
+      ],
+      "title": "ReportHeader",
+      "type": "object"
+    },
+    "ResourceMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "bundle_count": {
+          "minimum": 0,
+          "title": "Bundle Count",
+          "type": "integer"
+        },
+        "counterexample_combinations": {
+          "minimum": 0,
+          "title": "Counterexample Combinations",
+          "type": "integer"
+        },
+        "fake_client_calls": {
+          "minimum": 0,
+          "title": "Fake Client Calls",
+          "type": "integer"
+        },
+        "input_bytes": {
+          "minimum": 0,
+          "title": "Input Bytes",
+          "type": "integer"
+        },
+        "mean_runtime_seconds": {
+          "minimum": 0.0,
+          "title": "Mean Runtime Seconds",
+          "type": "number"
+        },
+        "model_failures": {
+          "minimum": 0,
+          "title": "Model Failures",
+          "type": "integer"
+        },
+        "model_requests": {
+          "minimum": 0,
+          "title": "Model Requests",
+          "type": "integer"
+        },
+        "model_retries": {
+          "minimum": 0,
+          "title": "Model Retries",
+          "type": "integer"
+        },
+        "model_successes": {
+          "minimum": 0,
+          "title": "Model Successes",
+          "type": "integer"
+        },
+        "real_model_calls": {
+          "minimum": 0,
+          "title": "Real Model Calls",
+          "type": "integer"
+        },
+        "total_runtime_seconds": {
+          "minimum": 0.0,
+          "title": "Total Runtime Seconds",
+          "type": "number"
+        }
+      },
+      "required": [
+        "total_runtime_seconds",
+        "mean_runtime_seconds",
+        "bundle_count",
+        "input_bytes",
+        "counterexample_combinations",
+        "model_requests",
+        "model_successes",
+        "model_failures",
+        "model_retries",
+        "fake_client_calls",
+        "real_model_calls"
+      ],
+      "title": "ResourceMetrics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cases": {
+      "items": {
+        "$ref": "#/$defs/CaseRecord"
+      },
+      "title": "Cases",
+      "type": "array"
+    },
+    "coverage": {
+      "$ref": "#/$defs/CoverageMetrics"
+    },
+    "decision": {
+      "$ref": "#/$defs/DecisionMetrics"
+    },
+    "finding_quality": {
+      "$ref": "#/$defs/FindingMetrics"
+    },
+    "header": {
+      "$ref": "#/$defs/ReportHeader"
+    },
+    "resources": {
+      "$ref": "#/$defs/ResourceMetrics"
+    }
+  },
+  "required": [
+    "header",
+    "decision",
+    "finding_quality",
+    "coverage",
+    "resources",
+    "cases"
+  ],
+  "title": "EvaluationMetrics",
+  "type": "object"
+}

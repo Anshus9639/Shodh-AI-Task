@@ -1,0 +1,34 @@
+{
+  "bundle_id": "E07_missing_evidence",
+  "suite": "development",
+  "bundle_path": "evaluation/bundles/E07_missing_evidence",
+  "expected": {
+    "status": "INCOMPLETE",
+    "defect_classes": [
+      "PROVENANCE_FAILURE"
+    ],
+    "primary_defect": "PROVENANCE_FAILURE",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "The manifest declares a spec sha256 that does not match spec.json. The review target still names SPEC@1.0, but the artifact cannot be loaded as evidence, so specification coverage is unavailable and the result is INCOMPLETE rather than a silent skip.",
+  "source_evidence": [
+    "bundle.json spec sha256 is all zeros",
+    "spec.json bytes hash differently"
+  ],
+  "scenarios": [
+    "missing evidence",
+    "tampered artifact"
+  ],
+  "reviewer_output_used": false
+}

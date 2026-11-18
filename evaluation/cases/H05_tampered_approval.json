@@ -1,0 +1,34 @@
+{
+  "bundle_id": "H05_tampered_approval",
+  "suite": "development",
+  "bundle_path": "fixtures/dev_evidence/holdout_v1/bundles/H05_tampered_approval",
+  "expected": {
+    "status": "INCOMPLETE",
+    "defect_classes": [
+      "INVALID_APPROVAL"
+    ],
+    "primary_defect": "INVALID_APPROVAL",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "The only approval claims C1@1 but its change_sha256 is all zeros and does not match the change record. It grants no authority, so the change stays unapproved and the approval evidence is invalid. Review of the approval claim cannot be completed.",
+  "source_evidence": [
+    "bundle.json approval A5 with zero hash",
+    "changes.json C1 content hash differs"
+  ],
+  "scenarios": [
+    "invalid approval",
+    "missing evidence"
+  ],
+  "reviewer_output_used": false
+}

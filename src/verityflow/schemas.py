@@ -5,6 +5,16 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
+from verityflow.evaluation.models import (
+    AblationReport,
+    CounterexamplesReport,
+    CoverageReport,
+    DatasetManifest,
+    DebuggingExamplesReport,
+    EvaluationMetrics,
+    FindingsReport,
+    SealedResults,
+)
 from verityflow.ir.policy import EffectiveRequirements, Policy
 from verityflow.mapping.models import MappingResult
 from verityflow.model.models import ModelAnalysis, ModelRequest, ModelResponse
@@ -40,6 +50,14 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "model_request": ModelRequest,
     "model_response": ModelResponse,
     "model_analysis": ModelAnalysis,
+    "evaluation_metrics": EvaluationMetrics,
+    "evaluation_findings": FindingsReport,
+    "evaluation_coverage": CoverageReport,
+    "evaluation_counterexamples": CounterexamplesReport,
+    "evaluation_dataset": DatasetManifest,
+    "evaluation_sealed_results": SealedResults,
+    "evaluation_ablation": AblationReport,
+    "evaluation_debugging": DebuggingExamplesReport,
 }
 
 

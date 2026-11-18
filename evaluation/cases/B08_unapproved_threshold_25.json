@@ -1,0 +1,32 @@
+{
+  "bundle_id": "B08_unapproved_threshold_25",
+  "suite": "development",
+  "bundle_path": "fixtures/dev/B08_unapproved_threshold_25",
+  "expected": {
+    "status": "PASS",
+    "defect_classes": [],
+    "primary_defect": null,
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "C1 proposes 25 minutes without any approval record. It is not applied, so the effective threshold stays 30 and the unchanged artifacts agree with it.",
+  "source_evidence": [
+    "changes.json C1 30 -> 25 minutes",
+    "bundle.json approvals is empty"
+  ],
+  "scenarios": [
+    "unapproved threshold suggestion",
+    "numeric threshold changes"
+  ],
+  "reviewer_output_used": false
+}

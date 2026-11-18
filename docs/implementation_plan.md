@@ -852,3 +852,60 @@ approval change; offline execution without credentials).
 - No live model request was made. The Gemini adapter is covered only by a fail-closed no-credential test.
 - `configs/default.toml` is unchanged at sha256 `6e3170f2…`; model defaults are in `config.ModelSettings` (D-042).
 - Both sealed holdouts remain unexecuted and their manifests unchanged.
+
+---
+
+## 16. Stage 4 plan — controlled evaluation, debugging and final submission
+
+Stage 4 is evaluation and evidence work on top of the frozen deterministic engine. It does not
+rewrite Stage 1–3 verification code. The only functional change is an explicit, default-on
+ablation switch for numeric domain partitioning.
+
+### 16.1 Evaluation assets (inventory first)
+
+- Reuse `fixtures/dev/B01–B14` (12 bundles) and the frozen development evidence
+  `fixtures/dev_evidence/holdout_v1/H01–H05` (5 bundles). Their expected Stage 1 labels are
+  retained; Stage 2 status expectations are independently derived.
+- Add `evaluation/bundles/E01–E07` for scenarios not represented in the existing development
+  set: an accepted approved threshold change, a missing branch, a wrong destination, an
+  interacting exception, unsupported requirement language, unsupported Python syntax and a
+  provenance/missing-evidence failure. These are development fixtures, not modifications of any
+  sealed set.
+- Sealed `holdout/` and `holdout_stage2/` remain untouched until the single final evaluation run.
+
+### 16.2 Independent oracle
+
+`evaluation/oracle.py` is a separately written first-match router with its own three-valued
+logic, hash-bound approval resolution and probe tickets. It does not import the review
+orchestrator, spec verifier, workflow interpreter, Python AST interpreter or counterexample
+generator. Per-case expectations live in `evaluation/cases/`; each label records its method
+(`oracle` or `manual`) and a concise independent reason.
+
+### 16.3 Measurement
+
+`evaluation/harness.py` runs the current reviewer and a canonicalized baseline adapter
+(`stage2-baseline` → `4702939`) over identical bundle bytes and configuration. It records
+decision correctness, false PASS/false blocks, finding quality, coverage, resource use and
+abstention reasons. Metrics are computed only from executed reports.
+
+### 16.4 Controlled ablation
+
+`Config.domain_partitioning.enabled` (default `true`) gates boundary/interval representative
+generation. Disabled mode evaluates a small fixed ticket set and marks the space `UNREVIEWED`
+with an explicit unreviewed scope, so it can never be reported as exhaustive or PASS. The
+ablation runs the same bundles, approvals, model mode (`off`) and environment.
+
+### 16.5 Deliverables
+
+- `scripts/run_offline.py`: tests, fixture validation, final development evaluation, baseline
+  comparison, ablation, schema validation and JSON/Markdown report generation; no provider or
+  external access.
+- `scripts/run_final_evaluation.py`: the single sealed F/G execution, compared with frozen labels.
+- `reports/` machine-readable outputs, `docs/engineering_note.md` (four pages) and
+  `docs/ai_assistance_note.md` (one page).
+- Two debugging examples reproduced from actual history (`528aaf7`, `f0dbb0c`).
+
+### 16.6 Gates
+
+`uv run pytest -q`, ruff, format check, mypy, `uv run python scripts/run_offline.py`, report
+schema validation, manifest integrity checks, and a clean working tree after the Stage 4 commit.

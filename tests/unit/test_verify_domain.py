@@ -123,3 +123,20 @@ def test_sampling_is_disclosed_instead_of_claimed_exhaustive() -> None:
     assert space.combinations_skipped > 0
     assert space.combinations_total == space.checked + space.combinations_skipped
     assert "not evaluated" in space.detail
+
+
+def test_disabled_partitioning_is_explicitly_unreviewed() -> None:
+    expressions = (Cmp(field="wait_time", op=">=", value=Fraction(30), unit=None),)
+
+    space = build_ticket_space(
+        TICKET_DICTIONARY,
+        expressions,
+        max_cells=10_000,
+        partitioning_enabled=False,
+    )
+
+    assert space.mode is ComparisonMode.UNREVIEWED
+    assert not space.exhaustive
+    assert len(space.cells) == len(TICKET_DICTIONARY.fields) + 1
+    assert "domain partitioning is disabled" in space.detail
+    assert "not exhaustive" in space.detail

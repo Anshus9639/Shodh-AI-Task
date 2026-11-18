@@ -209,3 +209,27 @@ def test_cli_exit_codes_follow_the_review_status(tmp_path: Path) -> None:
 
     missing = runner.invoke(app, ["review", str(tmp_path / "absent")])
     assert missing.exit_code == 2
+
+
+def test_disabled_domain_partitioning_cannot_pass() -> None:
+    from verityflow.config import DomainSettings
+
+    disabled = Config(domain_partitioning=DomainSettings(enabled=False))
+    report = _review("B01_starter", config=disabled)
+
+    assert report.status is ReviewStatus.INCOMPLETE
+    assert not report.exhaustive
+    assert all(record.mode is ComparisonMode.UNREVIEWED for record in report.comparisons)
+    assert any(
+        "domain partitioning is disabled" in scope.description for scope in report.unreviewed
+    )
+
+
+def test_disabled_domain_partitioning_hides_a_boundary_defect() -> None:
+    from verityflow.config import DomainSettings
+
+    disabled = Config(domain_partitioning=DomainSettings(enabled=False))
+    report = _review("B12_router_threshold", config=disabled)
+
+    assert report.status is ReviewStatus.INCOMPLETE
+    assert not any(finding.severity is Severity.BLOCKER for finding in report.findings)

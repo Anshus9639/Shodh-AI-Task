@@ -1,0 +1,35 @@
+{
+  "bundle_id": "H04_approved_threshold",
+  "suite": "development",
+  "bundle_path": "fixtures/dev_evidence/holdout_v1/bundles/H04_approved_threshold",
+  "expected": {
+    "status": "CHANGES_REQUIRED",
+    "defect_classes": [
+      "THRESHOLD_CHANGED"
+    ],
+    "primary_defect": "THRESHOLD_CHANGED",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "escalation_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "A4 is a valid hash-bound approval of C1@1, so R3 becomes wait >= 20 minutes. The spec still encodes >= 30; tickets in 20..29 route to normal in the artifact and escalation in the effective requirement.",
+  "source_evidence": [
+    "changes.json C1 30 -> 20 minutes",
+    "bundle.json approval A4 hash matches",
+    "spec.json S3 keeps 30"
+  ],
+  "scenarios": [
+    "approved threshold change",
+    "numeric threshold changes"
+  ],
+  "reviewer_output_used": false
+}

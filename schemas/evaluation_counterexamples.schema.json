@@ -1,0 +1,89 @@
+{
+  "$defs": {
+    "ReportHeader": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baseline Revision"
+        },
+        "bundle_count": {
+          "minimum": 0,
+          "title": "Bundle Count",
+          "type": "integer"
+        },
+        "code_revision": {
+          "title": "Code Revision",
+          "type": "string"
+        },
+        "config_sha256": {
+          "title": "Config Sha256",
+          "type": "string"
+        },
+        "dataset_manifest_sha256": {
+          "title": "Dataset Manifest Sha256",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "model_execution_mode": {
+          "title": "Model Execution Mode",
+          "type": "string"
+        },
+        "report": {
+          "title": "Report",
+          "type": "string"
+        },
+        "unsupported_scope": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Unsupported Scope",
+          "type": "array"
+        }
+      },
+      "required": [
+        "report",
+        "generated_at",
+        "code_revision",
+        "config_sha256",
+        "dataset_manifest_sha256",
+        "bundle_count",
+        "model_execution_mode"
+      ],
+      "title": "ReportHeader",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cases": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Cases",
+      "type": "array"
+    },
+    "header": {
+      "$ref": "#/$defs/ReportHeader"
+    }
+  },
+  "required": [
+    "header",
+    "cases"
+  ],
+  "title": "CounterexamplesReport",
+  "type": "object"
+}

@@ -1,0 +1,90 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "bundle_count": {
+      "minimum": 0,
+      "title": "Bundle Count",
+      "type": "integer"
+    },
+    "cases": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Cases",
+      "type": "array"
+    },
+    "config": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Config",
+      "type": "object"
+    },
+    "dataset_freeze_commit": {
+      "title": "Dataset Freeze Commit",
+      "type": "string"
+    },
+    "dataset_id": {
+      "title": "Dataset Id",
+      "type": "string"
+    },
+    "development_bundle_count": {
+      "minimum": 0,
+      "title": "Development Bundle Count",
+      "type": "integer"
+    },
+    "evaluation_manifest_sha256": {
+      "title": "Evaluation Manifest Sha256",
+      "type": "string"
+    },
+    "expected_outcome_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Expected Outcome Counts",
+      "type": "object"
+    },
+    "frozen_on": {
+      "title": "Frozen On",
+      "type": "string"
+    },
+    "implementation_checkpoint": {
+      "title": "Implementation Checkpoint",
+      "type": "string"
+    },
+    "label_isolation": {
+      "title": "Label Isolation",
+      "type": "string"
+    },
+    "sealed_bundle_count": {
+      "minimum": 0,
+      "title": "Sealed Bundle Count",
+      "type": "integer"
+    },
+    "sealed_manifests": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Sealed Manifests",
+      "type": "object"
+    }
+  },
+  "required": [
+    "dataset_id",
+    "frozen_on",
+    "bundle_count",
+    "development_bundle_count",
+    "sealed_bundle_count",
+    "expected_outcome_counts",
+    "implementation_checkpoint",
+    "dataset_freeze_commit",
+    "config",
+    "label_isolation",
+    "sealed_manifests",
+    "evaluation_manifest_sha256",
+    "cases"
+  ],
+  "title": "DatasetManifest",
+  "type": "object"
+}

@@ -1,0 +1,34 @@
+{
+  "bundle_id": "B09_conflicting_threshold_25",
+  "suite": "development",
+  "bundle_path": "fixtures/dev/B09_conflicting_threshold_25",
+  "expected": {
+    "status": "INCOMPLETE",
+    "defect_classes": [
+      "UNDETERMINED_CONFLICT"
+    ],
+    "primary_defect": "UNDETERMINED_CONFLICT",
+    "tickets": {
+      "category=<absent>,priority=urgent,wait_time=<absent>,vip=<absent>": "manual_review",
+      "category=<absent>,priority=urgent,wait_time=30,vip=True": "manual_review",
+      "category=billing,priority=urgent,wait_time=30,vip=True": "priority_queue",
+      "category=billing,priority=normal,wait_time=25,vip=False": "normal_queue",
+      "category=billing,priority=normal,wait_time=29,vip=True": "normal_queue",
+      "category=billing,priority=normal,wait_time=30,vip=False": "escalation_queue",
+      "category=billing,priority=normal,wait_time=<absent>,vip=False": "normal_queue",
+      "category=<absent>,priority=normal,wait_time=60,vip=False": "manual_review"
+    }
+  },
+  "method": "independent-oracle and manual reasoning",
+  "oracle": "evaluation/oracle.py",
+  "independent_reasoning": "A8 approves and A9 rejects the same hash-bound C1@1 change to 25 minutes. No active policy can be selected without inventing authority, so the affected scope is undetermined and the result is INCOMPLETE.",
+  "source_evidence": [
+    "bundle.json approvals A8 approve and A9 reject",
+    "changes.json C1 30 -> 25 minutes"
+  ],
+  "scenarios": [
+    "contradictory approvals",
+    "numeric threshold changes"
+  ],
+  "reviewer_output_used": false
+}
